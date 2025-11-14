@@ -49,9 +49,12 @@ const CategoryStatItem: FC<CategoryStatItemProps> = ({
               {category?.name || "Khác"}
             </Text>
             {showBudget && budgetStatus.hasBudget && (
-              <Text size="xSmall" className="text-gray-500">
-                💰 Ngân sách: {formatCurrency(budgetStatus.budget)}
-              </Text>
+              <Box className="flex items-center">
+                <Icon icon="zi-coin" className="text-gray-500 mr-1" size={12} />
+                <Text size="xSmall" className="text-gray-500">
+                  Ngân sách: {formatCurrency(budgetStatus.budget)}
+                </Text>
+              </Box>
             )}
           </Box>
         </Box>
@@ -63,9 +66,12 @@ const CategoryStatItem: FC<CategoryStatItemProps> = ({
             {stat.percentage.toFixed(1)}%
           </Text>
           {showBudget && budgetStatus.hasBudget && budgetStatus.isExceeded && (
-            <Text size="xSmall" className="text-red-600 font-medium">
-              ⚠️ Vượt ngân sách!
-            </Text>
+            <Box className="flex items-center">
+              <Icon icon="zi-warning-solid" className="text-red-600 mr-1" size={12} />
+              <Text size="xSmall" className="text-red-600 font-medium">
+                Vượt ngân sách!
+              </Text>
+            </Box>
           )}
         </Box>
       </Box>

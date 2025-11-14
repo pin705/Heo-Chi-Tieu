@@ -417,16 +417,18 @@ const HistoryPage: FC = () => {
                 clearFilters();
                 setShowFilterSheet(false);
               }}
-              className="h-12 font-semibold shadow-sm hover:shadow-md transition-shadow"
+              className="h-12 font-semibold shadow-sm hover:shadow-md transition-shadow flex items-center justify-center"
             >
-              🗑️ Xóa bộ lọc
+              <Icon icon="zi-delete" className="mr-2" />
+              Xóa bộ lọc
             </Button>
             <Button 
               fullWidth 
               onClick={() => setShowFilterSheet(false)}
-              className="h-12 font-semibold shadow-md hover:shadow-lg transition-shadow"
+              className="h-12 font-semibold shadow-md hover:shadow-lg transition-shadow flex items-center justify-center"
             >
-              ✓ Áp dụng
+              <Icon icon="zi-check-circle" className="mr-2" />
+              Áp dụng
             </Button>
           </Box>
         </Box>

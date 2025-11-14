@@ -274,11 +274,18 @@ const BudgetPage: FC = () => {
         swipeToClose
       >
         <Box className="p-5">
-          <Text.Title className="mb-5 text-center">
-            {formData.type === "monthly"
-              ? "💰 Ngân sách tháng"
-              : "📂 Ngân sách danh mục"}
-          </Text.Title>
+          <Box className="flex items-center justify-center mb-5">
+            <Icon 
+              icon={formData.type === "monthly" ? "zi-coin" : "zi-more-grid"} 
+              className="mr-2" 
+              size={24}
+            />
+            <Text.Title>
+              {formData.type === "monthly"
+                ? "Ngân sách tháng"
+                : "Ngân sách danh mục"}
+            </Text.Title>
+          </Box>
 
           {formData.type === "category" && (
             <Box className="mb-5">
@@ -353,9 +360,10 @@ const BudgetPage: FC = () => {
             <Button 
               fullWidth 
               onClick={handleAddBudget}
-              className="h-12 font-semibold shadow-md hover:shadow-lg transition-shadow"
+              className="h-12 font-semibold shadow-md hover:shadow-lg transition-shadow flex items-center justify-center"
             >
-              ✓ Lưu
+              <Icon icon="zi-check-circle" className="mr-2" />
+              Lưu
             </Button>
           </Box>
         </Box>
