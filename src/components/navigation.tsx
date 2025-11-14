@@ -1,33 +1,31 @@
 import { useVirtualKeyboardVisible } from "hooks";
-import React, { FC, useMemo, useState } from "react";
+import React, { FC, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { MenuItem } from "types/menu";
 import { BottomNavigation, Icon } from "zmp-ui";
-import { CartIcon } from "./cart-icon";
 
 const tabs: Record<string, MenuItem> = {
   "/": {
     label: "Trang chủ",
     icon: <Icon icon="zi-home" />,
   },
-  "/notification": {
-    label: "Thông báo",
-    icon: <Icon icon="zi-notif" />,
+  "/history": {
+    label: "Lịch sử",
+    icon: <Icon icon="zi-calendar" />,
   },
-  "/cart": {
-    label: "Giỏ hàng",
-    icon: <CartIcon />,
-    activeIcon: <CartIcon active />,
+  "/reports": {
+    label: "Báo cáo",
+    icon: <Icon icon="zi-poll" />,
   },
-  "/profile": {
-    label: "Cá nhân",
-    icon: <Icon icon="zi-user" />,
+  "/settings": {
+    label: "Cài đặt",
+    icon: <Icon icon="zi-setting" />,
   },
 };
 
 export type TabKeys = keyof typeof tabs;
 
-export const NO_BOTTOM_NAVIGATION_PAGES = ["/search", "/category", "/result"];
+export const NO_BOTTOM_NAVIGATION_PAGES = ["/add-transaction", "/manage-wallets", "/manage-categories"];
 
 export const Navigation: FC = () => {
   const keyboardVisible = useVirtualKeyboardVisible();

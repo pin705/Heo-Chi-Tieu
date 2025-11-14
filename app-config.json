@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "ZaUI Coffee",
+    "title": "Quản Lý Chi Tiêu",
     "textColor": "black",
     "leftButton": "none",
     "statusBar": "transparent",
@@ -9,12 +9,13 @@
     "hideIOSSafeAreaBottom": false,
     "actionBarHidden": true
   },
+  "pages": [],
   "listCSS": [],
   "listSyncJS": [],
   "listAsyncJS": [],
   "template": {
-    "name": "zaui-coffee",
-    "primaryColor": "#006af5",
+    "name": "expense-tracker",
+    "primaryColor": "#10b981",
     "prefixCurrencySymbol": false,
     "currencySymbol": "đ",
     "headerLogo": ""

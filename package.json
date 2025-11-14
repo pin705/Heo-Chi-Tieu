@@ -1,8 +1,8 @@
 {
-  "name": "zaui-coffee",
+  "name": "expense-tracker",
   "private": true,
-  "version": "1.1.0",
-  "description": "ZaUI Coffee",
+  "version": "1.0.0",
+  "description": "Quản Lý Chi Tiêu - Expense Tracker",
   "repository": "",
   "license": "UNLICENSED",
   "browserslist": [
