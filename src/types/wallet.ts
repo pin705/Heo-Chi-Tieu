@@ -18,14 +18,14 @@ export const DEFAULT_WALLETS: Wallet[] = [
     id: "bank",
     name: "Ngân hàng",
     balance: 0,
-    icon: "zi-user",
+    icon: "zi-user-circle",
     color: "#3b82f6",
   },
   {
     id: "zalopay",
     name: "ZaloPay",
     balance: 0,
-    icon: "zi-home",
+    icon: "zi-user-circle-solid",
     color: "#006af5",
   },
 ];

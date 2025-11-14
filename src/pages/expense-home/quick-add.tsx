@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Box, Text, Button } from "zmp-ui";
+import { Box, Text, Button, Icon } from "zmp-ui";
 import { useNavigate } from "react-router-dom";
 
 export const QuickAdd: FC = () => {
@@ -13,19 +13,19 @@ export const QuickAdd: FC = () => {
       <Box className="grid grid-cols-2 gap-3">
         <Button
           variant="secondary"
-          className="h-24 flex flex-col items-center justify-center"
+          className="h-24 flex flex-col items-center justify-center hover:shadow-md transition-all duration-200"
           onClick={() => navigate("/add-transaction?type=expense")}
         >
-          <Box className="text-3xl mb-2">📤</Box>
-          <Text size="small">Chi tiêu</Text>
+          <Icon icon="zi-minus-circle" size={32} className="mb-2 text-red-500" />
+          <Text size="small" className="font-medium">Chi tiêu</Text>
         </Button>
         <Button
           variant="secondary"
-          className="h-24 flex flex-col items-center justify-center"
+          className="h-24 flex flex-col items-center justify-center hover:shadow-md transition-all duration-200"
           onClick={() => navigate("/add-transaction?type=income")}
         >
-          <Box className="text-3xl mb-2">📥</Box>
-          <Text size="small">Thu nhập</Text>
+          <Icon icon="zi-plus-circle" size={32} className="mb-2 text-green-500" />
+          <Text size="small" className="font-medium">Thu nhập</Text>
         </Button>
       </Box>
     </Box>

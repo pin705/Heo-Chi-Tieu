@@ -159,9 +159,12 @@ const AddTransactionPage: FC = () => {
 
         {/* Amount Input */}
         <Box className="mb-6 p-5 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-sm border border-gray-200">
-          <Text size="small" className="text-gray-700 mb-3 font-medium">
-            💰 Số tiền
-          </Text>
+          <Box className="flex items-center mb-3">
+            <Icon icon="zi-star" className="text-yellow-500 mr-2" size={20} />
+            <Text size="small" className="text-gray-700 font-medium">
+              Số tiền
+            </Text>
+          </Box>
           <Input
             type="number"
             placeholder="0"
@@ -176,9 +179,12 @@ const AddTransactionPage: FC = () => {
           className="mb-4 p-4 bg-white rounded-xl cursor-pointer border-2 border-gray-100 hover:border-blue-300 transition-all duration-200 shadow-sm hover:shadow-md"
           onClick={() => setShowCategorySheet(true)}
         >
-          <Text size="small" className="text-gray-700 mb-2 font-medium">
-            📂 Danh mục
-          </Text>
+          <Box className="flex items-center mb-2">
+            <Icon icon="zi-more-grid" className="text-blue-500 mr-2" size={18} />
+            <Text size="small" className="text-gray-700 font-medium">
+              Danh mục
+            </Text>
+          </Box>
           {selectedCategoryData ? (
             <Box className="flex items-center space-x-3">
               <Box
@@ -205,9 +211,12 @@ const AddTransactionPage: FC = () => {
           className="mb-4 p-4 bg-white rounded-xl cursor-pointer border-2 border-gray-100 hover:border-blue-300 transition-all duration-200 shadow-sm hover:shadow-md"
           onClick={() => setShowWalletSheet(true)}
         >
-          <Text size="small" className="text-gray-700 mb-2 font-medium">
-            👛 Ví
-          </Text>
+          <Box className="flex items-center mb-2">
+            <Icon icon="zi-user-circle" className="text-purple-500 mr-2" size={18} />
+            <Text size="small" className="text-gray-700 font-medium">
+              Ví
+            </Text>
+          </Box>
           {selectedWalletData ? (
             <Box className="flex items-center space-x-3">
               <Box
@@ -247,9 +256,12 @@ const AddTransactionPage: FC = () => {
 
         {/* Note Input */}
         <Box className="mb-6">
-          <Text size="small" className="text-gray-700 mb-2 font-medium">
-            📝 Ghi chú
-          </Text>
+          <Box className="flex items-center mb-2">
+            <Icon icon="zi-note" className="text-gray-500 mr-2" size={18} />
+            <Text size="small" className="text-gray-700 font-medium">
+              Ghi chú
+            </Text>
+          </Box>
           <Input
             placeholder="Thêm ghi chú (không bắt buộc)"
             value={note}
@@ -265,7 +277,8 @@ const AddTransactionPage: FC = () => {
           onClick={handleSubmit}
           className="mb-4 h-12 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
         >
-          ✓ Lưu giao dịch
+          <Icon icon="zi-check-circle" className="mr-2" />
+          Lưu giao dịch
         </Button>
       </Box>
 
