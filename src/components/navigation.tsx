@@ -56,7 +56,7 @@ export const Navigation: FC = () => {
         className="absolute left-1/2 -translate-x-1/2 -top-8 z-50"
         onClick={() => navigate("/add-transaction")}
       >
-        <Box className="bg-gradient-to-br from-emerald-500 to-green-600 w-16 h-16 rounded-full shadow-xl flex items-center justify-center cursor-pointer active:scale-95 transition-transform border-4 border-white">
+        <Box className="bg-[#eab308] w-16 h-16 rounded-full shadow-xl flex items-center justify-center cursor-pointer active:scale-95 transition-transform border-4 border-white">
           <Icon icon="zi-plus" size={32} className="text-white" />
         </Box>
       </Box>

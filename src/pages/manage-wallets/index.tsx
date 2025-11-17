@@ -135,15 +135,16 @@ const ManageWalletsPage: FC = () => {
       <Header title="Quản lý ví" showBackIcon={true} />
       <Box className="flex-1 overflow-auto pb-24">
         {/* Total Balance */}
-        <Box className="bg-yellow-500 p-6 relative overflow-hidden">
+        <Box className="rounded-2xl m-4 bg-white p-6 relative overflow-hidden">
+          <Box className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16" />
           <Box className="relative z-10">
-            <Text size="xSmall" className="text-white opacity-90 mb-1">
+            <Text size="xSmall" className="text-gray-900 opacity-90 mb-1">
               Tổng số dư
             </Text>
-            <Text.Title className="text-white text-3xl font-bold mb-2">
+            <Text.Title className="text-gray-900 text-3xl font-bold mb-2">
               {formatCurrency(totalBalance)}
             </Text.Title>
-            <Text size="xSmall" className="text-white opacity-90">
+            <Text size="xSmall" className="text-gray-900 opacity-90">
               {wallets.length} ví
             </Text>
           </Box>

@@ -68,6 +68,25 @@ body {
   }
 }
 
+// Fix header back icon alignment
+.zaui-header {
+  .zaui-header-back {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-right: 4px;
+    .zaui-icon {
+      font-size: 24px;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+  }
+  .zaui-header-title {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+}
 .zaui-picker-item-selected {
   color: var(--zmp-primary-color);
 }

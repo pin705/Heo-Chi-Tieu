@@ -144,6 +144,7 @@ const BudgetPage: FC = () => {
           <Box className="flex items-center justify-between mb-3">
             <Text.Title size="small" className="font-semibold">Ngân sách tháng</Text.Title>
             <Button
+            className="flex"
               size="small"
               onClick={() => {
                 setFormData({
@@ -169,6 +170,7 @@ const BudgetPage: FC = () => {
                 {formatCurrency(monthlyBudget.amount)}
               </Text.Title>
               <Button
+              className="flex"
                 size="small"
                 variant="secondary"
                 className="bg-white text-blue-600 hover:bg-gray-100 font-semibold shadow-md"
@@ -205,7 +207,7 @@ const BudgetPage: FC = () => {
                 setSelectedDate(new Date());
                 setShowAddSheet(true);
               }}
-              className="shadow-sm hover:shadow-md transition-shadow"
+              className="shadow-sm flex hover:shadow-md transition-shadow"
             >
               <Icon icon="zi-plus" className="mr-1" />
               Thêm

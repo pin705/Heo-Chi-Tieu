@@ -214,25 +214,26 @@ const ManageCategoriesPage: FC = () => {
       <Header title="Quản lý danh mục" showBackIcon={true} />
       <Box className="flex-1 overflow-auto pb-4">
         {/* Header Info */}
-        <Box className="bg-yellow-500 p-6 relative overflow-hidden">
+        <Box className="rounded-2xl m-4 bg-white p-6 relative overflow-hidden">
+          <Box className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16" />
           <Box className="relative z-10">
-            <Text.Title className="text-white text-2xl font-bold mb-3">
+            <Text.Title className="text-gray-900 text-2xl font-bold mb-3">
               Danh mục thu chi
             </Text.Title>
             <Box className="flex gap-6">
               <Box>
-                <Text size="xSmall" className="text-white opacity-90 mb-1">
+                <Text size="xSmall" className="text-gray-900 opacity-90 mb-1">
                   Chi tiêu
                 </Text>
-                <Text className="text-white font-bold text-xl">
+                <Text className="text-gray-900 font-bold text-xl">
                   {expenseCategories.length} danh mục
                 </Text>
               </Box>
               <Box>
-                <Text size="xSmall" className="text-white opacity-90 mb-1">
+                <Text size="xSmall" className="text-gray-900 opacity-90 mb-1">
                   Thu nhập
                 </Text>
-                <Text className="text-white font-bold text-xl">
+                <Text className="text-gray-900 font-bold text-xl">
                   {incomeCategories.length} danh mục
                 </Text>
               </Box>
@@ -241,7 +242,8 @@ const ManageCategoriesPage: FC = () => {
         </Box>
 
         {/* Tabs */}
-        <Tabs
+       <Box className="m-4 rounded-2xl overflow-hidden">
+         <Tabs
           activeKey={activeTab}
           onChange={(key) => setActiveTab(key as "expense" | "income")}
           className="bg-white"
@@ -253,6 +255,7 @@ const ManageCategoriesPage: FC = () => {
             {renderCategoryList(incomeCategories, "income")}
           </Tabs.Tab>
         </Tabs>
+        </Box>
 
         {/* Add/Edit Sheet */}
         <Sheet

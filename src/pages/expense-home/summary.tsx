@@ -69,7 +69,7 @@ export const Summary: FC = () => {
             <Text size="xSmall" className="text-gray-600 font-medium">
               {formatCurrency(budgetStatus.spent)} / {formatCurrency(budgetStatus.budget)}
             </Text>
-            <Text size="small" className={`font-bold ${budgetStatus.isExceeded ? "text-red-600" : "text-emerald-600"}`}>
+            <Text size="small" className={`font-bold ${budgetStatus.isExceeded ? "text-red-600" : "text-yellow-600"}`}>
               {budgetStatus.percentage.toFixed(1)}%
             </Text>
           </Box>
@@ -134,7 +134,7 @@ export const Summary: FC = () => {
             </Box>
             <Text.Title
               size="small"
-              className={`font-bold ${stats.balance >= 0 ? "text-emerald-600" : "text-red-600"}`}
+              className={`font-bold ${stats.balance >= 0 ? "text-yellow-600" : "text-red-600"}`}
             >
               {stats.balance >= 0 ? "+" : ""}{formatCurrency(stats.balance)}
             </Text.Title>

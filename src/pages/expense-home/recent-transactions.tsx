@@ -32,7 +32,7 @@ export const RecentTransactions: FC = () => {
         <Text.Title size="small" className="font-semibold">Giao dịch gần đây</Text.Title>
         <Text
           size="xSmall"
-          className="text-emerald-600 cursor-pointer font-medium active:opacity-70"
+          className="text-yellow-600 cursor-pointer font-medium active:opacity-70"
           onClick={() => navigate("/history")}
         >
           Xem tất cả
@@ -74,7 +74,7 @@ export const RecentTransactions: FC = () => {
                 size="small"
                 className={`font-semibold ${
                   transaction.type === "income"
-                    ? "text-emerald-600"
+                    ? "text-yellow-600"
                     : "text-red-600"
                 }`}
               >

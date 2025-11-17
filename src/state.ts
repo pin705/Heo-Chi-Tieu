@@ -101,7 +101,7 @@ export const notificationsState = atom<Notification[]>({
       image: logo,
       title: "Chào bạn mới",
       content:
-        "Cảm ơn đã sử dụng ZaUI Coffee, bạn có thể dùng ứng dụng này để tiết kiệm thời gian xây dựng",
+        "Cảm ơn đã sử dụng Heo Chi Tiêu, bạn có thể dùng ứng dụng này để tiết kiệm thời gian xây dựng",
     },
     {
       id: 2,

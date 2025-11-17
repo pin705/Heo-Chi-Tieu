@@ -35,15 +35,16 @@ const SettingsPage: FC = () => {
       <Header title="Cài đặt" showBackIcon={false} />
       <Box className="flex-1 overflow-auto pb-20">
         {/* User Info */}
-        <Box className="bg-yellow-500 p-6 relative overflow-hidden">
+        <Box className="rounded-2xl m-4 bg-white p-6 relative overflow-hidden">
+          <Box className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16" />
           <Box className="flex items-center space-x-3 relative z-10">
             <img
               className="w-16 h-16 rounded-full border-3 border-white shadow-lg"
               src={user.avatar.startsWith("http") ? user.avatar : undefined}
             />
             <Box>
-              <Text.Title className="text-white font-bold text-lg">{user.name}</Text.Title>
-              <Text size="small" className="text-white opacity-95">
+              <Text.Title className="text-gray-900 font-bold text-lg">{user.name}</Text.Title>
+              <Text size="small" className="text-gray-700 opacity-95">
                 ID: {user.id}
               </Text>
             </Box>
@@ -75,7 +76,7 @@ const SettingsPage: FC = () => {
               onClick={() => navigate("/budget")}
             />
             <List.Item
-              prefix={<Icon icon="zi-calendar" className="text-emerald-600" size={22} />}
+              prefix={<Icon icon="zi-calendar" className="text-yellow-600" size={22} />}
               title="Lịch sử giao dịch"
               suffix={<Icon icon="zi-chevron-right" className="text-gray-400" />}
               onClick={() => navigate("/history")}
