@@ -163,7 +163,7 @@ const BudgetPage: FC = () => {
           {monthlyBudget ? (
             <Box className="p-5 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 rounded-2xl text-white shadow-lg">
               <Text size="small" className="opacity-90">
-                📅 {getMonthName(monthlyBudget.month)} {monthlyBudget.year}
+                {getMonthName(monthlyBudget.month)} {monthlyBudget.year}
               </Text>
               <Text.Title size="large" className="mt-3 mb-4 font-bold">
                 {formatCurrency(monthlyBudget.amount)}

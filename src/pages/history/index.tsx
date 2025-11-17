@@ -215,7 +215,7 @@ const HistoryPage: FC = () => {
               <Box key={dateKey} className="mb-6">
                 <Box className="px-4 py-3 bg-gradient-to-r from-gray-100 to-gray-50 flex justify-between items-center rounded-t-xl">
                   <Text size="small" className="font-semibold text-gray-700">
-                    📅 {dateKey}
+                    {dateKey}
                   </Text>
                   <Text
                     size="small"
@@ -265,7 +265,7 @@ const HistoryPage: FC = () => {
                               {category?.name || "Khác"}
                             </Text>
                             <Text size="xSmall" className="text-gray-500">
-                              ⏰ {time}
+                              {time}
                               {transaction.note && ` • ${transaction.note}`}
                             </Text>
                           </Box>
@@ -377,7 +377,7 @@ const HistoryPage: FC = () => {
           {/* Date Range Filter */}
           <Box className="mb-5">
             <Text size="small" className="mb-3 text-gray-700 font-medium">
-              📅 Khoảng thời gian
+              Khoảng thời gian
             </Text>
             <Box className="space-y-3">
               <DatePicker

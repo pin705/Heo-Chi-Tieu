@@ -158,7 +158,7 @@ const AddTransactionPage: FC = () => {
         </Box>
 
         {/* Amount Input */}
-        <Box className="mb-6 p-5 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-sm border border-gray-200">
+        <Box className="mb-6 p-5 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-sm ">
           <Box className="flex items-center mb-3">
             <Icon icon="zi-star" className="text-yellow-500 mr-2" size={20} />
             <Text size="small" className="text-gray-700 font-medium">

@@ -89,7 +89,7 @@ export const Summary: FC = () => {
       )}
 
       {/* Monthly Stats */}
-      <Box className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-5 shadow-sm border border-gray-200">
+      <Box className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-5 shadow-sm ">
         <Box className="flex items-center mb-4">
           <Icon icon="zi-clock-2" className="text-gray-700 mr-2" size={20} />
           <Text.Title size="small">Tháng này</Text.Title>

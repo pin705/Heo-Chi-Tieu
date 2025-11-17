@@ -8,6 +8,9 @@ import HistoryPage from "pages/history";
 import ReportsPage from "pages/reports";
 import SettingsPage from "pages/settings";
 import BudgetPage from "pages/budget";
+import ManageWalletsPage from "pages/manage-wallets";
+import ManageCategoriesPage from "pages/manage-categories";
+import GuidePage from "pages/guide";
 import { getSystemInfo } from "zmp-sdk";
 import { ScrollRestoration } from "./scroll-restoration";
 import { useHandlePayment } from "hooks";
@@ -38,6 +41,9 @@ export const Layout: FC = () => {
           <Route path="/reports" element={<ReportsPage />}></Route>
           <Route path="/budget" element={<BudgetPage />}></Route>
           <Route path="/settings" element={<SettingsPage />}></Route>
+          <Route path="/manage-wallets" element={<ManageWalletsPage />}></Route>
+          <Route path="/manage-categories" element={<ManageCategoriesPage />}></Route>
+          <Route path="/guide" element={<GuidePage />}></Route>
         </Routes>
       </Box>
       <Navigation />

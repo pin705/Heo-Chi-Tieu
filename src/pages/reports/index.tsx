@@ -143,7 +143,7 @@ const ReportsPage: FC = () => {
         {/* Monthly Summary */}
         <Box className="p-5 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 shadow-lg">
           <Text size="small" className="text-white opacity-90 mb-3 font-medium">
-            📊 Tháng này
+             Tháng này
           </Text>
           <Box className="grid grid-cols-3 gap-4 text-white">
             <Box className="bg-white bg-opacity-10 backdrop-blur-sm p-3 rounded-xl">

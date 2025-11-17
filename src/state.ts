@@ -14,7 +14,7 @@ import categories from "../mock/categories.json";
 export const userState = selector({
   key: "user",
   get: async () => {
-    const { userInfo } = await getUserInfo({ autoRequestPermission: true });
+    const { userInfo } = await getUserInfo({ autoRequestPermission: false });
     return userInfo;
   },
 });

@@ -1,0 +1,324 @@
+import React, { FC, useState } from "react";
+import {
+  Page,
+  Header,
+  Box,
+  Text,
+  Button,
+  Icon,
+  useSnackbar,
+  Sheet,
+  Input,
+  Select,
+} from "zmp-ui";
+import { useRecoilState } from "recoil";
+import { walletsState } from "expense-state";
+import { Wallet } from "types/wallet";
+import { formatCurrency } from "utils/format";
+
+const WALLET_ICONS = [
+  { value: "zi-star", label: "Ngôi sao" },
+  { value: "zi-user-circle", label: "Người dùng" },
+  { value: "zi-user-circle-solid", label: "Người dùng (đậm)" },
+  { value: "zi-home", label: "Nhà" },
+  { value: "zi-wallet", label: "Ví" },
+  { value: "zi-card", label: "Thẻ" },
+];
+
+const WALLET_COLORS = [
+  { value: "#10b981", label: "Xanh lá" },
+  { value: "#3b82f6", label: "Xanh dương" },
+  { value: "#006af5", label: "Xanh Zalo" },
+  { value: "#f59e0b", label: "Cam" },
+  { value: "#ef4444", label: "Đỏ" },
+  { value: "#8b5cf6", label: "Tím" },
+  { value: "#ec4899", label: "Hồng" },
+];
+
+const ManageWalletsPage: FC = () => {
+  const [wallets, setWallets] = useRecoilState(walletsState);
+  const { openSnackbar } = useSnackbar();
+  const [sheetVisible, setSheetVisible] = useState(false);
+  const [editingWallet, setEditingWallet] = useState<Wallet | null>(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    balance: "0",
+    icon: "zi-wallet",
+    color: "#10b981",
+  });
+
+  const handleOpenAddSheet = () => {
+    setEditingWallet(null);
+    setFormData({
+      name: "",
+      balance: "0",
+      icon: "zi-wallet",
+      color: "#10b981",
+    });
+    setSheetVisible(true);
+  };
+
+  const handleOpenEditSheet = (wallet: Wallet) => {
+    setEditingWallet(wallet);
+    setFormData({
+      name: wallet.name,
+      balance: wallet.balance.toString(),
+      icon: wallet.icon,
+      color: wallet.color,
+    });
+    setSheetVisible(true);
+  };
+
+  const handleSave = () => {
+    if (!formData.name.trim()) {
+      openSnackbar({
+        type: "error",
+        text: "Vui lòng nhập tên ví",
+      });
+      return;
+    }
+
+    const balance = parseFloat(formData.balance) || 0;
+
+    if (editingWallet) {
+      // Update existing wallet
+      setWallets(
+        wallets.map((w) =>
+          w.id === editingWallet.id
+            ? {
+                ...w,
+                name: formData.name,
+                balance,
+                icon: formData.icon,
+                color: formData.color,
+              }
+            : w
+        )
+      );
+      openSnackbar({
+        type: "success",
+        text: "Cập nhật ví thành công",
+      });
+    } else {
+      // Add new wallet
+      const newWallet: Wallet = {
+        id: Date.now().toString(),
+        name: formData.name,
+        balance,
+        icon: formData.icon,
+        color: formData.color,
+      };
+      setWallets([...wallets, newWallet]);
+      openSnackbar({
+        type: "success",
+        text: "Thêm ví thành công",
+      });
+    }
+
+    setSheetVisible(false);
+  };
+
+  const handleDelete = (walletId: string) => {
+    if (confirm("Bạn có chắc chắn muốn xóa ví này?")) {
+      setWallets(wallets.filter((w) => w.id !== walletId));
+      openSnackbar({
+        type: "success",
+        text: "Xóa ví thành công",
+      });
+    }
+  };
+
+  const totalBalance = wallets.reduce((sum, wallet) => sum + wallet.balance, 0);
+
+  return (
+    <Page className="flex flex-col bg-gray-50">
+      <Header title="Quản lý ví" showBackIcon={true} />
+      <Box className="flex-1 overflow-auto pb-20">
+        {/* Total Balance */}
+        <Box className="bg-gradient-to-r from-blue-500 to-indigo-600 p-6 text-white">
+          <Text size="xSmall" className="text-white opacity-90 mb-1">
+            Tổng số dư
+          </Text>
+          <Text.Title className="text-white text-3xl font-bold">
+            {formatCurrency(totalBalance)}
+          </Text.Title>
+          <Text size="xSmall" className="text-white opacity-90 mt-1">
+            {wallets.length} ví
+          </Text>
+        </Box>
+
+        {/* Wallets List */}
+        <Box className="p-4 space-y-3">
+          {wallets.length === 0 ? (
+            <Box className="bg-white rounded-xl p-8 text-center">
+              <Icon icon="zi-home" size={48} className="text-gray-300 mb-3" />
+              <Text className="text-gray-500">Chưa có ví nào</Text>
+              <Text size="xSmall" className="text-gray-400 mt-1">
+                Nhấn nút + bên dưới để thêm ví
+              </Text>
+            </Box>
+          ) : (
+            wallets.map((wallet) => (
+              <Box
+                key={wallet.id}
+                className="bg-white rounded-xl p-4 shadow-sm"
+              >
+                <Box className="flex items-center justify-between">
+                  <Box className="flex items-center flex-1">
+                    <Box
+                      className="w-12 h-12 rounded-full flex items-center justify-center mr-3"
+                      style={{ backgroundColor: wallet.color + "20" }}
+                    >
+                      <Icon
+                        icon={wallet.icon as any}
+                        size={24}
+                        style={{ color: wallet.color }}
+                      />
+                    </Box>
+                    <Box className="flex-1">
+                      <Text className="font-semibold text-gray-900">
+                        {wallet.name}
+                      </Text>
+                      <Text className="text-lg font-bold" style={{ color: wallet.color }}>
+                        {formatCurrency(wallet.balance)}
+                      </Text>
+                    </Box>
+                  </Box>
+                  <Box className="flex gap-2">
+                    <Button
+                      size="small"
+                      variant="secondary"
+                      onClick={() => handleOpenEditSheet(wallet)}
+                    >
+                      <Icon icon="zi-edit" size={16} />
+                    </Button>
+                    <Button
+                      size="small"
+                      variant="secondary"
+                      onClick={() => handleDelete(wallet.id)}
+                      className="text-red-600"
+                    >
+                      <Icon icon="zi-delete" size={16} />
+                    </Button>
+                  </Box>
+                </Box>
+              </Box>
+            ))
+          )}
+        </Box>
+
+        {/* Add Button */}
+        <Box className="fixed bottom-20 right-4 z-10">
+          <Button
+            variant="primary"
+            onClick={handleOpenAddSheet}
+            className="w-14 h-14 rounded-full shadow-lg flex items-center justify-center"
+          >
+            <Icon icon="zi-plus" size={24} />
+          </Button>
+        </Box>
+
+        {/* Add/Edit Sheet */}
+        <Sheet
+          visible={sheetVisible}
+          onClose={() => setSheetVisible(false)}
+          autoHeight
+          mask
+          handler
+          swipeToClose
+        >
+          <Box className="p-4 pb-8">
+            <Text.Title className="mb-4">
+              {editingWallet ? "Chỉnh sửa ví" : "Thêm ví mới"}
+            </Text.Title>
+
+            <Box className="space-y-4">
+              <Box>
+                <Text size="small" className="mb-2 text-gray-700">
+                  Tên ví <span className="text-red-500">*</span>
+                </Text>
+                <Input
+                  type="text"
+                  placeholder="VD: Tiền mặt, Ngân hàng..."
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
+                />
+              </Box>
+
+              <Box>
+                <Text size="small" className="mb-2 text-gray-700">
+                  Số dư ban đầu
+                </Text>
+                <Input
+                  type="number"
+                  placeholder="0"
+                  value={formData.balance}
+                  onChange={(e) =>
+                    setFormData({ ...formData, balance: e.target.value })
+                  }
+                />
+              </Box>
+
+              <Box>
+                <Text size="small" className="mb-2 text-gray-700">
+                  Biểu tượng
+                </Text>
+                <Select
+                  value={formData.icon}
+                  onChange={(value) =>
+                    setFormData({ ...formData, icon: value as string })
+                  }
+                >
+                  {WALLET_ICONS.map((icon) => (
+                    <option key={icon.value} value={icon.value}>
+                      {icon.label}
+                    </option>
+                  ))}
+                </Select>
+              </Box>
+
+              <Box>
+                <Text size="small" className="mb-2 text-gray-700">
+                  Màu sắc
+                </Text>
+                <Box className="grid grid-cols-7 gap-2">
+                  {WALLET_COLORS.map((color) => (
+                    <Box
+                      key={color.value}
+                      className={`w-10 h-10 rounded-full cursor-pointer border-2 ${
+                        formData.color === color.value
+                          ? "border-gray-800"
+                          : "border-transparent"
+                      }`}
+                      style={{ backgroundColor: color.value }}
+                      onClick={() =>
+                        setFormData({ ...formData, color: color.value })
+                      }
+                    />
+                  ))}
+                </Box>
+              </Box>
+
+              <Box className="flex gap-2 pt-2">
+                <Button
+                  fullWidth
+                  variant="secondary"
+                  onClick={() => setSheetVisible(false)}
+                >
+                  Hủy
+                </Button>
+                <Button fullWidth variant="primary" onClick={handleSave}>
+                  {editingWallet ? "Cập nhật" : "Thêm"}
+                </Button>
+              </Box>
+            </Box>
+          </Box>
+        </Sheet>
+      </Box>
+    </Page>
+  );
+};
+
+export default ManageWalletsPage;

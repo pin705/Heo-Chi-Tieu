@@ -25,7 +25,12 @@ const tabs: Record<string, MenuItem> = {
 
 export type TabKeys = keyof typeof tabs;
 
-export const NO_BOTTOM_NAVIGATION_PAGES = ["/add-transaction", "/manage-wallets", "/manage-categories"];
+export const NO_BOTTOM_NAVIGATION_PAGES = [
+  "/add-transaction",
+  "/manage-wallets",
+  "/manage-categories",
+  "/guide",
+];
 
 export const Navigation: FC = () => {
   const keyboardVisible = useVirtualKeyboardVisible();
