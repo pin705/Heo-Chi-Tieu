@@ -137,7 +137,7 @@ const ManageCategoriesPage: FC = () => {
   const renderCategoryList = (categoryList: ExpenseCategory[], type: "expense" | "income") => (
     <Box className="p-4 pb-24 space-y-2.5">
       {categoryList.length === 0 ? (
-        <Box className="bg-white rounded-2xl p-12 text-center ">
+        <Box className="bg-section rounded-2xl p-12 text-center ">
           <Box className="bg-gray-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
             <Icon icon="zi-home" size={40} className="text-gray-400" />
           </Box>
@@ -150,7 +150,7 @@ const ManageCategoriesPage: FC = () => {
         categoryList.map((category) => (
           <Box
             key={category.id}
-            className="bg-white rounded-2xl p-4 "
+            className="bg-section rounded-2xl p-4 "
           >
             <Box className="flex items-center justify-between">
               <Box className="flex items-center flex-1">
@@ -210,11 +210,11 @@ const ManageCategoriesPage: FC = () => {
   );
 
   return (
-    <Page className="flex flex-col bg-gray-50">
+    <Page className="flex flex-col bg-background">
       <Header title="Quản lý danh mục" showBackIcon={true} />
       <Box className="flex-1 overflow-auto pb-4">
         {/* Header Info */}
-        <Box className="rounded-2xl m-4 bg-white p-6 relative overflow-hidden">
+        <Box className="rounded-2xl m-4 bg-section p-6 relative overflow-hidden">
           <Box className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16" />
           <Box className="relative z-10">
             <Text.Title className="text-gray-900 text-2xl font-bold mb-3">

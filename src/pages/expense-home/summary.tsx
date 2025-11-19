@@ -14,7 +14,7 @@ export const Summary: FC = () => {
   return (
     <Box className="px-4 pt-4 pb-2">
       {/* Total Balance Card */}
-      <Box className="bg-white rounded-2xl p-6 mb-3 shadow-md relative overflow-hidden">
+      <Box className="bg-section rounded-2xl p-6 mb-3 shadow-md relative overflow-hidden">
         <Box className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16" />
         <Box className="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -ml-12 -mb-12" />
         <Box className="relative">
@@ -49,7 +49,7 @@ export const Summary: FC = () => {
 
       {/* Budget Progress */}
       {budgetStatus.hasBudget && (
-        <Box className="bg-white rounded-2xl p-5 mb-3 ">
+        <Box className="bg-section rounded-2xl p-5 mb-3 ">
           <Box className="flex items-center justify-between mb-3">
             <Box className="flex items-center">
               <Box className="bg-blue-50 rounded-full p-2 mr-2">
@@ -93,7 +93,7 @@ export const Summary: FC = () => {
       )}
 
       {/* Monthly Stats */}
-      <Box className="bg-white rounded-2xl p-5 ">
+      <Box className="bg-section rounded-2xl p-5 ">
         <Box className="flex items-center mb-4">
           <Box className="bg-gray-50 rounded-full p-2 mr-2">
             <Icon icon="zi-clock-2" className="text-gray-700" size={18} />

@@ -100,7 +100,7 @@ const HistoryPage: FC = () => {
   };
 
   return (
-    <Page className="flex flex-col bg-gray-50">
+    <Page className="flex flex-col bg-background">
       <Header title="Lịch sử giao dịch" showBackIcon={true} />
       
       {/* Search and Filter Bar */}
@@ -229,7 +229,7 @@ const HistoryPage: FC = () => {
                     {formatCurrency(dayTotal)}
                   </Text>
                 </Box>
-                <Box className="px-4 bg-white rounded-b-xl shadow-sm">
+                <Box className="px-4 bg-section rounded-b-xl shadow-sm">
                   {dayTransactions.map((transaction) => {
                     const category = categories.find(
                       (c) => c.id === transaction.categoryId

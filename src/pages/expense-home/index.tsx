@@ -6,7 +6,7 @@ import { RecentTransactions } from "./recent-transactions";
 
 const ExpenseHomePage: React.FunctionComponent = () => {
   return (
-    <Page className="relative flex-1 flex flex-col bg-gray-50">
+    <Page className="relative flex-1 flex flex-col bg-background">
       <Welcome />
       <Box className="flex-1 overflow-auto pb-20">
         <Suspense>

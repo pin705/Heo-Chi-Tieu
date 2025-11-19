@@ -67,7 +67,7 @@ const GuidePage: FC = () => {
   const [expandedStep, setExpandedStep] = useState<number | null>(null);
 
   return (
-    <Page className="flex flex-col bg-gray-50">
+    <Page className="flex flex-col bg-background">
       <Header title="Hướng dẫn sử dụng" showBackIcon={true} />
       <Box className="flex-1 overflow-auto pb-24">
         {/* Welcome Section */}
@@ -100,7 +100,7 @@ const GuidePage: FC = () => {
             {GUIDE_STEPS.map((step, index) => (
               <Box
                 key={index}
-                className="bg-white rounded-2xl overflow-hidden cursor-pointer transition-all "
+                className="bg-section rounded-2xl overflow-hidden cursor-pointer transition-all "
                 onClick={() => setExpandedStep(expandedStep === index ? null : index)}
               >
                 <Box className="p-4 flex items-start">
@@ -156,7 +156,7 @@ const GuidePage: FC = () => {
 
         {/* Quick Start */}
         <Box className="px-4 pt-4">
-          <Box className="bg-white rounded-2xl p-5 ">
+          <Box className="bg-section rounded-2xl p-5 ">
             <Text.Title size="small" className="text-gray-800 mb-4 font-semibold">
               Bắt đầu ngay
             </Text.Title>

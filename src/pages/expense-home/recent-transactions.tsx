@@ -18,7 +18,7 @@ export const RecentTransactions: FC = () => {
         <Box className="flex justify-between items-center mb-3">
           <Text.Title size="small" className="font-semibold">Giao dịch gần đây</Text.Title>
         </Box>
-        <Box className="text-center py-12 bg-white rounded-2xl ">
+        <Box className="text-center py-12 bg-section rounded-2xl ">
           <Icon icon="zi-clock-2" size={48} className="text-gray-300 mb-2" />
           <Text size="small" className="text-gray-400">Chưa có giao dịch nào</Text>
         </Box>
@@ -38,7 +38,7 @@ export const RecentTransactions: FC = () => {
           Xem tất cả
         </Text>
       </Box>
-      <Box className="space-y-2 bg-white rounded-2xl p-3 ">
+      <Box className="space-y-2 bg-section rounded-2xl p-3 ">
         {recentTransactions.map((transaction) => {
           const category = categories.find(
             (c) => c.id === transaction.categoryId

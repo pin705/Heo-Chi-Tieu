@@ -31,7 +31,7 @@ const SettingsPage: FC = () => {
   };
 
   return (
-    <Page className="flex flex-col bg-gray-50">
+    <Page className="flex flex-col bg-background">
       <Header title="Cài đặt" showBackIcon={false} />
       <Box className="flex-1 overflow-auto pb-20">
         {/* User Info */}
@@ -52,7 +52,7 @@ const SettingsPage: FC = () => {
         </Box>
 
         {/* Settings List */}
-        <Box className="mt-4 mx-4 bg-white rounded-2xl overflow-hidden ">
+        <Box className="mt-4 mx-4 bg-section rounded-2xl overflow-hidden ">
           <Box className="px-4 pt-3 pb-2 bg-gray-50">
             <Text size="xSmall" className="text-gray-600 font-semibold tracking-wide">QUẢN LÝ</Text>
           </Box>
@@ -84,7 +84,7 @@ const SettingsPage: FC = () => {
           </List>
         </Box>
 
-        <Box className="mt-3 mx-4 bg-white rounded-2xl overflow-hidden ">
+        <Box className="mt-3 mx-4 bg-section rounded-2xl overflow-hidden ">
           <Box className="px-4 pt-3 pb-2 bg-gray-50">
             <Text size="xSmall" className="text-gray-600 font-semibold tracking-wide">HỖ TRỢ</Text>
           </Box>
@@ -110,7 +110,7 @@ const SettingsPage: FC = () => {
 
         {/* Danger Zone */}
         <Box className="px-4 mt-4 mb-4">
-          <Box className="bg-white rounded-2xl p-4 ">
+          <Box className="bg-section rounded-2xl p-4 ">
             <Box className="mb-3">
               <Text size="xSmall" className="text-red-600 font-semibold tracking-wide">VÙNG NGUY HIỂM</Text>
             </Box>

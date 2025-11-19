@@ -4,11 +4,16 @@ module.exports = {
     extend: {
       colors: {
         primary: "var(--zmp-primary-color)",
+        primaryForeground: "var(--primaryForeground)",
+        foreground: "var(--foreground)",
+        background: "var(--background)",
+        section: "var(--section)",
+        inactive: "var(--inactive)",
+        subtitle: "var(--subtitle)",
+        skeleton: "var(--skeleton)",
         gray: "#767A7F",
         divider: "#E9EBED",
         green: "#288F4E",
-        background: "#ffffff",
-        skeleton: "rgba(0, 0, 0, 0.1)",
         yellow: {
           50: "#fefce8",
           100: "#fef9c3",

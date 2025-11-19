@@ -136,7 +136,7 @@ const BudgetPage: FC = () => {
   };
 
   return (
-    <Page className="flex flex-col bg-gray-50">
+    <Page className="flex flex-col bg-background">
       <Header title="Quản lý ngân sách" />
       <Box className="flex-1 overflow-auto pb-20">
         {/* Monthly Budget Section */}

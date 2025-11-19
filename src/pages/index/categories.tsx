@@ -16,7 +16,7 @@ export const Categories: FC = () => {
   };
 
   return (
-    <Box className="bg-white grid grid-cols-4 gap-4 p-4">
+    <Box className="bg-section grid grid-cols-4 gap-4 p-4">
       {categories.map((category, i) => (
         <div
           key={i}

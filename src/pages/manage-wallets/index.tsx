@@ -131,11 +131,11 @@ const ManageWalletsPage: FC = () => {
   const totalBalance = wallets.reduce((sum, wallet) => sum + wallet.balance, 0);
 
   return (
-    <Page className="flex flex-col bg-gray-50">
+    <Page className="flex flex-col bg-background">
       <Header title="Quản lý ví" showBackIcon={true} />
       <Box className="flex-1 overflow-auto pb-24">
         {/* Total Balance */}
-        <Box className="rounded-2xl m-4 bg-white p-6 relative overflow-hidden">
+        <Box className="rounded-2xl m-4 bg-section p-6 relative overflow-hidden">
           <Box className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16" />
           <Box className="relative z-10">
             <Text size="xSmall" className="text-gray-900 opacity-90 mb-1">
@@ -153,7 +153,7 @@ const ManageWalletsPage: FC = () => {
         {/* Wallets List */}
         <Box className="p-4 space-y-2.5">
           {wallets.length === 0 ? (
-            <Box className="bg-white rounded-2xl p-12 text-center ">
+            <Box className="bg-section rounded-2xl p-12 text-center ">
               <Box className="bg-gray-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
                 <Icon icon="zi-home" size={40} className="text-gray-400" />
               </Box>
@@ -166,7 +166,7 @@ const ManageWalletsPage: FC = () => {
             wallets.map((wallet) => (
               <Box
                 key={wallet.id}
-                className="bg-white rounded-2xl p-4 "
+                className="bg-section rounded-2xl p-4 "
               >
                 <Box className="flex items-center justify-between">
                   <Box className="flex items-center flex-1">

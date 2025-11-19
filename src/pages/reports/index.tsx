@@ -29,7 +29,7 @@ const CategoryStatItem: FC<CategoryStatItemProps> = ({
   );
 
   return (
-    <Box className="p-4 bg-white rounded-2xl shadow-sm ">
+    <Box className="p-4 bg-section rounded-2xl shadow-sm ">
       <Box className="flex items-center justify-between mb-3">
         <Box className="flex items-center space-x-3">
           <Box
@@ -137,11 +137,11 @@ const ReportsPage: FC = () => {
   };
 
   return (
-    <Page className="flex flex-col bg-gray-50">
+    <Page className="flex flex-col bg-background">
       <Header title="Báo cáo" showBackIcon={false} />
       <Box className="flex-1 overflow-auto pb-20">
         {/* Monthly Summary */}
-        <Box className="p-6 rounded-2xl m-4 bg-white relative overflow-hidden">
+        <Box className="p-6 rounded-2xl m-4 bg-section relative overflow-hidden">
           <Box className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16" />
           <Text size="small" className="text-gray-900 opacity-95 mb-3 font-medium relative z-10">
              Tháng này
@@ -256,7 +256,7 @@ const ReportsPage: FC = () => {
               <Text.Title size="small" className="mb-3">
                 Xu hướng theo tuần (Tháng này)
               </Text.Title>
-              <Box className="bg-white rounded-xl p-4 shadow-sm">
+              <Box className="bg-section rounded-xl p-4 shadow-sm">
                 <TrendChart
                   data={weeklyTrend.map((w) => ({
                     label: `T${w.week}`,
@@ -274,7 +274,7 @@ const ReportsPage: FC = () => {
               <Text.Title size="small" className="mb-3">
                 Xu hướng 6 tháng
               </Text.Title>
-              <Box className="bg-white rounded-xl p-4 shadow-sm">
+              <Box className="bg-section rounded-xl p-4 shadow-sm">
                 <TrendChart
                   data={monthlyTrend.map((m) => ({
                     label: getMonthName(m.month),
@@ -292,7 +292,7 @@ const ReportsPage: FC = () => {
               <Text.Title size="small" className="mb-3">
                 So sánh Thu - Chi (6 tháng)
               </Text.Title>
-              <Box className="bg-white rounded-xl p-4 shadow-sm">
+              <Box className="bg-section rounded-xl p-4 shadow-sm">
                 <Box className="space-y-4">
                   {monthlyTrend.map((m, i) => (
                     <Box key={i}>
