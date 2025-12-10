@@ -13,6 +13,7 @@ import {
 import { Transaction, TransactionType } from "types/transaction";
 import { ExpenseCategory } from "types/expense-category";
 import { Wallet } from "types/wallet";
+import { suggestCategoryWithLearning, learnFromHistory } from "services/ai-categorization";
 
 const AddTransactionPage: FC = () => {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ const AddTransactionPage: FC = () => {
   const [note, setNote] = useState("");
   const [showCategorySheet, setShowCategorySheet] = useState(false);
   const [showWalletSheet, setShowWalletSheet] = useState(false);
+  const [suggestedCategory, setSuggestedCategory] = useState<ExpenseCategory | null>(null);
 
   const categories =
     type === "expense" ? expenseCategories : incomeCategories;
@@ -47,6 +49,17 @@ const AddTransactionPage: FC = () => {
       setSelectedCategory(categories[0].id);
     }
   }, [categories, selectedCategory]);
+
+  // AI category suggestion based on note
+  useEffect(() => {
+    if (note.trim().length > 2 && type === "expense") {
+      const patterns = learnFromHistory(transactions, expenseCategories);
+      const suggested = suggestCategoryWithLearning(note, patterns, expenseCategories);
+      setSuggestedCategory(suggested);
+    } else {
+      setSuggestedCategory(null);
+    }
+  }, [note, type, transactions, expenseCategories]);
 
   const handleSubmit = () => {
     // Validation
@@ -117,7 +130,7 @@ const AddTransactionPage: FC = () => {
   const selectedWalletData = wallets.find((w) => w.id === selectedWallet);
 
   return (
-    <Page className="flex flex-col">
+    <Page className="flex flex-col bg-background dark:bg-dark-background">
       <AppHeader title="Thêm giao dịch" />
       <Box className="flex-1 overflow-auto p-4">
         {/* Type Toggle */}
@@ -128,7 +141,7 @@ const AddTransactionPage: FC = () => {
             className={`transition-all duration-200 ${
               type === "expense" 
                 ? "shadow-md transform scale-105" 
-                : "hover:bg-gray-200"
+                : "hover:bg-gray-200 dark:hover:bg-gray-700"
             }`}
           >
             <Icon icon="zi-minus-circle" className="mr-1" />
@@ -140,7 +153,7 @@ const AddTransactionPage: FC = () => {
             className={`transition-all duration-200 ${
               type === "income" 
                 ? "shadow-md transform scale-105" 
-                : "hover:bg-gray-200"
+                : "hover:bg-gray-200 dark:hover:bg-gray-700"
             }`}
           >
             <Icon icon="zi-plus-circle" className="mr-1" />
@@ -149,10 +162,10 @@ const AddTransactionPage: FC = () => {
         </Box>
 
         {/* Amount Input */}
-        <Box className="mb-6 p-5 bg-gray-100 rounded-2xl shadow-sm ">
+        <Box className="mb-6 p-5 bg-gray-100 dark:bg-dark-surface rounded-2xl shadow-sm">
           <Box className="flex items-center mb-3">
             <Icon icon="zi-star" className="text-yellow-500 mr-2" size={20} />
-            <Text size="small" className="text-gray-700 font-medium">
+            <Text size="small" className="text-gray-700 dark:text-dark-textSecondary font-medium">
               Số tiền
             </Text>
           </Box>
@@ -161,18 +174,18 @@ const AddTransactionPage: FC = () => {
             placeholder="0"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="text-3xl font-bold"
+            className="text-3xl font-bold dark:bg-dark-surfaceVariant dark:text-dark-text"
           />
         </Box>
 
         {/* Category Selection */}
         <Box
-          className="mb-4 p-4 bg-section rounded-xl cursor-pointer hover:border-blue-300 transition-all duration-200 shadow-sm hover:shadow-md"
+          className="mb-4 p-4 bg-section dark:bg-dark-surface rounded-xl cursor-pointer hover:border-blue-300 transition-all duration-200 shadow-sm hover:shadow-md"
           onClick={() => setShowCategorySheet(true)}
         >
           <Box className="flex items-center mb-2">
             <Icon icon="zi-more-grid" className="text-blue-500 mr-2" size={18} />
-            <Text size="small" className="text-gray-700 font-medium">
+            <Text size="small" className="text-gray-700 dark:text-dark-textSecondary font-medium">
               Danh mục
             </Text>
           </Box>
@@ -190,21 +203,43 @@ const AddTransactionPage: FC = () => {
                   size={24}
                 />
               </Box>
-              <Text className="font-medium">{selectedCategoryData.name}</Text>
+              <Text className="font-medium dark:text-dark-text">{selectedCategoryData.name}</Text>
             </Box>
           ) : (
-            <Text className="text-gray-400">Chọn danh mục</Text>
+            <Text className="text-gray-400 dark:text-dark-textSecondary">Chọn danh mục</Text>
           )}
         </Box>
 
+        {/* AI Category Suggestion */}
+        {suggestedCategory && selectedCategory !== suggestedCategory.id && (
+          <Box className="mb-4 p-3 bg-blue-50 dark:bg-dark-surfaceVariant border border-blue-200 dark:border-dark-border rounded-xl animate-fade-in">
+            <Box className="flex items-center justify-between">
+              <Box className="flex items-center space-x-2 flex-1">
+                <Icon icon="zi-star" className="text-blue-600" size={18} />
+                <Text size="small" className="text-blue-700 dark:text-blue-400">
+                  Đề xuất: <strong>{suggestedCategory.name}</strong>
+                </Text>
+              </Box>
+              <Button
+                size="small"
+                variant="tertiary"
+                onClick={() => setSelectedCategory(suggestedCategory.id)}
+                className="text-blue-600 dark:text-blue-400"
+              >
+                Áp dụng
+              </Button>
+            </Box>
+          </Box>
+        )}
+
         {/* Wallet Selection */}
         <Box
-          className="mb-4 p-4 bg-section rounded-xl cursor-pointer hover:border-blue-300 transition-all duration-200 shadow-sm hover:shadow-md"
+          className="mb-4 p-4 bg-section dark:bg-dark-surface rounded-xl cursor-pointer hover:border-blue-300 transition-all duration-200 shadow-sm hover:shadow-md"
           onClick={() => setShowWalletSheet(true)}
         >
           <Box className="flex items-center mb-2">
             <Icon icon="zi-user-circle" className="text-purple-500 mr-2" size={18} />
-            <Text size="small" className="text-gray-700 font-medium">
+            <Text size="small" className="text-gray-700 dark:text-dark-textSecondary font-medium">
               Ví
             </Text>
           </Box>
@@ -222,10 +257,10 @@ const AddTransactionPage: FC = () => {
                   size={24}
                 />
               </Box>
-              <Text className="font-medium">{selectedWalletData.name}</Text>
+              <Text className="font-medium dark:text-dark-text">{selectedWalletData.name}</Text>
             </Box>
           ) : (
-            <Text className="text-gray-400">Chọn ví</Text>
+            <Text className="text-gray-400 dark:text-dark-textSecondary">Chọn ví</Text>
           )}
         </Box>
 
@@ -248,8 +283,8 @@ const AddTransactionPage: FC = () => {
         {/* Note Input */}
         <Box className="mb-6">
           <Box className="flex items-center mb-2">
-            <Icon icon="zi-note" className="text-gray-500 mr-2" size={18} />
-            <Text size="small" className="text-gray-700 font-medium">
+            <Icon icon="zi-note" className="text-gray-500 dark:text-dark-textSecondary mr-2" size={18} />
+            <Text size="small" className="text-gray-700 dark:text-dark-textSecondary font-medium">
               Ghi chú
             </Text>
           </Box>
@@ -257,7 +292,7 @@ const AddTransactionPage: FC = () => {
             placeholder="Thêm ghi chú (không bắt buộc)"
             value={note}
             onChange={(e) => setNote(e.target.value)}
-            className="bg-section rounded-xl"
+            className="bg-section dark:bg-dark-surface dark:text-dark-text rounded-xl"
           />
         </Box>
 
@@ -282,8 +317,8 @@ const AddTransactionPage: FC = () => {
         handler
         swipeToClose
       >
-        <Box className="p-5">
-          <Text.Title size="small" className="mb-4 text-center">
+        <Box className="p-5 dark:bg-dark-surface">
+          <Text.Title size="small" className="mb-4 text-center dark:text-dark-text">
             Chọn danh mục
           </Text.Title>
           <Box className="grid grid-cols-3 gap-4">
@@ -293,7 +328,7 @@ const AddTransactionPage: FC = () => {
                 className={`p-4 rounded-2xl cursor-pointer text-center transition-all duration-200 transform hover:scale-105 ${
                   selectedCategory === category.id
                     ? "bg-yellow-500 text-white shadow-lg"
-                    : "bg-gray-50 hover:bg-gray-100"
+                    : "bg-gray-50 dark:bg-dark-surfaceVariant hover:bg-gray-100 dark:hover:bg-gray-700"
                 }`}
                 onClick={() => {
                   setSelectedCategory(category.id);
@@ -315,7 +350,7 @@ const AddTransactionPage: FC = () => {
                   className={`font-medium ${
                     selectedCategory === category.id
                       ? "text-white"
-                      : "text-gray-700"
+                      : "text-gray-700 dark:text-dark-text"
                   }`}
                 >
                   {category.name}
@@ -335,8 +370,8 @@ const AddTransactionPage: FC = () => {
         handler
         swipeToClose
       >
-        <Box className="p-5">
-          <Text.Title size="small" className="mb-4 text-center">
+        <Box className="p-5 dark:bg-dark-surface">
+          <Text.Title size="small" className="mb-4 text-center dark:text-dark-text">
             Chọn ví
           </Text.Title>
           <Box className="space-y-3">
@@ -346,7 +381,7 @@ const AddTransactionPage: FC = () => {
                 className={`p-4 rounded-2xl cursor-pointer flex items-center justify-between transition-all duration-200 transform hover:scale-102 ${
                   selectedWallet === wallet.id 
                     ? "bg-yellow-500 shadow-lg" 
-                    : "bg-gray-50 hover:bg-gray-100"
+                    : "bg-gray-50 dark:bg-dark-surfaceVariant hover:bg-gray-100 dark:hover:bg-gray-700"
                 }`}
                 onClick={() => {
                   setSelectedWallet(wallet.id);
@@ -378,7 +413,7 @@ const AddTransactionPage: FC = () => {
                     className={`font-medium ${
                       selectedWallet === wallet.id
                         ? "text-white"
-                        : "text-gray-700"
+                        : "text-gray-700 dark:text-dark-text"
                     }`}
                   >
                     {wallet.name}
@@ -389,7 +424,7 @@ const AddTransactionPage: FC = () => {
                   className={`font-semibold ${
                     selectedWallet === wallet.id
                       ? "text-white"
-                      : "text-gray-600"
+                      : "text-gray-600 dark:text-dark-textSecondary"
                   }`}
                 >
                   {new Intl.NumberFormat("vi-VN", {
