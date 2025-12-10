@@ -2,6 +2,11 @@ body {
   background: linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%);
   user-select: none;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+.dark body {
+  background: linear-gradient(180deg, #0F172A 0%, #1E293B 100%);
 }
 
 .zaui-routes {
@@ -179,6 +184,18 @@ body {
   --zmp-background-color: #0F172A;
   --background: #0F172A;
   --section: #1E293B;
+}
+
+/* Smooth transitions for theme changes - applied to specific elements */
+.dark-transition,
+.zaui-page,
+.zaui-box,
+.bg-section,
+.bg-background,
+.bg-white,
+.dark\:bg-dark-background,
+.dark\:bg-dark-surface {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 /* Remove generic transitions - we'll add specific ones where needed */
