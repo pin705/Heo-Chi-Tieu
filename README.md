@@ -72,8 +72,8 @@
 - [x] Tìm kiếm và lọc giao dịch
 - [x] Bộ lọc đa điều kiện (loại, danh mục, ví)
 - [x] Hiển thị trực quan các bộ lọc đang áp dụng
-- [ ] Xuất dữ liệu (Tính năng tương lai)
-- [ ] Chế độ tối (Tính năng tương lai)
+- [x] Chế độ tối (Dark Mode)
+- [ ] Xuất dữ liệu (Đang phát triển)
 - [ ] Hệ thống thông báo (Tính năng tương lai)
 
 #### Hoàn thành trong Phase 4:
@@ -86,6 +86,15 @@
 - Hiển thị số lượng bộ lọc đang áp dụng
 - Xóa từng bộ lọc hoặc xóa tất cả
 - Giao diện lọc thân thiện với người dùng
+
+**Chế độ tối (Dark Mode)** ✅
+- Chuyển đổi linh hoạt giữa chế độ sáng và tối
+- Theme toggle button với hiệu ứng mượt mà
+- Lưu tùy chọn theme vào Zalo storage
+- Hỗ trợ tự động theo theme hệ thống
+- Dark mode cho tất cả các trang và components
+- Màu sắc và shadow được tối ưu cho dark mode
+- Transitions mượt mà khi chuyển theme (0.2s ease)
 
 ## Cài đặt
 
