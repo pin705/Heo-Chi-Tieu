@@ -167,3 +167,96 @@ body {
     }
   }
 }
+
+/* Dark mode support */
+:root.dark {
+  --zmp-background-color: #121212;
+  --background: #121212;
+  --section: #1E1E1E;
+}
+
+/* Smooth transitions for theme switching */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* Improve shadows for a more native look */
+.shadow-sm {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+}
+
+.dark .shadow-sm {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.dark .shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}
+
+/* Better button hover states */
+.zaui-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.dark .zaui-btn:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Improve list items */
+.zaui-list-item {
+  transition: background-color 0.2s ease;
+}
+
+.zaui-list-item:active {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dark .zaui-list-item:active {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Better input focus states */
+.zaui-input-affix-wrapper-focused {
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+.dark .zaui-input-affix-wrapper-focused {
+  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
+}
+
+/* Smooth animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Better scrollbar for dark mode */
+.dark ::-webkit-scrollbar {
+  width: 8px;
+  background-color: #1E1E1E;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background-color: #333333;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: #444444;
+}
+

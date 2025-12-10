@@ -104,6 +104,13 @@ const SettingsPage: FC = () => {
               suffix={<Icon icon="zi-chevron-right" className="text-gray-400" />}
               onClick={() => navigate("/export")}
             />
+            <List.Item
+              prefix={<Icon icon="zi-cloud" className="text-blue-600" size={22} />}
+              title="Sao lưu & Khôi phục"
+              subtitle="Bảo vệ dữ liệu của bạn"
+              suffix={<Icon icon="zi-chevron-right" className="text-gray-400" />}
+              onClick={() => navigate("/backup")}
+            />
           </List>
         </Box>
 
