@@ -12,6 +12,15 @@ export function formatDate(timestamp: number): string {
   return `${day}/${month}/${year}`;
 }
 
+// Generate filename with current date
+export function generateFilename(prefix: string, extension: string): string {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  return `${prefix}-${year}-${month}-${day}.${extension}`;
+}
+
 // Format currency helper
 export function formatCurrency(amount: number): string {
   return new Intl.NumberFormat('vi-VN', {

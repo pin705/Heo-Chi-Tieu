@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Page, Box, Text, Button, Select, Icon, useSnackbar } from 'zmp-ui';
 import { useRecoilValue } from 'recoil';
 import { transactionsState, categoriesState, walletsState, budgetsState } from '../../expense-state';
-import { exportToCSV, downloadCSV } from '../../utils/export';
+import { exportToCSV, downloadCSV, generateFilename } from '../../utils/export';
 import { exportToExcel } from '../../utils/export-excel';
 import { exportToPDF } from '../../utils/export-pdf';
 import AppHeader from '../../components/app-header';
@@ -34,8 +34,7 @@ const ExportPage: React.FC = () => {
       switch (format) {
         case 'csv':
           const csvContent = exportToCSV(transactions, categories, wallets);
-          const now = new Date();
-          const filename = `chi-tieu-${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}.csv`;
+          const filename = generateFilename('chi-tieu', 'csv');
           downloadCSV(csvContent, filename);
           openSnackbar({
             type: 'success',

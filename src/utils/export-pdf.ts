@@ -11,6 +11,7 @@ import {
   getCategoryName,
   getWalletName,
   calculateSummary,
+  generateFilename,
 } from './export';
 
 // Extend jsPDF type to include autoTable
@@ -107,7 +108,6 @@ export function exportToPDF(
   }
 
   // Save
-  const now = new Date();
-  const filename = `bao-cao-${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}.pdf`;
+  const filename = generateFilename('bao-cao', 'pdf');
   doc.save(filename);
 }

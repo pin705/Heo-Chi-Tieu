@@ -11,6 +11,7 @@ import {
   getCategoryName,
   getWalletName,
   calculateSummary,
+  generateFilename,
 } from './export';
 
 export function exportToExcel(
@@ -100,7 +101,6 @@ export function exportToExcel(
   }
 
   // Write file
-  const now = new Date();
-  const filename = `chi-tieu-${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}.xlsx`;
+  const filename = generateFilename('chi-tieu', 'xlsx');
   XLSX.writeFile(wb, filename);
 }

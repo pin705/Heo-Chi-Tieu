@@ -122,6 +122,10 @@ export function suggestCategoryWithLearning(
   return suggestCategory(note, categories);
 }
 
+// Constants for thresholds
+const UNUSUAL_SPENDING_THRESHOLD = 2; // standard deviations
+const SPENDING_TREND_THRESHOLD = 0.1; // 10% threshold
+
 /**
  * Detect unusual transactions (spending much higher than average)
  */
@@ -146,8 +150,8 @@ export function detectUnusualTransactions(
   const variance = amounts.reduce((sum, a) => sum + Math.pow(a - average, 2), 0) / amounts.length;
   const stdDev = Math.sqrt(variance);
 
-  // Find transactions that are more than 2 standard deviations above average
-  const threshold = average + (2 * stdDev);
+  // Find transactions that are more than threshold standard deviations above average
+  const threshold = average + (UNUSUAL_SPENDING_THRESHOLD * stdDev);
   
   return filtered.filter(t => t.amount > threshold);
 }
@@ -191,7 +195,7 @@ export function calculateSpendingTrend(
   const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
 
   // Determine trend based on slope
-  const threshold = monthlySpending[0] * 0.1; // 10% threshold
+  const threshold = monthlySpending[0] * SPENDING_TREND_THRESHOLD;
   
   if (slope > threshold) {
     return 'increasing';
