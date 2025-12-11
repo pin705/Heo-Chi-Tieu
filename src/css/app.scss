@@ -46,6 +46,20 @@ body {
   color: var(--zmp-primary-color);
 }
 
+/* Dark mode bottom navigation */
+.dark .zaui-bottom-navigation {
+  background-color: #1E293B;
+  color: #94A3B8;
+}
+
+.dark .zaui-bottom-navigation-item {
+  color: #94A3B8;
+}
+
+.dark .zaui-bottom-navigation-item-active {
+  color: #818CF8;
+}
+
 .zaui-btn-primary,
 .zaui-btn-primary.zaui-btn-highlight,
 .zaui-radio-checked .zaui-radio-checkmark,
