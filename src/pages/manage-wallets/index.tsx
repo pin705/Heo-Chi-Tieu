@@ -180,20 +180,18 @@ const ManageWalletsPage: FC = () => {
                     </Box>
                   </Box>
                   <Box className="flex gap-2">
-                    <Button
-                      size="small"
-                      variant="secondary"
+                    <Box
+                      className="w-9 h-9 flex items-center justify-center rounded-full bg-gray-100 active:bg-gray-200 cursor-pointer transition-colors"
                       onClick={() => handleOpenEditSheet(wallet)}
-                      className="border-gray-200 active:bg-gray-100"
-                      icon={<Icon icon="zi-edit" size={18} className="text-gray-700" />}
-                    />
-                    <Button
-                      size="small"
-                      variant="secondary"
+                    >
+                      <Icon icon="zi-edit" size={18} className="text-gray-600" />
+                    </Box>
+                    <Box
+                      className="w-9 h-9 flex items-center justify-center rounded-full bg-red-50 active:bg-red-100 cursor-pointer transition-colors"
                       onClick={() => handleDelete(wallet.id)}
-                      className="border-red-200 text-red-600 active:bg-red-50"
-                      icon={<Icon icon="zi-delete" size={18} />}
-                    />
+                    >
+                      <Icon icon="zi-delete" size={18} className="text-red-500" />
+                    </Box>
                   </Box>
                 </Box>
               </Box>
@@ -203,12 +201,12 @@ const ManageWalletsPage: FC = () => {
 
         {/* Add Button */}
         <Box className="fixed bottom-24 right-5 z-10">
-          <Button
-            variant="primary"
+          <Box
             onClick={handleOpenAddSheet}
-            className="w-14 h-14 rounded-full shadow-xl flex items-center justify-center bg-yellow-500 border-0 active:scale-95 transition-transform"
-            icon={<Icon icon="zi-plus" size={28} className="text-white" />}
-          />
+            className="w-14 h-14 rounded-full shadow-xl flex items-center justify-center bg-yellow-500 cursor-pointer active:scale-95 transition-transform"
+          >
+            <Icon icon="zi-plus" size={28} className="text-white" />
+          </Box>
         </Box>
 
         {/* Add/Edit Sheet */}

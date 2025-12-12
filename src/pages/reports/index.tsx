@@ -178,42 +178,63 @@ const ReportsPage: FC = () => {
         </Box>
 
         {/* Tabs for Expense/Income */}
-        <Box className="p-4 rounded-2xl overflow-hidden">
-          <Tabs
-            activeKey={activeTab}
-            onChange={(key) => setActiveTab(key as "expense" | "income")}
-          >
-            <Tabs.Tab key="expense" label="Chi tiêu" />
-            <Tabs.Tab key="income" label="Thu nhập" />
-          </Tabs>
+        <Box className="px-4 pb-4">
+          <Box className="flex p-1 bg-gray-100 rounded-xl">
+            <Box
+              className={`flex-1 flex items-center justify-center py-2.5 rounded-lg cursor-pointer transition-all duration-200 ${
+                activeTab === "expense"
+                  ? "bg-white text-red-600 shadow-sm"
+                  : "text-gray-500 hover:bg-gray-50"
+              }`}
+              onClick={() => setActiveTab("expense")}
+            >
+              <Icon icon="zi-minus-circle" className="mr-2" size={20} />
+              <Text size="small" className="font-medium">
+                Chi tiêu
+              </Text>
+            </Box>
+            <Box
+              className={`flex-1 flex items-center justify-center py-2.5 rounded-lg cursor-pointer transition-all duration-200 ${
+                activeTab === "income"
+                  ? "bg-white text-green-600 shadow-sm"
+                  : "text-gray-500 hover:bg-gray-50"
+              }`}
+              onClick={() => setActiveTab("income")}
+            >
+              <Icon icon="zi-plus-circle" className="mr-2" size={20} />
+              <Text size="small" className="font-medium">
+                Thu nhập
+              </Text>
+            </Box>
+          </Box>
         </Box>
 
         {/* View Mode Toggle */}
         <Box className="px-4 pb-4">
-          <Box className="flex gap-3 bg-gray-100 p-1 rounded-xl">
+          <Box className="flex p-1 bg-gray-100 rounded-xl">
             <Box
-              className={`flex-1 py-3 px-4 rounded-lg text-center cursor-pointer transition-all duration-200 ${
+              className={`flex-1 flex items-center justify-center py-2.5 rounded-lg cursor-pointer transition-all duration-200 ${
                 viewMode === "category"
-                  ? "bg-white text-yellow-600 shadow-md transform scale-105"
-                  : "text-gray-600 hover:bg-gray-200"
+                  ? "bg-white text-yellow-600 shadow-sm"
+                  : "text-gray-500 hover:bg-gray-50"
               }`}
               onClick={() => setViewMode("category")}
             >
-              <Icon icon="zi-more-grid" className="mb-1" />
-              <Text size="small" className={`font-medium ${viewMode === "category" ? "text-yellow-600" : "text-gray-600"}`}>
-                Theo danh mục
+              <Icon icon="zi-more-grid" className="mr-2" size={20} />
+              <Text size="small" className="font-medium">
+                Danh mục
               </Text>
             </Box>
             <Box
-              className={`flex-1 py-3 px-4 rounded-lg text-center cursor-pointer transition-all duration-200 ${
+              className={`flex-1 flex items-center justify-center py-2.5 rounded-lg cursor-pointer transition-all duration-200 ${
                 viewMode === "trend"
-                  ? "bg-white text-yellow-600 shadow-md transform scale-105"
-                  : "text-gray-600 hover:bg-gray-200"
+                  ? "bg-white text-yellow-600 shadow-sm"
+                  : "text-gray-500 hover:bg-gray-50"
               }`}
               onClick={() => setViewMode("trend")}
             >
-              <Icon icon="zi-more-grid" className="mb-1" />
-              <Text size="small" className={`font-medium ${viewMode === "trend" ? "text-yellow-600" : "text-gray-600"}`}>
+              <Icon icon="zi-poll" className="mr-2" size={20} />
+              <Text size="small" className="font-medium">
                 Xu hướng
               </Text>
             </Box>

@@ -328,30 +328,30 @@ const HistoryPage: FC = () => {
         swipeToClose
       >
         <Box className="p-5">
-          <Text.Title className="mb-5 text-center">🔍 Bộ lọc</Text.Title>
+          <Text.Title className="mb-5 text-center">Bộ lọc</Text.Title>
 
           {/* Type Filter */}
           <Box className="mb-5">
             <Text size="small" className="mb-3 text-gray-700 font-medium">
               Loại giao dịch
             </Text>
-            <Box className="flex gap-2">
+            <Box className="flex p-1 bg-gray-100 rounded-xl">
               {[
-                { value: "all", label: "Tất cả", icon: "zi-list" },
-                { value: "income", label: "Thu nhập", icon: "zi-plus-circle" },
-                { value: "expense", label: "Chi tiêu", icon: "zi-minus-circle" },
+                { value: "all", label: "Tất cả", icon: "zi-list", activeColor: "text-gray-900" },
+                { value: "income", label: "Thu nhập", icon: "zi-plus-circle", activeColor: "text-green-600" },
+                { value: "expense", label: "Chi tiêu", icon: "zi-minus-circle", activeColor: "text-red-600" },
               ].map((option) => (
                 <Box
                   key={option.value}
-                  className={`flex-1 py-3 px-4 rounded-xl text-center cursor-pointer transition-all duration-200 shadow-sm ${
+                  className={`flex-1 flex items-center justify-center py-2.5 rounded-lg cursor-pointer transition-all duration-200 ${
                     filterType === option.value
-                      ? "bg-gradient-to-br from-yellow-600 to-yellow-700 text-white shadow-md transform scale-105"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                      ? `bg-white shadow-sm ${option.activeColor}`
+                      : "text-gray-500 hover:bg-gray-50"
                   }`}
                   onClick={() => setFilterType(option.value as any)}
                 >
-                  <Icon icon={option.icon as any} className="mb-1" />
-                  <Text size="xSmall" className={`font-medium ${filterType === option.value ? "text-white" : "text-gray-600"}`}>
+                  <Icon icon={option.icon as any} className="mr-1.5" size={18} />
+                  <Text size="small" className="font-medium">
                     {option.label}
                   </Text>
                 </Box>
@@ -452,7 +452,7 @@ const HistoryPage: FC = () => {
             <Button 
               fullWidth 
               onClick={() => setShowFilterSheet(false)}
-              className="h-12 font-semibold shadow-md hover:shadow-lg transition-shadow flex items-center justify-center"
+              className="h-12 font-semibold shadow-md hover:shadow-lg transition-shadow flex items-center justify-center bg-yellow-500 text-white border-none"
               prefixIcon={<Icon icon="zi-check-circle" />}
             >
               Áp dụng
