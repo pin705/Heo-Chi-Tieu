@@ -2,19 +2,19 @@ import React, { FC } from "react";
 import { Box, Header, Text } from "zmp-ui";
 import { useRecoilValue } from "recoil";
 import { userState } from "expense-state";
+import { Header as ZmpHeader } from "zmp-ui";
 
 export const Welcome: FC = () => {
   const user = useRecoilValue(userState);
 
   return (
     <Box 
-      className="relative overflow-hidden"
+      className="relative app-header overflow-hidden"
       style={{
         background: 'linear-gradient(135deg, #EAB308 0%, #CA8A04 50%, #A16207 100%)',
       }}
     >
-      <Header
-        className="app-header no-border pl-4 flex-none pb-6 pt-2 text-white"
+      <ZmpHeader
         showBackIcon={false}
         title={
           (
@@ -28,7 +28,7 @@ export const Welcome: FC = () => {
               </Box>
               <Box>
                 <Text.Title size="small" className="font-bold">
-                  Chào {user.name}! 👋
+                  Chào {user.name}!
                 </Text.Title>
                 <Text size="xxSmall" className="font-medium">
                   Quản lý chi tiêu thông minh
