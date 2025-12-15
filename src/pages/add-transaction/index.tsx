@@ -128,13 +128,16 @@ const AddTransactionPage: FC = () => {
     navigate("/");
   };
 
+  // Maximum allowed transaction amount (1 billion VND)
+  const MAX_TRANSACTION_AMOUNT = 1000000000;
+
   const handleVoiceResult = (text: string) => {
     const parsed = parseVoiceInput(text);
     
     // Validate amount before setting
     if (parsed.amount !== null) {
-      // Check if amount is reasonable (between 1 and 1 billion)
-      if (parsed.amount > 0 && parsed.amount <= 1000000000) {
+      // Check if amount is reasonable (between 1 and MAX_TRANSACTION_AMOUNT)
+      if (parsed.amount > 0 && parsed.amount <= MAX_TRANSACTION_AMOUNT) {
         setAmount(parsed.amount.toString());
       } else {
         openSnackbar({

@@ -128,7 +128,7 @@ export const VoiceInput: FC<VoiceInputProps> = ({
     } else {
       setIsSupported(false);
     }
-  }, [onResult, onError]);
+  }, [onResult, onError, language]);
 
   const startListening = () => {
     if (recognition && !isListening) {

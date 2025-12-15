@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { Box, Text, Icon, Sheet } from "zmp-ui";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { walletsState, totalBalanceState } from "expense-state";
 import { formatCurrency } from "utils/format";
 
@@ -17,7 +17,7 @@ export const WalletSelector: FC<WalletSelectorProps> = ({
   showTotal = true,
   compact = false,
 }) => {
-  const [wallets] = useRecoilState(walletsState);
+  const wallets = useRecoilValue(walletsState);
   const totalBalance = useRecoilValue(totalBalanceState);
   const [showWalletSheet, setShowWalletSheet] = useState(false);
 

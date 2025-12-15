@@ -64,17 +64,22 @@ const EXPENSE_KEYWORDS = [
   "phí",
 ];
 
+// Pre-compile regex patterns for Vietnamese number words
+const NUMBER_WORD_PATTERNS = Object.entries(NUMBER_WORDS).map(([word, value]) => ({
+  pattern: new RegExp(`\\b${word}\\b`, "gi"),
+  value: value.toString()
+}));
+
 /**
  * Convert Vietnamese number words to digits
  */
 function convertVietnameseNumberWords(text: string): string {
   let result = text.toLowerCase();
   
-  // Replace number words with digits
-  Object.entries(NUMBER_WORDS).forEach(([word, value]) => {
-    const regex = new RegExp(`\\b${word}\\b`, "gi");
-    result = result.replace(regex, value.toString());
-  });
+  // Replace number words with digits using pre-compiled patterns
+  for (const { pattern, value } of NUMBER_WORD_PATTERNS) {
+    result = result.replace(pattern, value);
+  }
   
   return result;
 }
@@ -125,11 +130,12 @@ function determineTransactionType(text: string): boolean {
     lowerText.includes(keyword)
   );
   
-  // If both or neither, default to expense
+  // If only income keywords present, it's income
   if (hasIncomeKeyword && !hasExpenseKeyword) {
     return true; // Income
   }
   
+  // For all other cases (expense only, both, or neither), default to expense
   return false; // Expense (default)
 }
 
