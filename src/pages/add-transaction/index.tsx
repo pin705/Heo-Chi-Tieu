@@ -131,8 +131,18 @@ const AddTransactionPage: FC = () => {
   const handleVoiceResult = (text: string) => {
     const parsed = parseVoiceInput(text);
     
+    // Validate amount before setting
     if (parsed.amount !== null) {
-      setAmount(parsed.amount.toString());
+      // Check if amount is reasonable (between 1 and 1 billion)
+      if (parsed.amount > 0 && parsed.amount <= 1000000000) {
+        setAmount(parsed.amount.toString());
+      } else {
+        openSnackbar({
+          type: "error",
+          text: "Số tiền không hợp lệ. Vui lòng thử lại.",
+        });
+        return;
+      }
     }
     
     if (parsed.note) {

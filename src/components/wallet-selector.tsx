@@ -33,6 +33,114 @@ export const WalletSelector: FC<WalletSelectorProps> = ({
     }
   };
 
+  // Reusable wallet selection sheet content
+  const renderWalletSheet = () => (
+    <Sheet
+      visible={showWalletSheet}
+      onClose={() => setShowWalletSheet(false)}
+      autoHeight
+      mask
+      handler
+      swipeToClose
+    >
+      <Box className="p-6">
+        <Text.Title size="small" className="mb-5 text-center font-bold">
+          Chọn ví
+        </Text.Title>
+        {showTotal && (
+          <Box
+            className="mb-3 p-4 rounded-2xl cursor-pointer flex items-center justify-between transition-all duration-200 transform active:scale-98 bg-gradient-to-r from-yellow-50 to-amber-50 shadow-soft"
+            onClick={() => handleWalletSelect("")}
+          >
+            <Box className="flex items-center space-x-3">
+              <Box
+                className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm"
+                style={{
+                  background: "linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)",
+                }}
+              >
+                <Icon icon="zi-user-circle" className="text-white" size={24} />
+              </Box>
+              <Box>
+                <Text className="font-bold text-gray-900">Tất cả ví</Text>
+                <Text size="xSmall" className="text-gray-600">
+                  {formatCurrency(totalBalance)}
+                </Text>
+              </Box>
+            </Box>
+            {!selectedWalletId && (
+              <Icon icon="zi-check-circle-solid" className="text-yellow-600" size={24} />
+            )}
+          </Box>
+        )}
+        <Box className="space-y-3">
+          {wallets.map((wallet) => (
+            <Box
+              key={wallet.id}
+              className={`p-4 rounded-2xl cursor-pointer flex items-center justify-between transition-all duration-200 transform active:scale-98 ${
+                selectedWalletId === wallet.id
+                  ? "shadow-lg"
+                  : "bg-gray-50 hover:bg-gray-100 shadow-soft"
+              }`}
+              style={{
+                background:
+                  selectedWalletId === wallet.id
+                    ? "linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)"
+                    : undefined,
+              }}
+              onClick={() => handleWalletSelect(wallet.id)}
+            >
+              <Box className="flex items-center space-x-3">
+                <Box
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm"
+                  style={{
+                    background:
+                      selectedWalletId === wallet.id
+                        ? "rgba(255, 255, 255, 0.2)"
+                        : `linear-gradient(135deg, ${wallet.color}15 0%, ${wallet.color}25 100%)`,
+                  }}
+                >
+                  <Icon
+                    icon={wallet.icon as any}
+                    style={{
+                      color:
+                        selectedWalletId === wallet.id ? "white" : wallet.color,
+                    }}
+                    size={24}
+                  />
+                </Box>
+                <Box>
+                  <Text
+                    className={`font-bold ${
+                      selectedWalletId === wallet.id
+                        ? "text-white"
+                        : "text-gray-900"
+                    }`}
+                  >
+                    {wallet.name}
+                  </Text>
+                  <Text
+                    size="xSmall"
+                    className={`${
+                      selectedWalletId === wallet.id
+                        ? "text-white/80"
+                        : "text-gray-500"
+                    }`}
+                  >
+                    {formatCurrency(wallet.balance)}
+                  </Text>
+                </Box>
+              </Box>
+              {selectedWalletId === wallet.id && (
+                <Icon icon="zi-check-circle-solid" className="text-white" size={24} />
+              )}
+            </Box>
+          ))}
+        </Box>
+      </Box>
+    </Sheet>
+  );
+
   if (compact) {
     return (
       <>
@@ -86,111 +194,7 @@ export const WalletSelector: FC<WalletSelectorProps> = ({
           <Icon icon="zi-chevron-down" size={16} className="text-gray-400" />
         </Box>
 
-        {/* Wallet Selection Sheet */}
-        <Sheet
-          visible={showWalletSheet}
-          onClose={() => setShowWalletSheet(false)}
-          autoHeight
-          mask
-          handler
-          swipeToClose
-        >
-          <Box className="p-6">
-            <Text.Title size="small" className="mb-5 text-center font-bold">
-              Chọn ví
-            </Text.Title>
-            {showTotal && (
-              <Box
-                className="mb-3 p-4 rounded-2xl cursor-pointer flex items-center justify-between transition-all duration-200 transform active:scale-98 bg-gradient-to-r from-yellow-50 to-amber-50 shadow-soft"
-                onClick={() => handleWalletSelect("")}
-              >
-                <Box className="flex items-center space-x-3">
-                  <Box
-                    className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm"
-                    style={{
-                      background: "linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)",
-                    }}
-                  >
-                    <Icon icon="zi-user-circle" className="text-white" size={24} />
-                  </Box>
-                  <Box>
-                    <Text className="font-bold text-gray-900">Tất cả ví</Text>
-                    <Text size="xSmall" className="text-gray-600">
-                      {formatCurrency(totalBalance)}
-                    </Text>
-                  </Box>
-                </Box>
-                {!selectedWalletId && (
-                  <Icon icon="zi-check-circle-solid" className="text-yellow-600" size={24} />
-                )}
-              </Box>
-            )}
-            <Box className="space-y-3">
-              {wallets.map((wallet) => (
-                <Box
-                  key={wallet.id}
-                  className={`p-4 rounded-2xl cursor-pointer flex items-center justify-between transition-all duration-200 transform active:scale-98 ${
-                    selectedWalletId === wallet.id
-                      ? "shadow-lg"
-                      : "bg-gray-50 hover:bg-gray-100 shadow-soft"
-                  }`}
-                  style={{
-                    background:
-                      selectedWalletId === wallet.id
-                        ? "linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)"
-                        : undefined,
-                  }}
-                  onClick={() => handleWalletSelect(wallet.id)}
-                >
-                  <Box className="flex items-center space-x-3">
-                    <Box
-                      className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm"
-                      style={{
-                        background:
-                          selectedWalletId === wallet.id
-                            ? "rgba(255, 255, 255, 0.2)"
-                            : `linear-gradient(135deg, ${wallet.color}15 0%, ${wallet.color}25 100%)`,
-                      }}
-                    >
-                      <Icon
-                        icon={wallet.icon as any}
-                        style={{
-                          color:
-                            selectedWalletId === wallet.id ? "white" : wallet.color,
-                        }}
-                        size={24}
-                      />
-                    </Box>
-                    <Box>
-                      <Text
-                        className={`font-bold ${
-                          selectedWalletId === wallet.id
-                            ? "text-white"
-                            : "text-gray-900"
-                        }`}
-                      >
-                        {wallet.name}
-                      </Text>
-                      <Text
-                        size="xSmall"
-                        className={`${
-                          selectedWalletId === wallet.id
-                            ? "text-white/80"
-                            : "text-gray-500"
-                        }`}
-                      >
-                        {formatCurrency(wallet.balance)}
-                      </Text>
-                    </Box>
-                  </Box>
-                  {selectedWalletId === wallet.id && (
-                    <Icon icon="zi-check-circle-solid" className="text-white" size={24} />
-                  )}
-                </Box>
-              ))}
-            </Box>
-          </Box>
-        </Sheet>
+        {renderWalletSheet()}
       </>
     );
   }
@@ -273,111 +277,7 @@ export const WalletSelector: FC<WalletSelectorProps> = ({
         </Box>
       </Box>
 
-      {/* Wallet Selection Sheet - Same as compact mode */}
-      <Sheet
-        visible={showWalletSheet}
-        onClose={() => setShowWalletSheet(false)}
-        autoHeight
-        mask
-        handler
-        swipeToClose
-      >
-        <Box className="p-6">
-          <Text.Title size="small" className="mb-5 text-center font-bold">
-            Chọn ví
-          </Text.Title>
-          {showTotal && (
-            <Box
-              className="mb-3 p-4 rounded-2xl cursor-pointer flex items-center justify-between transition-all duration-200 transform active:scale-98 bg-gradient-to-r from-yellow-50 to-amber-50 shadow-soft"
-              onClick={() => handleWalletSelect("")}
-            >
-              <Box className="flex items-center space-x-3">
-                <Box
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm"
-                  style={{
-                    background: "linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)",
-                  }}
-                >
-                  <Icon icon="zi-user-circle" className="text-white" size={24} />
-                </Box>
-                <Box>
-                  <Text className="font-bold text-gray-900">Tất cả ví</Text>
-                  <Text size="xSmall" className="text-gray-600">
-                    {formatCurrency(totalBalance)}
-                  </Text>
-                </Box>
-              </Box>
-              {!selectedWalletId && (
-                <Icon icon="zi-check-circle-solid" className="text-yellow-600" size={24} />
-              )}
-            </Box>
-          )}
-          <Box className="space-y-3">
-            {wallets.map((wallet) => (
-              <Box
-                key={wallet.id}
-                className={`p-4 rounded-2xl cursor-pointer flex items-center justify-between transition-all duration-200 transform active:scale-98 ${
-                  selectedWalletId === wallet.id
-                    ? "shadow-lg"
-                    : "bg-gray-50 hover:bg-gray-100 shadow-soft"
-                }`}
-                style={{
-                  background:
-                    selectedWalletId === wallet.id
-                      ? "linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)"
-                      : undefined,
-                }}
-                onClick={() => handleWalletSelect(wallet.id)}
-              >
-                <Box className="flex items-center space-x-3">
-                  <Box
-                    className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm"
-                    style={{
-                      background:
-                        selectedWalletId === wallet.id
-                          ? "rgba(255, 255, 255, 0.2)"
-                          : `linear-gradient(135deg, ${wallet.color}15 0%, ${wallet.color}25 100%)`,
-                    }}
-                  >
-                    <Icon
-                      icon={wallet.icon as any}
-                      style={{
-                        color:
-                          selectedWalletId === wallet.id ? "white" : wallet.color,
-                      }}
-                      size={24}
-                    />
-                  </Box>
-                  <Box>
-                    <Text
-                      className={`font-bold ${
-                        selectedWalletId === wallet.id
-                          ? "text-white"
-                          : "text-gray-900"
-                      }`}
-                    >
-                      {wallet.name}
-                    </Text>
-                    <Text
-                      size="xSmall"
-                      className={`${
-                        selectedWalletId === wallet.id
-                          ? "text-white/80"
-                          : "text-gray-500"
-                      }`}
-                    >
-                      {formatCurrency(wallet.balance)}
-                    </Text>
-                  </Box>
-                </Box>
-                {selectedWalletId === wallet.id && (
-                  <Icon icon="zi-check-circle-solid" className="text-white" size={24} />
-                )}
-              </Box>
-            ))}
-          </Box>
-        </Box>
-      </Sheet>
+      {renderWalletSheet()}
     </>
   );
 };

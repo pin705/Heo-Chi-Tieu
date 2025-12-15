@@ -5,6 +5,7 @@ interface VoiceInputProps {
   onResult: (text: string) => void;
   onError?: (error: string) => void;
   placeholder?: string;
+  language?: string;
 }
 
 // Browser Speech Recognition API
@@ -63,6 +64,7 @@ export const VoiceInput: FC<VoiceInputProps> = ({
   onResult,
   onError,
   placeholder = "Nhấn để nói...",
+  language = "vi-VN",
 }) => {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState("");
@@ -79,7 +81,7 @@ export const VoiceInput: FC<VoiceInputProps> = ({
       const recognitionInstance = new SpeechRecognition();
       recognitionInstance.continuous = false;
       recognitionInstance.interimResults = true;
-      recognitionInstance.lang = "vi-VN"; // Vietnamese language
+      recognitionInstance.lang = language;
 
       recognitionInstance.onresult = (event: SpeechRecognitionEvent) => {
         let interimTranscript = "";
@@ -131,8 +133,15 @@ export const VoiceInput: FC<VoiceInputProps> = ({
   const startListening = () => {
     if (recognition && !isListening) {
       setTranscript("");
-      recognition.start();
-      setIsListening(true);
+      try {
+        recognition.start();
+        setIsListening(true);
+      } catch (error) {
+        console.error("Error starting speech recognition:", error);
+        if (onError) {
+          onError("Không thể bắt đầu ghi âm. Vui lòng thử lại.");
+        }
+      }
     }
   };
 

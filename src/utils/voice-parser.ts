@@ -79,6 +79,9 @@ function convertVietnameseNumberWords(text: string): string {
   return result;
 }
 
+// Shared regex pattern for amount extraction
+const AMOUNT_PATTERN = /(\d+(?:[.,]\d+)?)\s*(k|ngàn|nghìn|triệu|tr|tỷ)?/gi;
+
 /**
  * Extract amount from text
  */
@@ -86,27 +89,20 @@ function extractAmount(text: string): number | null {
   // Convert Vietnamese number words to digits first
   const convertedText = convertVietnameseNumberWords(text);
   
-  // Pattern 1: Direct numbers with optional multipliers (e.g., "50000", "50k", "2 triệu")
-  const patterns = [
-    /(\d+(?:[.,]\d+)?)\s*(k|ngàn|nghìn|triệu|tr|tỷ)?/gi,
-  ];
-  
   let maxAmount = 0;
   let foundAmount = false;
   
-  for (const pattern of patterns) {
-    const matches = convertedText.matchAll(pattern);
-    for (const match of matches) {
-      const numStr = match[1].replace(",", ".");
-      const num = parseFloat(numStr);
-      const multiplierStr = match[2]?.toLowerCase() || "";
-      const multiplier = MULTIPLIERS[multiplierStr] || 1;
-      
-      const amount = num * multiplier;
-      if (amount > maxAmount) {
-        maxAmount = amount;
-        foundAmount = true;
-      }
+  const matches = convertedText.matchAll(AMOUNT_PATTERN);
+  for (const match of matches) {
+    const numStr = match[1].replace(",", ".");
+    const num = parseFloat(numStr);
+    const multiplierStr = match[2]?.toLowerCase() || "";
+    const multiplier = MULTIPLIERS[multiplierStr] || 1;
+    
+    const amount = num * multiplier;
+    if (amount > maxAmount) {
+      maxAmount = amount;
+      foundAmount = true;
     }
   }
   
@@ -137,27 +133,32 @@ function determineTransactionType(text: string): boolean {
   return false; // Expense (default)
 }
 
+// Pre-compile regex patterns for better performance
+const ALL_KEYWORDS = [...INCOME_KEYWORDS, ...EXPENSE_KEYWORDS];
+const KEYWORD_PATTERNS = ALL_KEYWORDS.map(keyword => ({
+  keyword,
+  pattern: new RegExp(`^${keyword}\\s+`, "i")
+}));
+const CONNECTOR_PATTERN = /\b(cho|về|của|là|với|để|bằng)\b/gi;
+
 /**
  * Extract note from text by removing amount and transaction type keywords
  */
 function extractNote(text: string, amount: number | null): string {
   let note = text;
   
-  // Remove amount patterns
+  // Remove amount patterns using shared pattern
   if (amount !== null) {
-    // Remove direct number patterns
-    note = note.replace(/\d+(?:[.,]\d+)?\s*(k|ngàn|nghìn|triệu|tr|tỷ)?/gi, "");
+    note = note.replace(AMOUNT_PATTERN, "");
   }
   
   // Remove income/expense keywords at the beginning
-  const allKeywords = [...INCOME_KEYWORDS, ...EXPENSE_KEYWORDS];
-  for (const keyword of allKeywords) {
-    const regex = new RegExp(`^${keyword}\\s+`, "i");
-    note = note.replace(regex, "");
+  for (const { pattern } of KEYWORD_PATTERNS) {
+    note = note.replace(pattern, "");
   }
   
   // Remove common connectors
-  note = note.replace(/\b(cho|về|của|là|với|để|bằng)\b/gi, "");
+  note = note.replace(CONNECTOR_PATTERN, "");
   
   // Clean up extra spaces
   note = note.replace(/\s+/g, " ").trim();
