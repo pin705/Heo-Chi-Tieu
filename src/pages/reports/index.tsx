@@ -13,6 +13,7 @@ import {
 import { formatCurrency } from "utils/format";
 import { ExpenseCategory } from "types/expense-category";
 import { TrendChart } from "components/trend-chart";
+import { WalletSelector } from "components/wallet-selector";
 
 interface CategoryStatItemProps {
   stat: { categoryId: string; amount: number; percentage: number };
@@ -141,6 +142,11 @@ const ReportsPage: FC = () => {
     <Page className="flex flex-col bg-background">
       <AppHeader title="Báo cáo" noBack />
       <Box className="flex-1 overflow-auto pb-20">
+        {/* Wallet Selector */}
+        <Box className="px-4 pt-4">
+          <WalletSelector compact={true} />
+        </Box>
+
         {/* Monthly Summary */}
         <Box className="p-6 rounded-2xl m-4 bg-section relative overflow-hidden">
           <Box className="absolute top-0 right-0 w-32 h-32 opacity-10 rounded-full -mr-16 -mt-16" 

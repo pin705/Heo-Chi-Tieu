@@ -6,6 +6,7 @@ import { useRecoilValue } from "recoil";
 import { sortedTransactionsState, categoriesState, walletsState } from "expense-state";
 import { formatCurrency } from "utils/format";
 import { Transaction } from "types/transaction";
+import { WalletSelector } from "components/wallet-selector";
 
 const HistoryPage: FC = () => {
   const transactions = useRecoilValue(sortedTransactionsState);
@@ -103,6 +104,15 @@ const HistoryPage: FC = () => {
   return (
     <Page className="flex flex-col bg-background">
       <AppHeader title="Lịch sử giao dịch" />
+      
+      {/* Wallet Selector */}
+      <Box className="px-4 pt-4">
+        <WalletSelector 
+          selectedWalletId={filterWallet !== "all" ? filterWallet : undefined}
+          onWalletChange={(walletId) => setFilterWallet(walletId || "all")}
+          compact={true}
+        />
+      </Box>
       
       {/* Search and Filter Bar */}
       <Box className="p-4 bg-white shadow-soft rounded-b-2xl animate-fade-in">
