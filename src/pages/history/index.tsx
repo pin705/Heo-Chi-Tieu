@@ -106,13 +106,7 @@ const HistoryPage: FC = () => {
       <AppHeader title="Lịch sử giao dịch" />
       
       {/* Wallet Selector */}
-      <Box className="px-4 pt-4">
-        <WalletSelector 
-          selectedWalletId={filterWallet !== "all" ? filterWallet : undefined}
-          onWalletChange={(walletId) => setFilterWallet(walletId || "all")}
-          compact={true}
-        />
-      </Box>
+    
       
       {/* Search and Filter Bar */}
       <Box className="p-4 bg-white shadow-soft rounded-b-2xl animate-fade-in">
@@ -211,6 +205,14 @@ const HistoryPage: FC = () => {
         )}
       </Box>
 
+  <Box className="px-4 pt-4">
+        <WalletSelector 
+          selectedWalletId={filterWallet !== "all" ? filterWallet : undefined}
+          onWalletChange={(walletId) => setFilterWallet(walletId || "all")}
+          compact={true}
+        />
+      </Box>
+      
       <Box className="flex-1 overflow-auto px-4 pt-4">
         {Object.keys(groupedTransactions).length === 0 ? (
           <Box className="text-center py-16 bg-white rounded-2xl shadow-card animate-fade-in">

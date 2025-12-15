@@ -245,7 +245,7 @@ const AddTransactionPage: FC = () => {
           }}
         >
           <Box className="flex items-center justify-center space-x-2">
-            <Icon icon="zi-microphone" className="text-white" size={24} />
+            <Icon icon="zi-call" className="text-white" size={24} />
             <Text className="text-white font-bold">
               Nhập bằng giọng nói
             </Text>

@@ -193,7 +193,7 @@ export const VoiceInput: FC<VoiceInputProps> = ({
             }`}
           >
             <Icon
-              icon={isListening ? "zi-stop-circle" : "zi-microphone"}
+              icon={isListening ? "zi-pause" : "zi-call"}
               className="text-white"
               size={28}
             />
