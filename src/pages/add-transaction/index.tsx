@@ -15,6 +15,8 @@ import { ExpenseCategory } from "types/expense-category";
 import { Wallet } from "types/wallet";
 import { suggestCategoryWithLearning, learnFromHistory } from "services/ai-categorization";
 import { formatCurrency } from "utils/format";
+import { VoiceInput } from "components/voice-input";
+import { parseVoiceInput } from "utils/voice-parser";
 
 const AddTransactionPage: FC = () => {
   const navigate = useNavigate();
@@ -41,6 +43,7 @@ const AddTransactionPage: FC = () => {
   const [showCategorySheet, setShowCategorySheet] = useState(false);
   const [showWalletSheet, setShowWalletSheet] = useState(false);
   const [suggestedCategory, setSuggestedCategory] = useState<ExpenseCategory | null>(null);
+  const [showVoiceInput, setShowVoiceInput] = useState(false);
 
   const categories =
     type === "expense" ? expenseCategories : incomeCategories;
@@ -125,6 +128,36 @@ const AddTransactionPage: FC = () => {
     navigate("/");
   };
 
+  const handleVoiceResult = (text: string) => {
+    const parsed = parseVoiceInput(text);
+    
+    if (parsed.amount !== null) {
+      setAmount(parsed.amount.toString());
+    }
+    
+    if (parsed.note) {
+      setNote(parsed.note);
+    }
+    
+    if (parsed.isIncome) {
+      setType("income");
+    } else {
+      setType("expense");
+    }
+
+    openSnackbar({
+      type: "success",
+      text: "Đã nhận dạng giọng nói thành công",
+    });
+  };
+
+  const handleVoiceError = (error: string) => {
+    openSnackbar({
+      type: "error",
+      text: error,
+    });
+  };
+
   const selectedCategoryData = categories.find(
     (c) => c.id === selectedCategory
   );
@@ -187,6 +220,22 @@ const AddTransactionPage: FC = () => {
                 Thu nhập
               </Text>
             </Box>
+          </Box>
+        </Box>
+
+        {/* Voice Input Button */}
+        <Box
+          onClick={() => setShowVoiceInput(true)}
+          className="mb-6 p-4 rounded-2xl cursor-pointer transition-all duration-200 shadow-card hover:shadow-lg active:scale-98 animate-fade-in"
+          style={{
+            background: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
+          }}
+        >
+          <Box className="flex items-center justify-center space-x-2">
+            <Icon icon="zi-microphone" className="text-white" size={24} />
+            <Text className="text-white font-bold">
+              Nhập bằng giọng nói
+            </Text>
           </Box>
         </Box>
 
@@ -498,6 +547,37 @@ const AddTransactionPage: FC = () => {
               </Box>
             ))}
           </Box>
+        </Box>
+      </Sheet>
+
+      {/* Voice Input Sheet */}
+      <Sheet
+        visible={showVoiceInput}
+        onClose={() => setShowVoiceInput(false)}
+        autoHeight
+        mask
+        handler
+        swipeToClose
+      >
+        <Box className="p-6">
+          <Text.Title size="small" className="mb-4 text-center font-bold">
+            Nhập giao dịch bằng giọng nói
+          </Text.Title>
+          <Box className="mb-4">
+            <Text size="xSmall" className="text-gray-600 mb-2">
+              Ví dụ:
+            </Text>
+            <Box className="space-y-1">
+              <Text size="xSmall" className="text-gray-500">• "Chi 50000 đồng ăn sáng"</Text>
+              <Text size="xSmall" className="text-gray-500">• "Mua cafe 35k"</Text>
+              <Text size="xSmall" className="text-gray-500">• "Thu nhập 5 triệu lương tháng"</Text>
+            </Box>
+          </Box>
+          <VoiceInput
+            onResult={handleVoiceResult}
+            onError={handleVoiceError}
+            placeholder="Nhấn để bắt đầu"
+          />
         </Box>
       </Sheet>
     </Page>

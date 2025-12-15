@@ -22,6 +22,7 @@ import {
 import { Budget, BudgetFormData } from "types/budget";
 import { formatCurrency } from "utils/format";
 import AppHeader from "components/app-header";
+import { WalletSelector } from "components/wallet-selector";
 
 const BudgetPage: FC = () => {
   const { openSnackbar } = useSnackbar();
@@ -139,6 +140,11 @@ const BudgetPage: FC = () => {
     <Page className="flex flex-col bg-background">
       <AppHeader title="Quản lý ngân sách" />
       <Box className="flex-1 overflow-auto pb-20">
+        {/* Wallet Selector */}
+        <Box className="px-4 pt-4">
+          <WalletSelector compact={true} />
+        </Box>
+
         {/* Monthly Budget Section */}
         <Box className="px-4 pt-4">
           <Box className="flex items-center justify-between mb-3">
