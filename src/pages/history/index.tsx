@@ -1,5 +1,5 @@
 import React, { FC, useState, useMemo } from "react";
-import { Page, Box, Text, Icon, Input, Select, Sheet, Button } from "zmp-ui";
+import { Page, Box, Text, Input, Select, Sheet, Button } from "zmp-ui";
 import AppHeader from "components/app-header";
 import DatePicker from "zmp-ui/date-picker";
 import { useRecoilValue } from "recoil";
@@ -7,6 +7,8 @@ import { sortedTransactionsState, categoriesState, walletsState } from "expense-
 import { formatCurrency } from "utils/format";
 import { Transaction } from "types/transaction";
 import { WalletSelector } from "components/wallet-selector";
+import { Card, EmptyState } from "components/ui";
+import { SearchIcon, FilterIcon, CloseIcon, CheckIcon, DeleteIcon, getIcon, IncomeIcon, ExpenseIcon, MenuGridIcon } from "components/icons";
 
 const HistoryPage: FC = () => {
   const transactions = useRecoilValue(sortedTransactionsState);
@@ -109,17 +111,21 @@ const HistoryPage: FC = () => {
     
       
       {/* Search and Filter Bar */}
-      <Box className="p-4 bg-white shadow-soft rounded-b-2xl animate-fade-in">
+      <Box className="p-4 bg-white shadow-soft rounded-b-2xl animate-fadeIn">
           <Box className="flex gap-2.5 mb-3">
-          <Input
-            type="text"
-            placeholder="Tìm kiếm giao dịch..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1 bg-gray-50 border-none rounded-2xl shadow-soft"
-            prefix={<Icon icon="zi-search" />}
-            clearable
-          />
+          <Box className="flex-1 relative">
+            <Box className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
+              <SearchIcon size={18} color="#9CA3AF" />
+            </Box>
+            <Input
+              type="text"
+              placeholder="Tìm kiếm giao dịch..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-12 bg-gray-50 border-none rounded-2xl shadow-soft"
+              clearable
+            />
+          </Box>
           <Box
             className={`px-5 py-2 rounded-2xl flex items-center gap-2 cursor-pointer transition-all duration-200 transform active:scale-95 ${
               activeFiltersCount > 0 
@@ -133,7 +139,7 @@ const HistoryPage: FC = () => {
             }}
             onClick={() => setShowFilterSheet(true)}
           >
-            <Icon icon="zi-filter" className={activeFiltersCount > 0 ? "text-white" : "text-gray-600"} />
+            <FilterIcon size={20} color={activeFiltersCount > 0 ? "#FFFFFF" : "#4B5563"} />
             {activeFiltersCount > 0 && (
               <Box className="bg-white text-yellow-600 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shadow-md">
                 {activeFiltersCount}
@@ -144,14 +150,14 @@ const HistoryPage: FC = () => {
 
         {/* Active Filters Display */}
         {activeFiltersCount > 0 && (
-          <Box className="flex flex-wrap gap-2 animate-slide-up">
+          <Box className="flex flex-wrap gap-2 animate-fadeInUp">
             {filterType !== "all" && (
               <Box className="bg-gradient-to-r from-yellow-100 to-yellow-50 text-yellow-800 px-3 py-1.5 rounded-full text-xs flex items-center gap-2 shadow-soft">
                 <Text size="xSmall" className="font-bold">
                   {filterType === "income" ? "Thu nhập" : "Chi tiêu"}
                 </Text>
                 <Box className="cursor-pointer hover:bg-yellow-200 rounded-full p-0.5 transition-colors" onClick={() => setFilterType("all")}>
-                  <Icon icon="zi-close" size={12} />
+                  <CloseIcon size={12} color="#92400E" />
                 </Box>
               </Box>
             )}
@@ -161,7 +167,7 @@ const HistoryPage: FC = () => {
                   {categories.find((c) => c.id === filterCategory)?.name}
                 </Text>
                 <Box className="cursor-pointer hover:bg-yellow-200 rounded-full p-0.5 transition-colors" onClick={() => setFilterCategory("all")}>
-                  <Icon icon="zi-close" size={12} />
+                  <CloseIcon size={12} color="#92400E" />
                 </Box>
               </Box>
             )}
@@ -171,7 +177,7 @@ const HistoryPage: FC = () => {
                   {wallets.find((w) => w.id === filterWallet)?.name}
                 </Text>
                 <Box className="cursor-pointer hover:bg-yellow-200 rounded-full p-0.5 transition-colors" onClick={() => setFilterWallet("all")}>
-                  <Icon icon="zi-close" size={12} />
+                  <CloseIcon size={12} color="#92400E" />
                 </Box>
               </Box>
             )}
@@ -181,7 +187,7 @@ const HistoryPage: FC = () => {
                   Từ {filterStartDate.toLocaleDateString("vi-VN")}
                 </Text>
                 <Box className="cursor-pointer hover:bg-yellow-200 rounded-full p-0.5 transition-colors" onClick={() => setFilterStartDate(undefined)}>
-                  <Icon icon="zi-close" size={12} />
+                  <CloseIcon size={12} color="#92400E" />
                 </Box>
               </Box>
             )}
@@ -191,7 +197,7 @@ const HistoryPage: FC = () => {
                   Đến {filterEndDate.toLocaleDateString("vi-VN")}
                 </Text>
                 <Box className="cursor-pointer hover:bg-yellow-200 rounded-full p-0.5 transition-colors" onClick={() => setFilterEndDate(undefined)}>
-                  <Icon icon="zi-close" size={12} />
+                  <CloseIcon size={12} color="#92400E" />
                 </Box>
               </Box>
             )}
@@ -215,21 +221,11 @@ const HistoryPage: FC = () => {
       
       <Box className="flex-1 overflow-auto px-4 pt-4">
         {Object.keys(groupedTransactions).length === 0 ? (
-          <Box className="text-center py-16 bg-white rounded-2xl shadow-card animate-fade-in">
-            <Box className="bg-gradient-to-br from-gray-100 to-gray-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Icon icon="zi-search" size={40} className="text-gray-300" />
-            </Box>
-            <Text className="text-gray-400 font-medium">
-              {searchTerm || activeFiltersCount > 0
-                ? "Không tìm thấy giao dịch nào"
-                : "Chưa có giao dịch nào"}
-            </Text>
-            <Text size="xSmall" className="text-gray-300 mt-1">
-              {searchTerm || activeFiltersCount > 0
-                ? "Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm"
-                : "Bắt đầu thêm giao dịch ngay"}
-            </Text>
-          </Box>
+          <EmptyState
+            icon={<SearchIcon size={48} color="#D1D5DB" />}
+            title={searchTerm || activeFiltersCount > 0 ? "Không tìm thấy giao dịch nào" : "Chưa có giao dịch nào"}
+            description={searchTerm || activeFiltersCount > 0 ? "Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm" : "Bắt đầu thêm giao dịch ngay"}
+          />
         ) : (
           Object.entries(groupedTransactions).map(([dateKey, dayTransactions]) => {
             const dayTotal = dayTransactions.reduce((sum, t) => {
@@ -237,7 +233,7 @@ const HistoryPage: FC = () => {
             }, 0);
 
             return (
-              <Box key={dateKey} className="mb-4 animate-slide-up">
+              <Box key={dateKey} className="mb-4 animate-fadeInUp">
                 <Box 
                   className="px-5 py-3 flex justify-between items-center rounded-t-2xl"
                   style={{
@@ -260,7 +256,7 @@ const HistoryPage: FC = () => {
                     </Text>
                   </Box>
                 </Box>
-                <Box className="bg-white rounded-b-2xl shadow-card overflow-hidden">
+                <Card className="rounded-t-none" padding="none">
                   {dayTransactions.map((transaction) => {
                     const category = categories.find(
                       (c) => c.id === transaction.categoryId
@@ -272,11 +268,12 @@ const HistoryPage: FC = () => {
                         minute: "2-digit",
                       }
                     );
+                    const IconComponent = getIcon(category?.icon || "other");
 
                     return (
                       <Box
                         key={transaction.id}
-                        className="flex items-center justify-between p-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-all duration-200 cursor-pointer active:scale-98"
+                        className="flex items-center justify-between p-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-all duration-200 cursor-pointer active:scale-[0.98]"
                       >
                         <Box className="flex items-center space-x-3 flex-1">
                           <Box
@@ -285,11 +282,7 @@ const HistoryPage: FC = () => {
                               background: `linear-gradient(135deg, ${category?.color}15 0%, ${category?.color}25 100%)`,
                             }}
                           >
-                            <Icon
-                              icon={(category?.icon || "zi-more-grid") as any}
-                              style={{ color: category?.color }}
-                              size={24}
-                            />
+                            {IconComponent && <IconComponent size={24} color={category?.color || "#6B7280"} />}
                           </Box>
                           <Box className="flex-1 min-w-0">
                             <Text size="small" className="font-bold text-gray-900">
@@ -323,7 +316,7 @@ const HistoryPage: FC = () => {
                       </Box>
                     );
                   })}
-                </Box>
+                </Card>
               </Box>
             );
           })
@@ -349,9 +342,9 @@ const HistoryPage: FC = () => {
             </Text>
             <Box className="flex p-1 bg-gray-100 rounded-xl">
               {[
-                { value: "all", label: "Tất cả", icon: "zi-list", activeColor: "text-gray-900" },
-                { value: "income", label: "Thu nhập", icon: "zi-plus-circle", activeColor: "text-green-600" },
-                { value: "expense", label: "Chi tiêu", icon: "zi-minus-circle", activeColor: "text-red-600" },
+                { value: "all", label: "Tất cả", Icon: MenuGridIcon, activeColor: "text-gray-900" },
+                { value: "income", label: "Thu nhập", Icon: IncomeIcon, activeColor: "text-green-600" },
+                { value: "expense", label: "Chi tiêu", Icon: ExpenseIcon, activeColor: "text-red-600" },
               ].map((option) => (
                 <Box
                   key={option.value}
@@ -362,7 +355,7 @@ const HistoryPage: FC = () => {
                   }`}
                   onClick={() => setFilterType(option.value as any)}
                 >
-                  <Icon icon={option.icon as any} className="mr-1.5" size={18} />
+                  <option.Icon size={18} color={filterType === option.value ? (option.value === "income" ? "#22C55E" : option.value === "expense" ? "#EF4444" : "#111827") : "#6B7280"} className="mr-1.5" />
                   <Text size="small" className="font-medium">
                     {option.label}
                   </Text>
@@ -457,17 +450,21 @@ const HistoryPage: FC = () => {
                 setShowFilterSheet(false);
               }}
               className="h-12 font-semibold shadow-sm hover:shadow-md transition-shadow flex items-center justify-center"
-              prefixIcon={<Icon icon="zi-delete" />}
             >
-              Xóa bộ lọc
+              <Box className="flex items-center">
+                <DeleteIcon size={18} color="#6B7280" className="mr-2" />
+                <span>Xóa bộ lọc</span>
+              </Box>
             </Button>
             <Button 
               fullWidth 
               onClick={() => setShowFilterSheet(false)}
               className="h-12 font-semibold shadow-md hover:shadow-lg transition-shadow flex items-center justify-center bg-yellow-500 text-white border-none"
-              prefixIcon={<Icon icon="zi-check-circle" />}
             >
-              Áp dụng
+              <Box className="flex items-center">
+                <CheckIcon size={18} color="#FFFFFF" className="mr-2" />
+                <span>Áp dụng</span>
+              </Box>
             </Button>
           </Box>
         </Box>

@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
-import { Page, Box, Text, Input, Button, Sheet, Icon, useSnackbar } from "zmp-ui";
+import { Page, Box, Text, Input, Button, Sheet, useSnackbar } from "zmp-ui";
 import AppHeader from "components/app-header";
 import DatePicker from "zmp-ui/date-picker";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -17,6 +17,8 @@ import { suggestCategoryWithLearning, learnFromHistory } from "services/ai-categ
 import { formatCurrency } from "utils/format";
 import { VoiceInput } from "components/voice-input";
 import { parseVoiceInput } from "utils/voice-parser";
+import { Card } from "components/ui";
+import { ExpenseIcon, IncomeIcon, MicrophoneIcon, StarIcon, CategoryIcon, WalletIcon, CheckIcon, getIcon } from "components/icons";
 
 const AddTransactionPage: FC = () => {
   const navigate = useNavigate();
@@ -181,13 +183,13 @@ const AddTransactionPage: FC = () => {
       <AppHeader title="Thêm giao dịch" />
       <Box className="flex-1 overflow-auto p-4">
         {/* Type Toggle with modern gradient buttons */}
-        <Box className="grid grid-cols-2 gap-3 mb-6 animate-fade-in">
+        <Box className="grid grid-cols-2 gap-3 mb-6 animate-fadeIn">
           <Box
             onClick={() => setType("expense")}
             className={`p-4 rounded-2xl cursor-pointer transition-all duration-200 transform ${
               type === "expense" 
                 ? "shadow-lg scale-105" 
-                : "shadow-soft hover:shadow-md active:scale-98"
+                : "shadow-soft hover:shadow-md active:scale-[0.98]"
             }`}
             style={{
               background: type === "expense"
@@ -196,10 +198,9 @@ const AddTransactionPage: FC = () => {
             }}
           >
             <Box className="flex items-center justify-center">
-              <Icon 
-                icon="zi-minus-circle" 
-                className={type === "expense" ? "text-white" : "text-rose-500"} 
-                size={24} 
+              <ExpenseIcon 
+                size={24}
+                color={type === "expense" ? "#FFFFFF" : "#F87171"} 
               />
               <Text 
                 className={`ml-2 font-bold ${type === "expense" ? "text-white" : "text-gray-700"}`}
@@ -213,7 +214,7 @@ const AddTransactionPage: FC = () => {
             className={`p-4 rounded-2xl cursor-pointer transition-all duration-200 transform ${
               type === "income" 
                 ? "shadow-lg scale-105" 
-                : "shadow-soft hover:shadow-md active:scale-98"
+                : "shadow-soft hover:shadow-md active:scale-[0.98]"
             }`}
             style={{
               background: type === "income"
@@ -222,10 +223,9 @@ const AddTransactionPage: FC = () => {
             }}
           >
             <Box className="flex items-center justify-center">
-              <Icon 
-                icon="zi-plus-circle" 
-                className={type === "income" ? "text-white" : "text-emerald-500"} 
-                size={24} 
+              <IncomeIcon 
+                size={24}
+                color={type === "income" ? "#FFFFFF" : "#34D399"} 
               />
               <Text 
                 className={`ml-2 font-bold ${type === "income" ? "text-white" : "text-gray-700"}`}
@@ -239,13 +239,13 @@ const AddTransactionPage: FC = () => {
         {/* Voice Input Button */}
         <Box
           onClick={() => setShowVoiceInput(true)}
-          className="mb-6 p-4 rounded-2xl cursor-pointer transition-all duration-200 shadow-card hover:shadow-lg active:scale-98 animate-fade-in"
+          className="mb-6 p-4 rounded-2xl cursor-pointer transition-all duration-200 shadow-card hover:shadow-lg active:scale-[0.98] animate-fadeIn"
           style={{
             background: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
           }}
         >
           <Box className="flex items-center justify-center space-x-2">
-            <Icon icon="zi-call" className="text-white" size={24} />
+            <MicrophoneIcon size={24} color="#FFFFFF" />
             <Text className="text-white font-bold">
               Nhập bằng giọng nói
             </Text>
@@ -253,15 +253,16 @@ const AddTransactionPage: FC = () => {
         </Box>
 
         {/* Amount Input with gradient card */}
-        <Box 
-          className="mb-6 p-6 rounded-3xl shadow-card animate-slide-up"
+        <Card 
+          className="mb-6 animate-fadeInUp"
+          padding="lg"
           style={{
             background: 'linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)',
           }}
         >
           <Box className="flex items-center mb-3">
-            <Box className="bg-white/20 rounded-full p-2 mr-2">
-              <Icon icon="zi-star" className="text-white" size={20} />
+            <Box className="bg-white/20 rounded-2xl p-2 mr-2">
+              <StarIcon size={20} color="#FFFFFF" active />
             </Box>
             <Text size="small" className="text-white/90 font-semibold">
               Số tiền
@@ -274,17 +275,17 @@ const AddTransactionPage: FC = () => {
             onChange={(e) => setAmount(e.target.value)}
             className="text-4xl font-bold bg-white/10 border-white/20 text-white placeholder-white/50 rounded-2xl"
           />
-        </Box>
+        </Card>
 
         {/* Category Selection */}
-        <Box
-          className="mb-4 p-5 bg-white rounded-2xl cursor-pointer transition-all duration-200 shadow-card hover:shadow-lg active:scale-98 animate-slide-up"
+        <Card
+          className="mb-4 cursor-pointer transition-all duration-200 hover:shadow-lg active:scale-[0.98] animate-fadeInUp"
           style={{ animationDelay: '0.1s' }}
           onClick={() => setShowCategorySheet(true)}
         >
           <Box className="flex items-center mb-3">
             <Box className="bg-gradient-to-br from-yellow-100 to-yellow-50 rounded-2xl p-2 mr-2">
-              <Icon icon="zi-more-grid" className="text-yellow-600" size={20} />
+              <CategoryIcon size={20} color="#EAB308" />
             </Box>
             <Text size="small" className="text-gray-700 font-bold">
               Danh mục
@@ -298,23 +299,22 @@ const AddTransactionPage: FC = () => {
                   background: `linear-gradient(135deg, ${selectedCategoryData.color}15 0%, ${selectedCategoryData.color}25 100%)`,
                 }}
               >
-                <Icon
-                  icon={selectedCategoryData.icon as any}
-                  style={{ color: selectedCategoryData.color }}
-                  size={26}
-                />
+                {(() => {
+                  const IconComponent = getIcon(selectedCategoryData.icon);
+                  return IconComponent ? <IconComponent size={26} color={selectedCategoryData.color} /> : null;
+                })()}
               </Box>
               <Text className="font-bold text-gray-900">{selectedCategoryData.name}</Text>
             </Box>
           ) : (
             <Text className="text-gray-400 font-medium">Chọn danh mục</Text>
           )}
-        </Box>
+        </Card>
 
         {/* AI Category Suggestion */}
         {suggestedCategory && selectedCategory !== suggestedCategory.id && (
-          <Box 
-            className="mb-4 p-4 rounded-2xl shadow-soft animate-fade-in"
+          <Card 
+            className="mb-4 animate-fadeIn"
             style={{
               background: 'linear-gradient(135deg, #FEFCE8 0%, #FEF9C3 100%)',
             }}
@@ -322,7 +322,7 @@ const AddTransactionPage: FC = () => {
             <Box className="flex items-center justify-between">
               <Box className="flex items-center space-x-2 flex-1">
                 <Box className="bg-yellow-500 rounded-full p-1.5">
-                  <Icon icon="zi-star" className="text-white" size={16} />
+                  <StarIcon size={16} color="#FFFFFF" active />
                 </Box>
                 <Text size="small" className="text-yellow-900 font-semibold">
                   Đề xuất: <strong>{suggestedCategory.name}</strong>
@@ -335,18 +335,18 @@ const AddTransactionPage: FC = () => {
                 <Text size="small" className="text-white font-semibold">Áp dụng</Text>
               </Box>
             </Box>
-          </Box>
+          </Card>
         )}
 
         {/* Wallet Selection */}
-        <Box
-          className="mb-4 p-5 bg-white rounded-2xl cursor-pointer transition-all duration-200 shadow-card hover:shadow-lg active:scale-98 animate-slide-up"
+        <Card
+          className="mb-4 cursor-pointer transition-all duration-200 hover:shadow-lg active:scale-[0.98] animate-fadeInUp"
           style={{ animationDelay: '0.2s' }}
           onClick={() => setShowWalletSheet(true)}
         >
           <Box className="flex items-center mb-3">
             <Box className="bg-gradient-to-br from-purple-100 to-purple-50 rounded-2xl p-2 mr-2">
-              <Icon icon="zi-user-circle" className="text-purple-600" size={20} />
+              <WalletIcon size={20} color="#8B5CF6" />
             </Box>
             <Text size="small" className="text-gray-700 font-bold">
               Ví
@@ -360,21 +360,20 @@ const AddTransactionPage: FC = () => {
                   background: `linear-gradient(135deg, ${selectedWalletData.color}15 0%, ${selectedWalletData.color}25 100%)`,
                 }}
               >
-                <Icon
-                  icon={selectedWalletData.icon as any}
-                  style={{ color: selectedWalletData.color }}
-                  size={26}
-                />
+                {(() => {
+                  const IconComponent = getIcon(selectedWalletData.icon);
+                  return IconComponent ? <IconComponent size={26} color={selectedWalletData.color} /> : <WalletIcon size={26} color={selectedWalletData.color} />;
+                })()}
               </Box>
               <Text className="font-bold text-gray-900">{selectedWalletData.name}</Text>
             </Box>
           ) : (
             <Text className="text-gray-400 font-medium">Chọn ví</Text>
           )}
-        </Box>
+        </Card>
 
         {/* Date Input */}
-        <Box className="mb-4 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+        <Box className="mb-4 animate-fadeInUp" style={{ animationDelay: '0.3s' }}>
           <DatePicker
             label="Ngày"
             placeholder="Chọn ngày giao dịch"
@@ -390,10 +389,13 @@ const AddTransactionPage: FC = () => {
         </Box>
 
         {/* Note Input */}
-        <Box className="mb-6 animate-slide-up" style={{ animationDelay: '0.4s' }}>
+        <Box className="mb-6 animate-fadeInUp" style={{ animationDelay: '0.4s' }}>
           <Box className="flex items-center mb-2">
             <Box className="bg-gradient-to-br from-gray-100 to-gray-50 rounded-2xl p-2 mr-2">
-              <Icon icon="zi-note" className="text-gray-600" size={18} />
+              {(() => {
+                const NoteIcon = getIcon("receipt");
+                return NoteIcon ? <NoteIcon size={18} color="#6B7280" /> : null;
+              })()}
             </Box>
             <Text size="small" className="text-gray-700 font-bold">
               Ghi chú
@@ -410,14 +412,14 @@ const AddTransactionPage: FC = () => {
         {/* Submit Button with gradient */}
         <Box
           onClick={handleSubmit}
-          className="p-5 rounded-2xl cursor-pointer transition-all duration-200 transform active:scale-98 shadow-floating hover:shadow-lg animate-slide-up mb-4"
+          className="p-5 rounded-2xl cursor-pointer transition-all duration-200 transform active:scale-[0.98] shadow-floating hover:shadow-lg animate-fadeInUp mb-4"
           style={{
             background: 'linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)',
             animationDelay: '0.5s',
           }}
         >
           <Box className="flex items-center justify-center">
-            <Icon icon="zi-check-circle" className="text-white mr-2" size={24} />
+            <CheckIcon size={24} color="#FFFFFF" className="mr-2" />
             <Text className="text-white text-lg font-bold">Lưu giao dịch</Text>
           </Box>
         </Box>
@@ -437,46 +439,47 @@ const AddTransactionPage: FC = () => {
             Chọn danh mục
           </Text.Title>
           <Box className="grid grid-cols-3 gap-3">
-            {categories.map((category) => (
-              <Box
-                key={category.id}
-                className={`p-4 rounded-2xl cursor-pointer text-center transition-all duration-200 transform active:scale-95 ${
-                  selectedCategory === category.id
-                    ? "shadow-lg"
-                    : "bg-gray-50 hover:bg-gray-100 shadow-soft"
-                }`}
-                style={{
-                  background: selectedCategory === category.id
-                    ? 'linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)'
-                    : undefined,
-                }}
-                onClick={() => {
-                  setSelectedCategory(category.id);
-                  setShowCategorySheet(false);
-                }}
-              >
-                <Icon
-                  icon={category.icon as any}
-                  className="text-3xl mb-2"
-                  style={{
-                    color:
-                      selectedCategory === category.id
-                        ? "white"
-                        : category.color,
-                  }}
-                />
-                <Text
-                  size="xSmall"
-                  className={`font-bold ${
+            {categories.map((category) => {
+              const IconComponent = getIcon(category.icon);
+              return (
+                <Box
+                  key={category.id}
+                  className={`p-4 rounded-2xl cursor-pointer text-center transition-all duration-200 transform active:scale-95 ${
                     selectedCategory === category.id
-                      ? "text-white"
-                      : "text-gray-700"
+                      ? "shadow-lg"
+                      : "bg-gray-50 hover:bg-gray-100 shadow-soft"
                   }`}
+                  style={{
+                    background: selectedCategory === category.id
+                      ? 'linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)'
+                      : undefined,
+                  }}
+                  onClick={() => {
+                    setSelectedCategory(category.id);
+                    setShowCategorySheet(false);
+                  }}
                 >
-                  {category.name}
-                </Text>
-              </Box>
-            ))}
+                  {IconComponent && (
+                    <Box className="flex justify-center mb-2">
+                      <IconComponent 
+                        size={28}
+                        color={selectedCategory === category.id ? "#FFFFFF" : category.color}
+                      />
+                    </Box>
+                  )}
+                  <Text
+                    size="xSmall"
+                    className={`font-bold ${
+                      selectedCategory === category.id
+                        ? "text-white"
+                        : "text-gray-700"
+                    }`}
+                  >
+                    {category.name}
+                  </Text>
+                </Box>
+              );
+            })}
           </Box>
         </Box>
       </Sheet>
@@ -495,70 +498,69 @@ const AddTransactionPage: FC = () => {
             Chọn ví
           </Text.Title>
           <Box className="space-y-3">
-            {wallets.map((wallet) => (
-              <Box
-                key={wallet.id}
-                className={`p-4 rounded-2xl cursor-pointer flex items-center justify-between transition-all duration-200 transform active:scale-98 ${
-                  selectedWallet === wallet.id 
-                    ? "shadow-lg" 
-                    : "bg-gray-50 hover:bg-gray-100 shadow-soft"
-                }`}
-                style={{
-                  background: selectedWallet === wallet.id
-                    ? 'linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)'
-                    : undefined,
-                }}
-                onClick={() => {
-                  setSelectedWallet(wallet.id);
-                  setShowWalletSheet(false);
-                }}
-              >
-                <Box className="flex items-center space-x-3">
-                  <Box
-                    className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm"
-                    style={{
-                      background:
-                        selectedWallet === wallet.id
-                          ? "rgba(255, 255, 255, 0.2)"
-                          : `linear-gradient(135deg, ${wallet.color}15 0%, ${wallet.color}25 100%)`,
-                    }}
-                  >
-                    <Icon
-                      icon={wallet.icon as any}
+            {wallets.map((wallet) => {
+              const IconComponent = getIcon(wallet.icon) || WalletIcon;
+              return (
+                <Box
+                  key={wallet.id}
+                  className={`p-4 rounded-2xl cursor-pointer flex items-center justify-between transition-all duration-200 transform active:scale-[0.98] ${
+                    selectedWallet === wallet.id 
+                      ? "shadow-lg" 
+                      : "bg-gray-50 hover:bg-gray-100 shadow-soft"
+                  }`}
+                  style={{
+                    background: selectedWallet === wallet.id
+                      ? 'linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)'
+                      : undefined,
+                  }}
+                  onClick={() => {
+                    setSelectedWallet(wallet.id);
+                    setShowWalletSheet(false);
+                  }}
+                >
+                  <Box className="flex items-center space-x-3">
+                    <Box
+                      className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm"
                       style={{
-                        color:
-                          selectedWallet === wallet.id ? "white" : wallet.color,
+                        background:
+                          selectedWallet === wallet.id
+                            ? "rgba(255, 255, 255, 0.2)"
+                            : `linear-gradient(135deg, ${wallet.color}15 0%, ${wallet.color}25 100%)`,
                       }}
-                      size={24}
-                    />
-                  </Box>
-                  <Box>
-                    <Text
-                      className={`font-bold ${
-                        selectedWallet === wallet.id
-                          ? "text-white"
-                          : "text-gray-900"
-                      }`}
                     >
-                      {wallet.name}
-                    </Text>
-                    <Text
-                      size="xSmall"
-                      className={`${
-                        selectedWallet === wallet.id
-                          ? "text-white/80"
-                          : "text-gray-500"
-                      }`}
-                    >
-                      {formatCurrency(wallet.balance)}
-                    </Text>
+                      <IconComponent
+                        size={24}
+                        color={selectedWallet === wallet.id ? "#FFFFFF" : wallet.color}
+                      />
+                    </Box>
+                    <Box>
+                      <Text
+                        className={`font-bold ${
+                          selectedWallet === wallet.id
+                            ? "text-white"
+                            : "text-gray-900"
+                        }`}
+                      >
+                        {wallet.name}
+                      </Text>
+                      <Text
+                        size="xSmall"
+                        className={`${
+                          selectedWallet === wallet.id
+                            ? "text-white/80"
+                            : "text-gray-500"
+                        }`}
+                      >
+                        {formatCurrency(wallet.balance)}
+                      </Text>
+                    </Box>
                   </Box>
+                  {selectedWallet === wallet.id && (
+                    <CheckIcon size={24} color="#FFFFFF" />
+                  )}
                 </Box>
-                {selectedWallet === wallet.id && (
-                  <Icon icon="zi-check-circle-solid" className="text-white" size={24} />
-                )}
-              </Box>
-            ))}
+              );
+            })}
           </Box>
         </Box>
       </Sheet>

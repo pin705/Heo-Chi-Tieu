@@ -4,7 +4,6 @@ import {
   Box,
   Text,
   List,
-  Icon,
   Button,
   Sheet,
   Input,
@@ -23,6 +22,8 @@ import { Budget, BudgetFormData } from "types/budget";
 import { formatCurrency } from "utils/format";
 import AppHeader from "components/app-header";
 import { WalletSelector } from "components/wallet-selector";
+import { Card, AnimatedNumber } from "components/ui";
+import { BudgetIcon, PlusIcon, DeleteIcon, CategoryIcon, CalendarIcon, CheckIcon, getIcon } from "components/icons";
 
 const BudgetPage: FC = () => {
   const { openSnackbar } = useSnackbar();
@@ -149,9 +150,8 @@ const BudgetPage: FC = () => {
         <Box className="px-4 pt-4">
           <Box className="flex items-center justify-between mb-3">
             <Text.Title size="small" className="font-semibold">Ngân sách tháng</Text.Title>
-            <Button
-              className="flex"
-              size="small"
+            <Box
+              className="flex items-center px-3 py-2 bg-yellow-500 rounded-xl cursor-pointer active:scale-95 transition-transform shadow-md"
               onClick={() => {
                 setFormData({
                   type: "monthly",
@@ -161,46 +161,55 @@ const BudgetPage: FC = () => {
                 });
                 setShowAddSheet(true);
               }}
-              prefixIcon={<Icon icon="zi-plus" />}
             >
-              {monthlyBudget ? "Sửa" : "Thêm"}
-            </Button>
+              <PlusIcon size={16} color="#FFFFFF" className="mr-1" />
+              <Text size="xSmall" className="text-white font-semibold">
+                {monthlyBudget ? "Sửa" : "Thêm"}
+              </Text>
+            </Box>
           </Box>
 
           {monthlyBudget ? (
-            <Box className="p-5 bg-gradient-to-br from-yellow-600 via-purple-600 to-pink-600 rounded-2xl text-white shadow-lg">
-              <Text size="small" className="opacity-90">
+            <Card 
+              className="animate-fadeIn"
+              padding="lg"
+              style={{
+                background: 'linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)',
+              }}
+            >
+              <Text size="small" className="text-white/90">
                 {getMonthName(monthlyBudget.month)} {monthlyBudget.year}
               </Text>
-              <Text.Title size="large" className="mt-3 mb-4 font-bold">
-                {formatCurrency(monthlyBudget.amount)}
+              <Text.Title size="large" className="mt-3 mb-4 font-bold text-white">
+                <AnimatedNumber value={monthlyBudget.amount} formatFn={formatCurrency} />
               </Text.Title>
-              <Button
-                className="flex bg-white text-yellow-600 hover:bg-gray-100 font-semibold shadow-md"
-                size="small"
-                variant="secondary"
+              <Box
+                className="flex items-center justify-center px-4 py-2 bg-white/20 rounded-xl cursor-pointer active:scale-95 transition-transform"
                 onClick={() => handleDeleteBudget(monthlyBudget.id)}
-                prefixIcon={<Icon icon="zi-delete" />}
               >
-                Xóa ngân sách
-              </Button>
-            </Box>
+                <DeleteIcon size={18} color="#FFFFFF" className="mr-2" />
+                <Text size="small" className="text-white font-semibold">Xóa ngân sách</Text>
+              </Box>
+            </Card>
           ) : (
-            <Box className="p-8 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl text-center border-2 border-dashed border-gray-300">
-              <Icon icon="zi-calendar" size={48} className="text-gray-400 mb-3" />
+            <Card className="text-center border-2 border-dashed border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100">
+              <CalendarIcon size={48} color="#9CA3AF" className="mx-auto mb-3" />
               <Text className="text-gray-500 font-medium">
                 Chưa thiết lập ngân sách cho tháng này
               </Text>
-            </Box>
+            </Card>
           )}
         </Box>
 
         {/* Category Budgets Section */}
         <Box className="p-4">
           <Box className="flex items-center justify-between mb-4">
-            <Text.Title size="small">💳 Ngân sách theo danh mục</Text.Title>
-            <Button
-              size="small"
+            <Box className="flex items-center">
+              <CategoryIcon size={20} color="#8B5CF6" className="mr-2" />
+              <Text.Title size="small">Ngân sách theo danh mục</Text.Title>
+            </Box>
+            <Box
+              className="flex items-center px-3 py-2 bg-yellow-500 rounded-xl cursor-pointer active:scale-95 transition-transform shadow-md"
               onClick={() => {
                 setFormData({
                   type: "category",
@@ -212,61 +221,60 @@ const BudgetPage: FC = () => {
                 setSelectedDate(new Date());
                 setShowAddSheet(true);
               }}
-              className="shadow-sm flex hover:shadow-md transition-shadow"
-              prefixIcon={<Icon icon="zi-plus" />}
             >
-              Thêm
-            </Button>
+              <PlusIcon size={16} color="#FFFFFF" className="mr-1" />
+              <Text size="xSmall" className="text-white font-semibold">Thêm</Text>
+            </Box>
           </Box>
 
           {categoryBudgets.length === 0 ? (
-            <Box className="p-8 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl text-center border-2 border-dashed border-gray-300">
-              <Icon icon="zi-more-grid" size={48} className="text-gray-400 mb-3" />
+            <Card className="text-center border-2 border-dashed border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100">
+              <CategoryIcon size={48} color="#9CA3AF" className="mx-auto mb-3" />
               <Text className="text-gray-500 font-medium">
                 Chưa có ngân sách theo danh mục
               </Text>
-            </Box>
+            </Card>
           ) : (
-            <List>
-              {categoryBudgets.map((budget) => {
+            <Card padding="none" className="overflow-hidden">
+              {categoryBudgets.map((budget, index) => {
                 const category = expenseCategories.find(
                   (c) => c.id === budget.categoryId
                 );
+                const IconComponent = getIcon(category?.icon || "other");
                 return (
-                  <List.Item
+                  <Box
                     key={budget.id}
-                    prefix={
+                    className={`flex items-center justify-between p-4 ${index < categoryBudgets.length - 1 ? 'border-b border-gray-100' : ''}`}
+                  >
+                    <Box className="flex items-center space-x-3">
                       <Box
                         className="w-10 h-10 rounded-full flex items-center justify-center"
                         style={{
                           backgroundColor: `${category?.color}20`,
                         }}
                       >
-                        <Icon
-                          icon={(category?.icon || "zi-more-grid") as any}
-                          style={{ color: category?.color }}
-                        />
+                        {IconComponent && <IconComponent size={20} color={category?.color || "#6B7280"} />}
                       </Box>
-                    }
-                    title={category?.name || "Khác"}
-                    subTitle={`${getMonthName(budget.month)} ${budget.year}`}
-                    suffix={
-                      <Box className="flex items-center space-x-2">
-                        <Text className="font-semibold">
-                          {formatCurrency(budget.amount)}
-                        </Text>
-                        <Box
-                          className="text-red-500 cursor-pointer"
-                          onClick={() => handleDeleteBudget(budget.id)}
-                        >
-                          <Icon icon="zi-delete" />
-                        </Box>
+                      <Box>
+                        <Text className="font-medium text-gray-900">{category?.name || "Khác"}</Text>
+                        <Text size="xSmall" className="text-gray-500">{getMonthName(budget.month)} {budget.year}</Text>
                       </Box>
-                    }
-                  />
+                    </Box>
+                    <Box className="flex items-center space-x-3">
+                      <Text className="font-semibold text-gray-900">
+                        {formatCurrency(budget.amount)}
+                      </Text>
+                      <Box
+                        className="p-2 rounded-lg cursor-pointer active:bg-red-50 transition-colors"
+                        onClick={() => handleDeleteBudget(budget.id)}
+                      >
+                        <DeleteIcon size={18} color="#EF4444" />
+                      </Box>
+                    </Box>
+                  </Box>
                 );
               })}
-            </List>
+            </Card>
           )}
         </Box>
       </Box>
@@ -282,11 +290,11 @@ const BudgetPage: FC = () => {
       >
         <Box className="p-5">
           <Box className="flex items-center justify-center mb-5">
-            <Icon 
-              icon={formData.type === "monthly" ? "zi-star" : "zi-more-grid"} 
-              className="mr-2" 
-              size={24}
-            />
+            {formData.type === "monthly" ? (
+              <BudgetIcon size={24} color="#EAB308" className="mr-2" />
+            ) : (
+              <CategoryIcon size={24} color="#8B5CF6" className="mr-2" />
+            )}
             <Text.Title>
               {formData.type === "monthly"
                 ? "Ngân sách tháng"
@@ -364,14 +372,16 @@ const BudgetPage: FC = () => {
             >
               Hủy
             </Button>
-            <Button 
-              fullWidth 
+            <Box
+              className="flex-1 flex items-center justify-center h-12 rounded-xl cursor-pointer active:scale-[0.98] transition-transform shadow-md"
+              style={{
+                background: 'linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)',
+              }}
               onClick={handleAddBudget}
-              className="h-12 font-semibold shadow-md hover:shadow-lg transition-shadow flex items-center justify-center"
-              prefixIcon={<Icon icon="zi-check-circle" />}
             >
-              Lưu
-            </Button>
+              <CheckIcon size={20} color="#FFFFFF" className="mr-2" />
+              <Text className="text-white font-semibold">Lưu</Text>
+            </Box>
           </Box>
         </Box>
       </Sheet>

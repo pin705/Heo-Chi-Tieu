@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { Page, Box, Text, Tabs, Icon } from "zmp-ui";
+import { Page, Box, Text, Tabs } from "zmp-ui";
 import AppHeader from "components/app-header";
 import { useRecoilValue } from "recoil";
 import {
@@ -14,6 +14,8 @@ import { formatCurrency } from "utils/format";
 import { ExpenseCategory } from "types/expense-category";
 import { TrendChart } from "components/trend-chart";
 import { WalletSelector } from "components/wallet-selector";
+import { Card, AnimatedNumber, ProgressBar } from "components/ui";
+import { ExpenseIcon, IncomeIcon, CategoryIcon, ChartIcon, WarningIcon, StarIcon, getIcon } from "components/icons";
 
 interface CategoryStatItemProps {
   stat: { categoryId: string; amount: number; percentage: number };
@@ -29,9 +31,10 @@ const CategoryStatItem: FC<CategoryStatItemProps> = ({
   const budgetStatus = useRecoilValue(
     categoryBudgetStatusState(stat.categoryId)
   );
+  const IconComponent = getIcon(category?.icon || "other");
 
   return (
-    <Box className="p-4 bg-section rounded-2xl shadow-sm">
+    <Card className="animate-fadeInUp">
       <Box className="flex items-center justify-between mb-3">
         <Box className="flex items-center space-x-3">
           <Box
@@ -40,11 +43,7 @@ const CategoryStatItem: FC<CategoryStatItemProps> = ({
               backgroundColor: `${category?.color}20`,
             }}
           >
-            <Icon
-              icon={(category?.icon || "zi-more-grid") as any}
-              style={{ color: category?.color }}
-              size={24}
-            />
+            {IconComponent && <IconComponent size={24} color={category?.color || "#6B7280"} />}
           </Box>
           <Box>
             <Text size="small" className="font-semibold text-gray-800">
@@ -52,7 +51,7 @@ const CategoryStatItem: FC<CategoryStatItemProps> = ({
             </Text>
             {showBudget && budgetStatus.hasBudget && (
               <Box className="flex items-center">
-                <Icon icon="zi-star" className="text-gray-500 mr-1" size={12} />
+                <StarIcon size={12} color="#6B7280" className="mr-1" />
                 <Text size="xSmall" className="text-gray-500">
                   Ngân sách: {formatCurrency(budgetStatus.budget)}
                 </Text>
@@ -62,14 +61,14 @@ const CategoryStatItem: FC<CategoryStatItemProps> = ({
         </Box>
         <Box className="text-right">
           <Text size="small" className="font-bold text-gray-800">
-            {formatCurrency(stat.amount)}
+            <AnimatedNumber value={stat.amount} formatFn={formatCurrency} />
           </Text>
           <Text size="xSmall" className="text-yellow-600 font-medium">
             {stat.percentage.toFixed(1)}%
           </Text>
           {showBudget && budgetStatus.hasBudget && budgetStatus.isExceeded && (
-            <Box className="flex items-center">
-              <Icon icon="zi-warning-solid" className="text-red-600 mr-1" size={12} />
+            <Box className="flex items-center justify-end">
+              <WarningIcon size={12} color="#DC2626" className="mr-1" />
               <Text size="xSmall" className="text-red-600 font-medium">
                 Vượt ngân sách!
               </Text>
@@ -78,15 +77,12 @@ const CategoryStatItem: FC<CategoryStatItemProps> = ({
         </Box>
       </Box>
       {/* Progress Bar */}
-      <Box className="w-full bg-gray-200 rounded-full h-2.5 shadow-inner">
-        <Box
-          className="h-2.5 rounded-full shadow-sm"
-          style={{
-            width: `${stat.percentage}%`,
-            backgroundColor: category?.color,
-          }}
-        />
-      </Box>
+      <ProgressBar 
+        value={stat.percentage} 
+        maxValue={100} 
+        color={category?.color || "#EAB308"}
+        height="sm"
+      />
       {/* Budget Progress Bar */}
       {showBudget && budgetStatus.hasBudget && (
         <Box className="mt-3">
@@ -101,19 +97,15 @@ const CategoryStatItem: FC<CategoryStatItemProps> = ({
               {budgetStatus.percentage.toFixed(1)}%
             </Text>
           </Box>
-          <Box className="w-full bg-gray-200 rounded-full h-2 shadow-inner">
-            <Box
-              className={`h-2 rounded-full shadow-sm ${
-                budgetStatus.isExceeded ? "bg-red-600" : "bg-yellow-600"
-              }`}
-              style={{
-                width: `${Math.min(budgetStatus.percentage, 100)}%`,
-              }}
-            />
-          </Box>
+          <ProgressBar 
+            value={budgetStatus.percentage} 
+            maxValue={100} 
+            color={budgetStatus.isExceeded ? "#DC2626" : "#EAB308"}
+            height="sm"
+          />
         </Box>
       )}
-    </Box>
+    </Card>
   );
 };
 
@@ -148,40 +140,44 @@ const ReportsPage: FC = () => {
         </Box>
 
         {/* Monthly Summary */}
-        <Box className="p-6 rounded-2xl m-4 bg-section relative overflow-hidden">
-          <Box className="absolute top-0 right-0 w-32 h-32 opacity-10 rounded-full -mr-16 -mt-16" 
-            style={{ backgroundColor: 'white' }} 
-          />
-          <Text size="small" className="text-gray-900 opacity-95 mb-3 font-medium relative z-10">
+        <Card 
+          className="m-4 animate-fadeIn"
+          padding="lg"
+          style={{
+            background: 'linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)',
+          }}
+        >
+          <Box className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16" />
+          <Text size="small" className="text-white opacity-95 mb-3 font-medium relative z-10">
              Tháng này
           </Text>
-          <Box className="grid grid-cols-3 gap-3 text-gray-900 relative z-10">
+          <Box className="grid grid-cols-3 gap-3 relative z-10">
             <Box className="bg-white bg-opacity-20 backdrop-blur-sm p-3 rounded-2xl">
-              <Text size="xSmall" className="opacity-95 mb-1">
+              <Text size="xSmall" className="text-white opacity-95 mb-1">
                 Thu nhập
               </Text>
-              <Text.Title size="small" className="mt-1 font-bold">
-                {formatCurrency(stats.income)}
+              <Text.Title size="small" className="mt-1 font-bold text-white">
+                <AnimatedNumber value={stats.income} formatFn={formatCurrency} />
               </Text.Title>
             </Box>
             <Box className="bg-white bg-opacity-10 p-3 rounded-xl">
-              <Text size="xSmall" className="opacity-90 mb-1">
+              <Text size="xSmall" className="text-white opacity-90 mb-1">
                 Chi tiêu
               </Text>
-              <Text.Title size="small" className="mt-1 font-bold">
-                {formatCurrency(stats.expense)}
+              <Text.Title size="small" className="mt-1 font-bold text-white">
+                <AnimatedNumber value={stats.expense} formatFn={formatCurrency} />
               </Text.Title>
             </Box>
             <Box className="bg-white bg-opacity-10 p-3 rounded-xl">
-              <Text size="xSmall" className="opacity-90 mb-1">
+              <Text size="xSmall" className="text-white opacity-90 mb-1">
                 Còn lại
               </Text>
-              <Text.Title size="small" className="mt-1 font-bold">
-                {formatCurrency(stats.balance)}
+              <Text.Title size="small" className="mt-1 font-bold text-white">
+                <AnimatedNumber value={stats.balance} formatFn={formatCurrency} />
               </Text.Title>
             </Box>
           </Box>
-        </Box>
+        </Card>
 
         {/* Tabs for Expense/Income */}
         <Box className="px-4 pb-4">
@@ -194,7 +190,7 @@ const ReportsPage: FC = () => {
               }`}
               onClick={() => setActiveTab("expense")}
             >
-              <Icon icon="zi-minus-circle" className="mr-2" size={20} />
+              <ExpenseIcon size={20} color={activeTab === "expense" ? "#DC2626" : "#6B7280"} className="mr-2" />
               <Text size="small" className="font-medium">
                 Chi tiêu
               </Text>
@@ -207,7 +203,7 @@ const ReportsPage: FC = () => {
               }`}
               onClick={() => setActiveTab("income")}
             >
-              <Icon icon="zi-plus-circle" className="mr-2" size={20} />
+              <IncomeIcon size={20} color={activeTab === "income" ? "#16A34A" : "#6B7280"} className="mr-2" />
               <Text size="small" className="font-medium">
                 Thu nhập
               </Text>
@@ -226,7 +222,7 @@ const ReportsPage: FC = () => {
               }`}
               onClick={() => setViewMode("category")}
             >
-              <Icon icon="zi-more-grid" className="mr-2" size={20} />
+              <CategoryIcon size={20} color={viewMode === "category" ? "#CA8A04" : "#6B7280"} className="mr-2" />
               <Text size="small" className="font-medium">
                 Danh mục
               </Text>
@@ -239,7 +235,7 @@ const ReportsPage: FC = () => {
               }`}
               onClick={() => setViewMode("trend")}
             >
-              <Icon icon="zi-poll" className="mr-2" size={20} />
+              <ChartIcon size={20} color={viewMode === "trend" ? "#CA8A04" : "#6B7280"} className="mr-2" />
               <Text size="small" className="font-medium">
                 Xu hướng
               </Text>
