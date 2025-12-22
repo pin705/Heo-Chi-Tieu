@@ -291,6 +291,14 @@ export const SuccessIcon: React.FC<IconProps> = ({ size = 24, color = "#22C55E",
   </svg>
 );
 
+// Icon Chuông thông báo  
+export const BellIcon: React.FC<IconProps> = ({ size = 24, color = "currentColor", className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+    <path d="M18 8C18 6.4087 17.3679 4.88258 16.2426 3.75736C15.1174 2.63214 13.5913 2 12 2C10.4087 2 8.88258 2.63214 7.75736 3.75736C6.63214 4.88258 6 6.4087 6 8C6 15 3 17 3 17H21C21 17 18 15 18 8Z" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M13.73 21C13.5542 21.3031 13.3019 21.5547 12.9982 21.7295C12.6946 21.9044 12.3504 21.9965 12 21.9965C11.6496 21.9965 11.3054 21.9044 11.0018 21.7295C10.6982 21.5547 10.4458 21.3031 10.27 21" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
 // ==================== FEATURE ICONS ====================
 
 // Icon Ngân sách
@@ -511,6 +519,141 @@ export const PiggyBankIcon: React.FC<IconProps> = ({ size = 24, color = "#EC4899
   </svg>
 );
 
+// ==================== NEW CATEGORY ICONS ====================
+
+// Icon Quần áo (Clothing)
+export const ClothingIcon: React.FC<IconProps> = ({ size = 24, color = "#D946EF", className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+    <path d="M6 4L3 7L6 10V20H18V10L21 7L18 4H15C15 5.5 13.5 7 12 7C10.5 7 9 5.5 9 4H6Z" stroke={color} strokeWidth="1.5" strokeLinejoin="round"/>
+    <path d="M6 10H18" stroke={color} strokeWidth="1.5"/>
+  </svg>
+);
+
+// Icon Thể thao (Sports)
+export const SportsIcon: React.FC<IconProps> = ({ size = 24, color = "#0EA5E9", className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+    <circle cx="12" cy="12" r="9" stroke={color} strokeWidth="1.5"/>
+    <path d="M12 3C8 8 8 16 12 21" stroke={color} strokeWidth="1.5"/>
+    <path d="M12 3C16 8 16 16 12 21" stroke={color} strokeWidth="1.5"/>
+    <path d="M3 12H21" stroke={color} strokeWidth="1.5"/>
+  </svg>
+);
+
+// Icon Du lịch (Travel)
+export const TravelIcon: React.FC<IconProps> = ({ size = 24, color = "#14B8A6", className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+    <path d="M21 16L14 9L18 5L16 3L12 7L5 4V8L11 11L7 15L4 14V17L7 18L8 21H11L10 18L14 14L17 20H21L18 14L21 16Z" stroke={color} strokeWidth="1.5" strokeLinejoin="round"/>
+  </svg>
+);
+
+// Icon Điện thoại / Liên lạc (Phone)
+export const PhoneIcon: React.FC<IconProps> = ({ size = 24, color = "#3B82F6", className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+    <path d="M22 16.92V19.92C22 20.48 21.56 20.96 21 21C14.56 21.5 8.56 18.7 4.93 14.07C1.3 9.44 -0.5 3.44 3 3C3.54 2.96 4.02 3.4 4.08 3.93L4.92 7.93C4.98 8.22 4.92 8.52 4.76 8.76L3 11C4.44 13.84 6.5 16.06 9 17.5C10.96 18.68 12 19 13 19L15.24 17.24C15.48 17.08 15.78 17.02 16.07 17.08L20.07 17.92C20.6 18.02 21 18.52 21 19.07L22 16.92Z" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+// Icon Bảo hiểm / Bảo vệ (Shield)
+export const ShieldIcon: React.FC<IconProps> = ({ size = 24, color = "#6366F1", className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+    <path d="M12 3L4 7V12C4 16.5 7.5 20.5 12 21.5C16.5 20.5 20 16.5 20 12V7L12 3Z" stroke={color} strokeWidth="1.5" strokeLinejoin="round"/>
+    <path d="M9 12L11 14L15 10" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+// Icon Gia đình (Family)
+export const FamilyIcon: React.FC<IconProps> = ({ size = 24, color = "#F59E0B", className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+    <circle cx="9" cy="6" r="2.5" stroke={color} strokeWidth="1.5"/>
+    <circle cx="15" cy="6" r="2.5" stroke={color} strokeWidth="1.5"/>
+    <path d="M4 21V18C4 16 5.5 14 8 14H10" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M20 21V18C20 16 18.5 14 16 14H14" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
+    <circle cx="12" cy="14" r="2" stroke={color} strokeWidth="1.5"/>
+    <path d="M12 16V21" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
+  </svg>
+);
+
+// Icon Thú cưng (Pets)
+export const PetsIcon: React.FC<IconProps> = ({ size = 24, color = "#84CC16", className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+    <ellipse cx="12" cy="17" rx="5" ry="4" stroke={color} strokeWidth="1.5"/>
+    <circle cx="6" cy="10" r="2" stroke={color} strokeWidth="1.5"/>
+    <circle cx="18" cy="10" r="2" stroke={color} strokeWidth="1.5"/>
+    <circle cx="8" cy="5" r="1.5" stroke={color} strokeWidth="1.5"/>
+    <circle cx="16" cy="5" r="1.5" stroke={color} strokeWidth="1.5"/>
+  </svg>
+);
+
+// Icon Kinh doanh (Business)
+export const BusinessIcon: React.FC<IconProps> = ({ size = 24, color = "#8B5CF6", className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+    <rect x="3" y="7" width="18" height="14" rx="2" stroke={color} strokeWidth="1.5"/>
+    <path d="M8 7V5C8 3.89543 8.89543 3 10 3H14C15.1046 3 16 3.89543 16 5V7" stroke={color} strokeWidth="1.5"/>
+    <path d="M3 12H21" stroke={color} strokeWidth="1.5"/>
+    <path d="M10 12V14H14V12" stroke={color} strokeWidth="1.5"/>
+  </svg>
+);
+
+// Icon Hoàn tiền (Refund)
+export const RefundIcon: React.FC<IconProps> = ({ size = 24, color = "#14B8A6", className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+    <path d="M3 10H13C16.866 10 20 13.134 20 17V17C20 17 17 17 17 17" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M7 6L3 10L7 14" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M12 3V6" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M17 4V7" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
+  </svg>
+);
+
+// Icon Điện nước (Utilities)
+export const UtilitiesIcon: React.FC<IconProps> = ({ size = 24, color = "#06B6D4", className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+    <path d="M13 3L4 14H12L11 21L20 10H12L13 3Z" stroke={color} strokeWidth="1.5" strokeLinejoin="round"/>
+  </svg>
+);
+
+// Icon Cà phê (Coffee)
+export const CoffeeIcon: React.FC<IconProps> = ({ size = 24, color = "#92400E", className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+    <path d="M3 9H18V17C18 19.2091 16.2091 21 14 21H7C4.79086 21 3 19.2091 3 17V9Z" stroke={color} strokeWidth="1.5"/>
+    <path d="M18 10H19C20.6569 10 22 11.3431 22 13V13C22 14.6569 20.6569 16 19 16H18" stroke={color} strokeWidth="1.5"/>
+    <path d="M7 3V6" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M10.5 4V6" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M14 3V6" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
+  </svg>
+);
+
+// Icon Taxi
+export const TaxiIcon: React.FC<IconProps> = ({ size = 24, color = "#F59E0B", className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+    <path d="M5 11L6 5H18L19 11" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <rect x="3" y="11" width="18" height="7" rx="2" stroke={color} strokeWidth="1.5"/>
+    <circle cx="7" cy="21" r="2" stroke={color} strokeWidth="1.5"/>
+    <circle cx="17" cy="21" r="2" stroke={color} strokeWidth="1.5"/>
+    <path d="M5 18V19" stroke={color} strokeWidth="1.5"/>
+    <path d="M19 18V19" stroke={color} strokeWidth="1.5"/>
+    <path d="M9 5V3H15V5" stroke={color} strokeWidth="1.5"/>
+  </svg>
+);
+
+// Icon Xăng dầu (Gas/Fuel)
+export const GasIcon: React.FC<IconProps> = ({ size = 24, color = "#EF4444", className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+    <rect x="3" y="4" width="12" height="17" rx="2" stroke={color} strokeWidth="1.5"/>
+    <path d="M15 8L18 5L20 7V14C20 15.1046 19.1046 16 18 16V16" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <rect x="5" y="7" width="8" height="5" rx="1" stroke={color} strokeWidth="1.5"/>
+  </svg>
+);
+
+// Icon Thuê nhà (Rent)
+export const RentIcon: React.FC<IconProps> = ({ size = 24, color = "#84CC16", className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+    <path d="M3 10L12 3L21 10V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V10Z" stroke={color} strokeWidth="1.5" strokeLinejoin="round"/>
+    <path d="M12 15V18" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M10 13H14" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M12 21V15C12 13.8954 12.8954 13 14 13H14C15.1046 13 16 12.1046 16 11V11C16 9.89543 15.1046 9 14 9H10C8.89543 9 8 9.89543 8 11V11C8 12.1046 8.89543 13 10 13H10C11.1046 13 12 13.8954 12 15Z" stroke={color} strokeWidth="1.5"/>
+  </svg>
+);
+
 // Icon Download
 export const DownloadIcon: React.FC<IconProps> = ({ size = 24, color = "currentColor", className }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
@@ -594,6 +737,22 @@ export const iconMap: Record<string, React.FC<IconProps>> = {
   download: DownloadIcon,
   upload: UploadIcon,
   "menu-grid": MenuGridIcon,
+  bell: BellIcon,
+  // New category icons
+  clothing: ClothingIcon,
+  sports: SportsIcon,
+  travel: TravelIcon,
+  phone: PhoneIcon,
+  shield: ShieldIcon,
+  family: FamilyIcon,
+  pets: PetsIcon,
+  business: BusinessIcon,
+  refund: RefundIcon,
+  utilities: UtilitiesIcon,
+  coffee: CoffeeIcon,
+  taxi: TaxiIcon,
+  gas: GasIcon,
+  rent: RentIcon,
 };
 
 // Helper function to get icon by name

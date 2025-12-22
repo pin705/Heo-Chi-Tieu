@@ -39,20 +39,21 @@ const SettingsPage: FC = () => {
       <Box className="flex-1 overflow-auto pb-20">
         {/* User Info */}
         <Card 
-          className="m-4 animate-fadeIn"
+          className="mx-4 mt-3 relative overflow-hidden"
+          padding="md"
           style={{
             background: 'linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)',
           }}
         >
-          <Box className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16" />
-          <Box className="flex items-center space-x-3 relative z-10">
+          <Box className="absolute top-0 right-0 w-24 h-24 bg-white opacity-10 rounded-full -mr-12 -mt-12" />
+          <Box className="flex items-center space-x-3">
             <img
-              className="w-16 h-16 rounded-2xl border-3 border-white shadow-lg"
+              className="w-14 h-14 rounded-xl border-2 border-white/30 shadow-md"
               src={user.avatar.startsWith("http") ? user.avatar : undefined}
             />
             <Box className="flex-1">
-              <Text.Title className="text-white font-bold text-lg">{user.name}</Text.Title>
-              <Text size="small" className="text-white/80">
+              <Text className="text-white font-bold text-base">{user.name}</Text>
+              <Text size="xSmall" className="text-white/70">
                 ID: {user.id}
               </Text>
             </Box>
@@ -62,56 +63,56 @@ const SettingsPage: FC = () => {
         {/* Settings List - Management */}
         <Box className="mt-4 mx-4">
           <Box className="px-1 mb-2">
-            <Text size="xSmall" className="text-gray-600 font-semibold tracking-wide">QUẢN LÝ</Text>
+            <Text size="xxSmall" className="text-gray-500 font-semibold tracking-wider">QUẢN LÝ</Text>
           </Box>
-          <Card padding="none" className="overflow-hidden">
+          <Card padding="none" className="overflow-hidden shadow-sm">
             <Box 
-              className="flex items-center justify-between p-4 border-b border-gray-100 cursor-pointer active:bg-gray-50 transition-colors"
+              className="flex items-center justify-between p-3 cursor-pointer active:bg-gray-50 transition-colors"
               onClick={() => navigate("/manage-wallets")}
             >
               <Box className="flex items-center space-x-3">
-                <Box className="w-10 h-10 rounded-xl bg-yellow-100 flex items-center justify-center">
-                  <WalletIcon size={22} color="#EAB308" />
+                <Box className="w-9 h-9 rounded-lg bg-yellow-100 flex items-center justify-center">
+                  <WalletIcon size={20} color="#EAB308" />
                 </Box>
-                <Text className="font-medium text-gray-900">Quản lý ví</Text>
+                <Text className="font-medium text-gray-900 text-sm">Quản lý ví</Text>
               </Box>
-              <ChevronRightIcon size={20} color="#9CA3AF" />
+              <ChevronRightIcon size={18} color="#9CA3AF" />
             </Box>
             <Box 
-              className="flex items-center justify-between p-4 border-b border-gray-100 cursor-pointer active:bg-gray-50 transition-colors"
+              className="flex items-center justify-between p-3 cursor-pointer active:bg-gray-50 transition-colors"
               onClick={() => navigate("/manage-categories")}
             >
               <Box className="flex items-center space-x-3">
-                <Box className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
-                  <CategoryIcon size={22} color="#8B5CF6" />
+                <Box className="w-9 h-9 rounded-lg bg-purple-100 flex items-center justify-center">
+                  <CategoryIcon size={20} color="#8B5CF6" />
                 </Box>
-                <Text className="font-medium text-gray-900">Quản lý danh mục</Text>
+                <Text className="font-medium text-gray-900 text-sm">Quản lý danh mục</Text>
               </Box>
-              <ChevronRightIcon size={20} color="#9CA3AF" />
+              <ChevronRightIcon size={18} color="#9CA3AF" />
             </Box>
             <Box 
-              className="flex items-center justify-between p-4 border-b border-gray-100 cursor-pointer active:bg-gray-50 transition-colors"
+              className="flex items-center justify-between p-3 cursor-pointer active:bg-gray-50 transition-colors"
               onClick={() => navigate("/budget")}
             >
               <Box className="flex items-center space-x-3">
-                <Box className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
-                  <BudgetIcon size={22} color="#F59E0B" />
+                <Box className="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center">
+                  <BudgetIcon size={20} color="#F59E0B" />
                 </Box>
-                <Text className="font-medium text-gray-900">Quản lý ngân sách</Text>
+                <Text className="font-medium text-gray-900 text-sm">Quản lý ngân sách</Text>
               </Box>
-              <ChevronRightIcon size={20} color="#9CA3AF" />
+              <ChevronRightIcon size={18} color="#9CA3AF" />
             </Box>
             <Box 
-              className="flex items-center justify-between p-4 cursor-pointer active:bg-gray-50 transition-colors"
+              className="flex items-center justify-between p-3 cursor-pointer active:bg-gray-50 transition-colors"
               onClick={() => navigate("/history")}
             >
               <Box className="flex items-center space-x-3">
-                <Box className="w-10 h-10 rounded-xl bg-yellow-100 flex items-center justify-center">
-                  <CalendarIcon size={22} />
+                <Box className="w-9 h-9 rounded-lg bg-yellow-100 flex items-center justify-center">
+                  <CalendarIcon size={20} />
                 </Box>
-                <Text className="font-medium text-gray-900">Lịch sử giao dịch</Text>
+                <Text className="font-medium text-gray-900 text-sm">Lịch sử giao dịch</Text>
               </Box>
-              <ChevronRightIcon size={20} color="#9CA3AF" />
+              <ChevronRightIcon size={18} color="#9CA3AF" />
             </Box>
           </Card>
         </Box>
@@ -119,38 +120,38 @@ const SettingsPage: FC = () => {
         {/* Data Management */}
         <Box className="mt-4 mx-4">
           <Box className="px-1 mb-2">
-            <Text size="xSmall" className="text-gray-600 font-semibold tracking-wide">DỮ LIỆU</Text>
+            <Text size="xxSmall" className="text-gray-500 font-semibold tracking-wider">DỮ LIỆU</Text>
           </Box>
-          <Card padding="none" className="overflow-hidden">
+          <Card padding="none" className="overflow-hidden shadow-sm">
             <Box 
-              className="flex items-center justify-between p-4 border-b border-gray-100 cursor-pointer active:bg-gray-50 transition-colors"
+              className="flex items-center justify-between p-3 cursor-pointer active:bg-gray-50 transition-colors"
               onClick={() => navigate("/export")}
             >
               <Box className="flex items-center space-x-3">
-                <Box className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center">
-                  <ExportIcon size={22} color="#22C55E" />
+                <Box className="w-9 h-9 rounded-lg bg-green-100 flex items-center justify-center">
+                  <ExportIcon size={20} color="#22C55E" />
                 </Box>
                 <Box>
-                  <Text className="font-medium text-gray-900">Xuất dữ liệu</Text>
-                  <Text size="xSmall" className="text-gray-500">CSV, Excel, PDF</Text>
+                  <Text className="font-medium text-gray-900 text-sm">Xuất dữ liệu</Text>
+                  <Text size="xxSmall" className="text-gray-500">CSV, Excel, PDF</Text>
                 </Box>
               </Box>
-              <ChevronRightIcon size={20} color="#9CA3AF" />
+              <ChevronRightIcon size={18} color="#9CA3AF" />
             </Box>
             <Box 
-              className="flex items-center justify-between p-4 cursor-pointer active:bg-gray-50 transition-colors"
+              className="flex items-center justify-between p-3 cursor-pointer active:bg-gray-50 transition-colors"
               onClick={() => navigate("/backup")}
             >
               <Box className="flex items-center space-x-3">
-                <Box className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
-                  <BackupIcon size={22} color="#3B82F6" />
+                <Box className="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center">
+                  <BackupIcon size={20} color="#3B82F6" />
                 </Box>
                 <Box>
-                  <Text className="font-medium text-gray-900">Sao lưu & Khôi phục</Text>
-                  <Text size="xSmall" className="text-gray-500">Bảo vệ dữ liệu của bạn</Text>
+                  <Text className="font-medium text-gray-900 text-sm">Sao lưu & Khôi phục</Text>
+                  <Text size="xxSmall" className="text-gray-500">Bảo vệ dữ liệu của bạn</Text>
                 </Box>
               </Box>
-              <ChevronRightIcon size={20} color="#9CA3AF" />
+              <ChevronRightIcon size={18} color="#9CA3AF" />
             </Box>
           </Card>
         </Box>
@@ -158,23 +159,23 @@ const SettingsPage: FC = () => {
         {/* Support */}
         <Box className="mt-4 mx-4">
           <Box className="px-1 mb-2">
-            <Text size="xSmall" className="text-gray-600 font-semibold tracking-wide">HỖ TRỢ</Text>
+            <Text size="xxSmall" className="text-gray-500 font-semibold tracking-wider">HỖ TRỢ</Text>
           </Box>
-          <Card padding="none" className="overflow-hidden">
+          <Card padding="none" className="overflow-hidden shadow-sm">
             <Box 
-              className="flex items-center justify-between p-4 border-b border-gray-100 cursor-pointer active:bg-gray-50 transition-colors"
+              className="flex items-center justify-between p-3 cursor-pointer active:bg-gray-50 transition-colors"
               onClick={() => navigate("/guide")}
             >
               <Box className="flex items-center space-x-3">
-                <Box className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center">
-                  <GuideIcon size={22} color="#F97316" />
+                <Box className="w-9 h-9 rounded-lg bg-orange-100 flex items-center justify-center">
+                  <GuideIcon size={20} color="#F97316" />
                 </Box>
-                <Text className="font-medium text-gray-900">Hướng dẫn sử dụng</Text>
+                <Text className="font-medium text-gray-900 text-sm">Hướng dẫn sử dụng</Text>
               </Box>
-              <ChevronRightIcon size={20} color="#9CA3AF" />
+              <ChevronRightIcon size={18} color="#9CA3AF" />
             </Box>
             <Box 
-              className="flex items-center justify-between p-4 cursor-pointer active:bg-gray-50 transition-colors"
+              className="flex items-center justify-between p-3 cursor-pointer active:bg-gray-50 transition-colors"
               onClick={() => {
                 openSnackbar({
                   text: "Quản lý Chi Tiêu v1.0.0",
@@ -182,39 +183,34 @@ const SettingsPage: FC = () => {
               }}
             >
               <Box className="flex items-center space-x-3">
-                <Box className="w-10 h-10 rounded-xl bg-cyan-100 flex items-center justify-center">
-                  <InfoIcon size={22} color="#06B6D4" />
+                <Box className="w-9 h-9 rounded-lg bg-cyan-100 flex items-center justify-center">
+                  <InfoIcon size={20} color="#06B6D4" />
                 </Box>
-                <Text className="font-medium text-gray-900">Giới thiệu</Text>
+                <Text className="font-medium text-gray-900 text-sm">Giới thiệu</Text>
               </Box>
-              <ChevronRightIcon size={20} color="#9CA3AF" />
+              <ChevronRightIcon size={18} color="#9CA3AF" />
             </Box>
           </Card>
         </Box>
 
         {/* Danger Zone */}
         <Box className="px-4 mt-4 mb-4">
-          <Card>
-            <Box className="mb-3">
-              <Text size="xSmall" className="text-red-600 font-semibold tracking-wide">VÙNG NGUY HIỂM</Text>
-            </Box>
-            <Box
-              onClick={handleClearData}
-              className="flex items-center justify-center p-4 bg-red-50 rounded-2xl cursor-pointer active:scale-[0.98] transition-all border border-red-200"
-            >
-              <DeleteIcon size={20} color="#DC2626" className="mr-2" />
-              <Text className="text-red-600 font-semibold">Xóa toàn bộ dữ liệu</Text>
-            </Box>
-          </Card>
+          <Box className="px-1 mb-2">
+            <Text size="xxSmall" className="text-red-500 font-semibold tracking-wider">VÙNG NGUY HIỂM</Text>
+          </Box>
+          <Box
+            onClick={handleClearData}
+            className="flex items-center justify-center p-3 bg-red-50 rounded-xl cursor-pointer active:scale-[0.98] transition-all border border-red-200"
+          >
+            <DeleteIcon size={18} color="#DC2626" className="mr-2" />
+            <Text className="text-red-600 font-semibold text-sm">Xóa toàn bộ dữ liệu</Text>
+          </Box>
         </Box>
 
         {/* Footer */}
         <Box className="px-4 pb-4 text-center">
-          <Text size="xSmall" className="text-gray-500 block">
-            Phiên bản 1.0.0
-          </Text>
-          <Text size="xSmall" className="text-gray-400 block mt-1">
-            © 2025 Quản Lý Chi Tiêu
+          <Text size="xxSmall" className="text-gray-400 block">
+            Phiên bản 1.0.0 • © 2025 Quản Lý Chi Tiêu
           </Text>
         </Box>
       </Box>

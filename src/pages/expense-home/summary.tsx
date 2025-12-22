@@ -14,52 +14,48 @@ export const Summary: FC = () => {
   const navigate = useNavigate();
 
   return (
-    <Box className="px-4 pt-6 pb-2 -mt-6 relative z-10">
+    <Box className="px-4 pt-4 pb-2 -mt-3 relative z-10">
       {/* Total Balance Card with Gradient */}
       <Card 
-        className="mb-4 relative overflow-hidden animate-fadeInUp"
-        padding="lg"
+        className="mb-3 relative overflow-hidden"
+        padding="md"
         style={{
           background: 'linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)',
         }}
       >
-        <Box className="absolute top-0 right-0 w-40 h-40 bg-white opacity-10 rounded-full -mr-20 -mt-20" />
-        <Box className="absolute bottom-0 left-0 w-32 h-32 bg-white opacity-10 rounded-full -ml-16 -mb-16" />
+        <Box className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16" />
         <Box className="relative">
-          <Box className="flex items-center mb-3">
-            <Box className="bg-white/20 rounded-2xl p-2.5 mr-3">
-              <WalletIcon size={22} color="#FFFFFF" />
+          <Box className="flex items-center mb-2">
+            <Box className="bg-white/20 rounded-xl p-2 mr-2">
+              <WalletIcon size={18} color="#FFFFFF" />
             </Box>
-            <Text size="small" className="text-white/90 font-semibold">
+            <Text size="xSmall" className="text-white/80 font-medium">
               Tổng số dư
             </Text>
           </Box>
           <Box className="flex items-baseline">
-            <Text.Title className="font-bold text-white" style={{ fontSize: '34px' }}>
+            <Text className="font-bold text-white text-3xl">
               <AnimatedNumber 
                 value={totalBalance} 
                 formatFn={(v) => formatCurrency(v).replace(' ₫', '')}
                 duration={800}
               />
-            </Text.Title>
-            <Text className="text-white/80 ml-2 font-semibold">₫</Text>
+            </Text>
+            <Text className="text-white/70 ml-1.5 font-medium">₫</Text>
           </Box>
         </Box>
       </Card>
 
       {/* Budget Alert with modern styling */}
       {budgetStatus.hasBudget && budgetStatus.isExceeded && (
-        <Card className="mb-4 bg-gradient-to-r from-red-50 to-rose-50 border border-red-100 animate-fadeInUp" style={{ animationDelay: '0.05s' }}>
-          <Box className="flex items-start space-x-3">
-            <Box className="bg-red-500 rounded-2xl p-3 flex items-center justify-center shadow-md flex-shrink-0">
-              <WarningIcon size={22} color="#FFFFFF" />
+        <Card className="mb-3 bg-gradient-to-r from-red-50 to-rose-50" padding="sm">
+          <Box className="flex items-center space-x-2">
+            <Box className="bg-red-500 rounded-lg p-2 flex-shrink-0">
+              <WarningIcon size={16} color="#FFFFFF" />
             </Box>
             <Box className="flex-1">
-              <Text className="text-red-800 font-bold text-sm mb-1">
-                Vượt ngân sách!
-              </Text>
-              <Text size="xSmall" className="text-red-600 font-medium">
-                Chi tiêu vượt {formatCurrency(Math.abs(budgetStatus.remaining))} so với kế hoạch
+              <Text className="text-red-800 font-bold text-xs">
+                Vượt ngân sách! Chi tiêu vượt {formatCurrency(Math.abs(budgetStatus.remaining))}
               </Text>
             </Box>
           </Box>
@@ -68,31 +64,31 @@ export const Summary: FC = () => {
 
       {/* Budget Progress Card */}
       {budgetStatus.hasBudget && (
-        <Card className="mb-4 animate-fadeInUp" style={{ animationDelay: '0.1s' }}>
-          <Box className="flex items-center justify-between mb-4">
+        <Card className="mb-3" padding="md">
+          <Box className="flex items-center justify-between mb-3">
             <Box className="flex items-center">
-              <Box className="bg-gradient-to-br from-yellow-100 to-yellow-50 rounded-2xl p-2.5 mr-3 shadow-sm">
-                <BudgetIcon size={20} color="#EAB308" />
+              <Box className="bg-yellow-100 rounded-lg p-2 mr-2">
+                <BudgetIcon size={18} color="#EAB308" />
               </Box>
-              <Text.Title size="small" className="font-bold text-gray-900">
-                Ngân sách tháng này
-              </Text.Title>
+              <Text className="font-bold text-gray-900 text-sm">
+                Ngân sách tháng
+              </Text>
             </Box>
             <Box
-              className="flex items-center px-3 py-1.5 rounded-full bg-yellow-50 cursor-pointer active:scale-95 transition-transform"
+              className="flex items-center px-2 py-1 rounded-lg bg-yellow-50 cursor-pointer active:scale-95 transition-transform"
               onClick={() => navigate("/budget")}
             >
-              <Text size="xSmall" className="text-yellow-600 font-semibold mr-1">Chi tiết</Text>
-              <ChevronRightIcon size={14} color="#CA8A04" />
+              <Text size="xxSmall" className="text-yellow-600 font-semibold mr-0.5">Chi tiết</Text>
+              <ChevronRightIcon size={12} color="#CA8A04" />
             </Box>
           </Box>
           
-          <Box className="flex justify-between items-center mb-3">
-            <Text size="small" className="text-gray-600 font-semibold">
+          <Box className="flex justify-between items-center mb-2">
+            <Text size="xSmall" className="text-gray-600 font-medium">
               <AnimatedNumber value={budgetStatus.spent} formatFn={formatCurrency} duration={600} /> / {formatCurrency(budgetStatus.budget)}
             </Text>
-            <Box className={`px-3 py-1 rounded-full ${budgetStatus.isExceeded ? 'bg-red-100' : 'bg-yellow-100'}`}>
-              <Text size="small" className={`font-bold ${budgetStatus.isExceeded ? "text-red-600" : "text-yellow-600"}`}>
+            <Box className={`px-2 py-0.5 rounded-lg ${budgetStatus.isExceeded ? 'bg-red-100' : 'bg-yellow-100'}`}>
+              <Text size="xSmall" className={`font-bold ${budgetStatus.isExceeded ? "text-red-600" : "text-yellow-600"}`}>
                 {budgetStatus.percentage.toFixed(0)}%
               </Text>
             </Box>
@@ -102,13 +98,13 @@ export const Summary: FC = () => {
             value={budgetStatus.spent} 
             maxValue={budgetStatus.budget} 
             color={budgetStatus.isExceeded ? "#EF4444" : "#EAB308"}
-            height="md"
+            height="sm"
           />
           
           {!budgetStatus.isExceeded && (
-            <Box className="flex items-center mt-4 px-4 py-3 bg-emerald-50 rounded-2xl">
-              <SuccessIcon size={18} color="#22C55E" className="mr-2" />
-              <Text size="small" className="text-emerald-700 font-semibold">
+            <Box className="flex items-center mt-3 px-3 py-2 bg-emerald-50 rounded-xl">
+              <SuccessIcon size={16} color="#22C55E" className="mr-1.5" />
+              <Text size="xSmall" className="text-emerald-700 font-semibold">
                 Còn lại: {formatCurrency(budgetStatus.remaining)}
               </Text>
             </Box>
@@ -117,55 +113,54 @@ export const Summary: FC = () => {
       )}
 
       {/* Monthly Stats Card */}
-      <Card className="animate-fadeInUp" style={{ animationDelay: '0.15s' }}>
-        <Box className="flex items-center mb-4">
-          <Box className="bg-gradient-to-br from-gray-100 to-gray-50 rounded-2xl p-2.5 mr-3 shadow-sm">
-            <ChartIcon size={20} color="#6B7280" />
+      <Card className="mb-3" padding="md">
+        <Box className="flex items-center mb-3">
+          <Box className="bg-gray-100 rounded-lg p-2 mr-2">
+            <ChartIcon size={18} color="#6B7280" />
           </Box>
-          <Text.Title size="small" className="font-bold text-gray-900">
+          <Text className="font-bold text-gray-900 text-sm">
             Tháng này
-          </Text.Title>
+          </Text>
         </Box>
         
-        <Box className="grid grid-cols-2 gap-3 mb-4">
-          <Box className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-2xl p-4 shadow-sm">
-            <Box className="flex items-center mb-2">
-              <IncomeIcon size={18} color="#22C55E" className="mr-2" />
-              <Text size="xSmall" className="text-emerald-700 font-bold">
+        <Box className="grid grid-cols-2 gap-2 mb-3">
+          <Box className="bg-emerald-50 rounded-xl p-3">
+            <Box className="flex items-center mb-1">
+              <IncomeIcon size={16} color="#22C55E" className="mr-1.5" />
+              <Text size="xSmall" className="text-emerald-700 font-semibold">
                 Thu nhập
               </Text>
             </Box>
-            <Text.Title size="small" className="text-emerald-600 font-bold">
+            <Text className="text-emerald-600 font-bold text-base">
               <AnimatedNumber value={stats.income} formatFn={formatCurrency} duration={700} />
-            </Text.Title>
+            </Text>
           </Box>
-          <Box className="bg-gradient-to-br from-rose-50 to-red-50 rounded-2xl p-4 shadow-sm">
-            <Box className="flex items-center mb-2">
-              <ExpenseIcon size={18} color="#EF4444" className="mr-2" />
-              <Text size="xSmall" className="text-rose-700 font-bold">
+          <Box className="bg-rose-50 rounded-xl p-3">
+            <Box className="flex items-center mb-1">
+              <ExpenseIcon size={16} color="#EF4444" className="mr-1.5" />
+              <Text size="xSmall" className="text-rose-700 font-semibold">
                 Chi tiêu
               </Text>
             </Box>
-            <Text.Title size="small" className="text-rose-600 font-bold">
+            <Text className="text-rose-600 font-bold text-base">
               <AnimatedNumber value={stats.expense} formatFn={formatCurrency} duration={700} />
-            </Text.Title>
+            </Text>
           </Box>
         </Box>
         
-        <Box className="pt-3 border-t border-gray-100">
-          <Box className="flex justify-between items-center bg-gradient-to-r from-gray-50 to-slate-50 rounded-2xl p-4">
+        <Box className="pt-2">
+          <Box className="flex justify-between items-center bg-gray-50 rounded-xl p-3">
             <Box className="flex items-center">
-              <WalletIcon size={18} color="#6B7280" className="mr-2" />
-              <Text size="small" className="text-gray-700 font-bold">
+              <WalletIcon size={16} color="#6B7280" className="mr-1.5" />
+              <Text size="xSmall" className="text-gray-700 font-bold">
                 Còn lại
               </Text>
             </Box>
-            <Text.Title
-              size="small"
-              className={`font-bold ${stats.balance >= 0 ? "text-yellow-600" : "text-red-600"}`}
+            <Text
+              className={`font-bold text-base ${stats.balance >= 0 ? "text-yellow-600" : "text-red-600"}`}
             >
               {stats.balance >= 0 ? "+" : ""}<AnimatedNumber value={stats.balance} formatFn={formatCurrency} duration={700} />
-            </Text.Title>
+            </Text>
           </Box>
         </Box>
       </Card>

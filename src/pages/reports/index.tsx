@@ -135,110 +135,96 @@ const ReportsPage: FC = () => {
       <AppHeader title="Báo cáo" noBack />
       <Box className="flex-1 overflow-auto pb-20">
         {/* Wallet Selector */}
-        <Box className="px-4 pt-4">
+        <Box className="px-4 pt-3 pb-2 -mt-2 bg-gradient-to-b from-yellow-500/10 to-transparent">
           <WalletSelector compact={true} />
         </Box>
 
         {/* Monthly Summary */}
         <Card 
-          className="m-4 animate-fadeIn"
-          padding="lg"
+          className="mx-4 mb-3 relative overflow-hidden"
+          padding="md"
           style={{
             background: 'linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)',
           }}
         >
-          <Box className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16" />
-          <Text size="small" className="text-white opacity-95 mb-3 font-medium relative z-10">
-             Tháng này
+          <Box className="absolute top-0 right-0 w-24 h-24 bg-white opacity-10 rounded-full -mr-12 -mt-12" />
+          <Text size="xSmall" className="text-white/80 mb-2 font-medium">
+            Tháng này
           </Text>
-          <Box className="grid grid-cols-3 gap-3 relative z-10">
-            <Box className="bg-white bg-opacity-20 backdrop-blur-sm p-3 rounded-2xl">
-              <Text size="xSmall" className="text-white opacity-95 mb-1">
-                Thu nhập
-              </Text>
-              <Text.Title size="small" className="mt-1 font-bold text-white">
+          <Box className="grid grid-cols-3 gap-2">
+            <Box className="bg-white/15 p-2.5 rounded-xl">
+              <Text size="xxSmall" className="text-white/80 mb-0.5">Thu nhập</Text>
+              <Text className="font-bold text-white text-sm">
                 <AnimatedNumber value={stats.income} formatFn={formatCurrency} />
-              </Text.Title>
-            </Box>
-            <Box className="bg-white bg-opacity-10 p-3 rounded-xl">
-              <Text size="xSmall" className="text-white opacity-90 mb-1">
-                Chi tiêu
               </Text>
-              <Text.Title size="small" className="mt-1 font-bold text-white">
+            </Box>
+            <Box className="bg-white/15 p-2.5 rounded-xl">
+              <Text size="xxSmall" className="text-white/80 mb-0.5">Chi tiêu</Text>
+              <Text className="font-bold text-white text-sm">
                 <AnimatedNumber value={stats.expense} formatFn={formatCurrency} />
-              </Text.Title>
-            </Box>
-            <Box className="bg-white bg-opacity-10 p-3 rounded-xl">
-              <Text size="xSmall" className="text-white opacity-90 mb-1">
-                Còn lại
               </Text>
-              <Text.Title size="small" className="mt-1 font-bold text-white">
+            </Box>
+            <Box className="bg-white/15 p-2.5 rounded-xl">
+              <Text size="xxSmall" className="text-white/80 mb-0.5">Còn lại</Text>
+              <Text className="font-bold text-white text-sm">
                 <AnimatedNumber value={stats.balance} formatFn={formatCurrency} />
-              </Text.Title>
+              </Text>
             </Box>
           </Box>
         </Card>
 
         {/* Tabs for Expense/Income */}
-        <Box className="px-4 pb-4">
+        <Box className="px-4 pb-3">
           <Box className="flex p-1 bg-gray-100 rounded-xl">
             <Box
-              className={`flex-1 flex items-center justify-center py-2.5 rounded-lg cursor-pointer transition-all duration-200 ${
+              className={`flex-1 flex items-center justify-center py-2 rounded-lg cursor-pointer transition-all duration-200 ${
                 activeTab === "expense"
                   ? "bg-white text-red-600 shadow-sm"
-                  : "text-gray-500 hover:bg-gray-50"
+                  : "text-gray-500"
               }`}
               onClick={() => setActiveTab("expense")}
             >
-              <ExpenseIcon size={20} color={activeTab === "expense" ? "#DC2626" : "#6B7280"} className="mr-2" />
-              <Text size="small" className="font-medium">
-                Chi tiêu
-              </Text>
+              <ExpenseIcon size={18} color={activeTab === "expense" ? "#DC2626" : "#6B7280"} className="mr-1.5" />
+              <Text size="small" className="font-semibold">Chi tiêu</Text>
             </Box>
             <Box
-              className={`flex-1 flex items-center justify-center py-2.5 rounded-lg cursor-pointer transition-all duration-200 ${
+              className={`flex-1 flex items-center justify-center py-2 rounded-lg cursor-pointer transition-all duration-200 ${
                 activeTab === "income"
                   ? "bg-white text-green-600 shadow-sm"
-                  : "text-gray-500 hover:bg-gray-50"
+                  : "text-gray-500"
               }`}
               onClick={() => setActiveTab("income")}
             >
-              <IncomeIcon size={20} color={activeTab === "income" ? "#16A34A" : "#6B7280"} className="mr-2" />
-              <Text size="small" className="font-medium">
-                Thu nhập
-              </Text>
+              <IncomeIcon size={18} color={activeTab === "income" ? "#16A34A" : "#6B7280"} className="mr-1.5" />
+              <Text size="small" className="font-semibold">Thu nhập</Text>
             </Box>
           </Box>
         </Box>
 
         {/* View Mode Toggle */}
-        <Box className="px-4 pb-4">
+        <Box className="px-4 pb-3">
           <Box className="flex p-1 bg-gray-100 rounded-xl">
             <Box
-              className={`flex-1 flex items-center justify-center py-2.5 rounded-lg cursor-pointer transition-all duration-200 ${
+              className={`flex-1 flex items-center justify-center py-2 rounded-lg cursor-pointer transition-all duration-200 ${
                 viewMode === "category"
                   ? "bg-white text-yellow-600 shadow-sm"
                   : "text-gray-500 hover:bg-gray-50"
               }`}
               onClick={() => setViewMode("category")}
             >
-              <CategoryIcon size={20} color={viewMode === "category" ? "#CA8A04" : "#6B7280"} className="mr-2" />
-              <Text size="small" className="font-medium">
-                Danh mục
-              </Text>
+              <CategoryIcon size={18} color={viewMode === "category" ? "#CA8A04" : "#6B7280"} className="mr-1.5" />
+              <Text size="small" className="font-semibold">Danh mục</Text>
             </Box>
             <Box
-              className={`flex-1 flex items-center justify-center py-2.5 rounded-lg cursor-pointer transition-all duration-200 ${
+              className={`flex-1 flex items-center justify-center py-2 rounded-lg cursor-pointer transition-all duration-200 ${
                 viewMode === "trend"
                   ? "bg-white text-yellow-600 shadow-sm"
-                  : "text-gray-500 hover:bg-gray-50"
+                  : "text-gray-500"
               }`}
               onClick={() => setViewMode("trend")}
             >
-              <ChartIcon size={20} color={viewMode === "trend" ? "#CA8A04" : "#6B7280"} className="mr-2" />
-              <Text size="small" className="font-medium">
-                Xu hướng
-              </Text>
+              <ChartIcon size={18} color={viewMode === "trend" ? "#CA8A04" : "#6B7280"} className="mr-1.5" />
+              <Text size="small" className="font-semibold">Xu hướng</Text>
             </Box>
           </Box>
         </Box>
@@ -254,7 +240,7 @@ const ReportsPage: FC = () => {
                 </Text>
               </Box>
             ) : (
-              <Box className="space-y-3">
+              <Box className="space-y-2">
                 {categoryStats.map((stat) => {
                   const category = categories.find(
                     (c) => c.id === stat.categoryId
@@ -278,11 +264,11 @@ const ReportsPage: FC = () => {
         {viewMode === "trend" && (
           <Box className="px-4 pb-4">
             {/* Weekly Trend */}
-            <Box className="mb-6">
-              <Text.Title size="small" className="mb-3">
-                Xu hướng theo tuần (Tháng này)
-              </Text.Title>
-              <Box className="bg-section rounded-xl p-4 shadow-sm">
+            <Box className="mb-4">
+              <Text className="font-bold text-gray-900 mb-2 text-sm">
+                Xu hướng theo tuần
+              </Text>
+              <Box className="bg-white rounded-xl p-3 shadow-sm">
                 <TrendChart
                   data={weeklyTrend.map((w) => ({
                     label: `T${w.week}`,

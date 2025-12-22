@@ -111,8 +111,8 @@ const HistoryPage: FC = () => {
     
       
       {/* Search and Filter Bar */}
-      <Box className="p-4 bg-white shadow-soft rounded-b-2xl animate-fadeIn">
-          <Box className="flex gap-2.5 mb-3">
+      <Box className="px-4 pt-4 pb-3 -mt-3 bg-gradient-to-b from-yellow-500/10 to-transparent">
+        <Box className="flex gap-2 mb-3">
           <Box className="flex-1 relative">
             <Box className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
               <SearchIcon size={18} color="#9CA3AF" />
@@ -122,15 +122,15 @@ const HistoryPage: FC = () => {
               placeholder="Tìm kiếm giao dịch..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-12 bg-gray-50 border-none rounded-2xl shadow-soft"
+              className="pl-12 bg-white border-none rounded-xl shadow-sm"
               clearable
             />
           </Box>
           <Box
-            className={`px-5 py-2 rounded-2xl flex items-center gap-2 cursor-pointer transition-all duration-200 transform active:scale-95 ${
+            className={`px-4 py-2 rounded-xl flex items-center gap-2 cursor-pointer transition-all duration-200 active:scale-95 ${
               activeFiltersCount > 0 
-                ? "shadow-lg"
-                : "bg-white  shadow-soft hover:shadow-md"
+                ? "shadow-md"
+                : "bg-white shadow-sm"
             }`}
             style={{
               background: activeFiltersCount > 0 
@@ -139,9 +139,9 @@ const HistoryPage: FC = () => {
             }}
             onClick={() => setShowFilterSheet(true)}
           >
-            <FilterIcon size={20} color={activeFiltersCount > 0 ? "#FFFFFF" : "#4B5563"} />
+            <FilterIcon size={18} color={activeFiltersCount > 0 ? "#FFFFFF" : "#6B7280"} />
             {activeFiltersCount > 0 && (
-              <Box className="bg-white text-yellow-600 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shadow-md">
+              <Box className="bg-white text-yellow-600 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
                 {activeFiltersCount}
               </Box>
             )}
@@ -150,68 +150,69 @@ const HistoryPage: FC = () => {
 
         {/* Active Filters Display */}
         {activeFiltersCount > 0 && (
-          <Box className="flex flex-wrap gap-2 animate-fadeInUp">
+          <Box className="flex flex-wrap gap-1.5 mt-2">
             {filterType !== "all" && (
-              <Box className="bg-gradient-to-r from-yellow-100 to-yellow-50 text-yellow-800 px-3 py-1.5 rounded-full text-xs flex items-center gap-2 shadow-soft">
-                <Text size="xSmall" className="font-bold">
+              <Box className="bg-yellow-100 text-yellow-800 px-2.5 py-1 rounded-lg text-xs flex items-center gap-1.5">
+                <Text size="xSmall" className="font-semibold">
                   {filterType === "income" ? "Thu nhập" : "Chi tiêu"}
                 </Text>
-                <Box className="cursor-pointer hover:bg-yellow-200 rounded-full p-0.5 transition-colors" onClick={() => setFilterType("all")}>
+                <Box className="cursor-pointer" onClick={() => setFilterType("all")}>
                   <CloseIcon size={12} color="#92400E" />
                 </Box>
               </Box>
             )}
             {filterCategory !== "all" && (
-              <Box className="bg-gradient-to-r from-yellow-100 to-yellow-50 text-yellow-800 px-3 py-1.5 rounded-full text-xs flex items-center gap-2 shadow-soft">
-                <Text size="xSmall" className="font-bold">
+              <Box className="bg-yellow-100 text-yellow-800 px-2.5 py-1 rounded-lg text-xs flex items-center gap-1.5">
+                <Text size="xSmall" className="font-semibold">
                   {categories.find((c) => c.id === filterCategory)?.name}
                 </Text>
-                <Box className="cursor-pointer hover:bg-yellow-200 rounded-full p-0.5 transition-colors" onClick={() => setFilterCategory("all")}>
+                <Box className="cursor-pointer" onClick={() => setFilterCategory("all")}>
                   <CloseIcon size={12} color="#92400E" />
                 </Box>
               </Box>
             )}
             {filterWallet !== "all" && (
-              <Box className="bg-gradient-to-r from-yellow-100 to-yellow-50 text-yellow-800 px-3 py-1.5 rounded-full text-xs flex items-center gap-2 shadow-soft">
-                <Text size="xSmall" className="font-bold">
+              <Box className="bg-yellow-100 text-yellow-800 px-2.5 py-1 rounded-lg text-xs flex items-center gap-1.5">
+                <Text size="xSmall" className="font-semibold">
                   {wallets.find((w) => w.id === filterWallet)?.name}
                 </Text>
-                <Box className="cursor-pointer hover:bg-yellow-200 rounded-full p-0.5 transition-colors" onClick={() => setFilterWallet("all")}>
+                <Box className="cursor-pointer" onClick={() => setFilterWallet("all")}>
                   <CloseIcon size={12} color="#92400E" />
                 </Box>
               </Box>
             )}
             {filterStartDate && (
-              <Box className="bg-gradient-to-r from-yellow-100 to-yellow-50 text-yellow-800 px-3 py-1.5 rounded-full text-xs flex items-center gap-2 shadow-soft">
-                <Text size="xSmall" className="font-bold">
+              <Box className="bg-yellow-100 text-yellow-800 px-2.5 py-1 rounded-lg text-xs flex items-center gap-1.5">
+                <Text size="xSmall" className="font-semibold">
                   Từ {filterStartDate.toLocaleDateString("vi-VN")}
                 </Text>
-                <Box className="cursor-pointer hover:bg-yellow-200 rounded-full p-0.5 transition-colors" onClick={() => setFilterStartDate(undefined)}>
+                <Box className="cursor-pointer" onClick={() => setFilterStartDate(undefined)}>
                   <CloseIcon size={12} color="#92400E" />
                 </Box>
               </Box>
             )}
             {filterEndDate && (
-              <Box className="bg-gradient-to-r from-yellow-100 to-yellow-50 text-yellow-800 px-3 py-1.5 rounded-full text-xs flex items-center gap-2 shadow-soft">
-                <Text size="xSmall" className="font-bold">
+              <Box className="bg-yellow-100 text-yellow-800 px-2.5 py-1 rounded-lg text-xs flex items-center gap-1.5">
+                <Text size="xSmall" className="font-semibold">
                   Đến {filterEndDate.toLocaleDateString("vi-VN")}
                 </Text>
-                <Box className="cursor-pointer hover:bg-yellow-200 rounded-full p-0.5 transition-colors" onClick={() => setFilterEndDate(undefined)}>
+                <Box className="cursor-pointer" onClick={() => setFilterEndDate(undefined)}>
                   <CloseIcon size={12} color="#92400E" />
                 </Box>
               </Box>
             )}
             <Box
-              className="px-3 py-1.5 text-xs cursor-pointer hover:bg-yellow-50 rounded-full transition-colors active:scale-95"
+              className="px-2.5 py-1 text-xs cursor-pointer bg-red-50 rounded-lg active:scale-95"
               onClick={clearFilters}
             >
-              <Text size="xSmall" className="text-yellow-600 font-bold">✕ Xóa tất cả</Text>
+              <Text size="xSmall" className="text-red-600 font-semibold">Xóa lọc</Text>
             </Box>
           </Box>
         )}
       </Box>
 
-  <Box className="px-4 pt-4">
+      {/* Wallet Selector */}
+      <Box className="px-4 py-2">
         <WalletSelector 
           selectedWalletId={filterWallet !== "all" ? filterWallet : undefined}
           onWalletChange={(walletId) => setFilterWallet(walletId || "all")}
@@ -219,7 +220,7 @@ const HistoryPage: FC = () => {
         />
       </Box>
       
-      <Box className="flex-1 overflow-auto px-4 pt-4">
+      <Box className="flex-1 overflow-auto px-4 pt-2 pb-20">
         {Object.keys(groupedTransactions).length === 0 ? (
           <EmptyState
             icon={<SearchIcon size={48} color="#D1D5DB" />}
@@ -233,9 +234,9 @@ const HistoryPage: FC = () => {
             }, 0);
 
             return (
-              <Box key={dateKey} className="mb-4 animate-fadeInUp">
+              <Box key={dateKey} className="mb-3">
                 <Box 
-                  className="px-5 py-3 flex justify-between items-center rounded-t-2xl"
+                  className="px-4 py-2.5 flex justify-between items-center rounded-t-xl"
                   style={{
                     background: 'linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)',
                   }}
@@ -244,19 +245,19 @@ const HistoryPage: FC = () => {
                     {dateKey}
                   </Text>
                   <Box
-                    className={`px-3 py-1.5 rounded-xl font-bold ${
+                    className={`px-2.5 py-1 rounded-lg ${
                       dayTotal >= 0 
-                        ? "bg-emerald-400/90 text-white" 
-                        : "bg-rose-400/90 text-white"
+                        ? "bg-white/20" 
+                        : "bg-white/20"
                     }`}
                   >
-                    <Text size="small" className="font-bold">
+                    <Text size="xSmall" className="font-bold text-white">
                       {dayTotal >= 0 ? "+" : ""}
                       {formatCurrency(dayTotal)}
                     </Text>
                   </Box>
                 </Box>
-                <Card className="rounded-t-none" padding="none">
+                <Card className="rounded-t-none shadow-sm" padding="none">
                   {dayTransactions.map((transaction) => {
                     const category = categories.find(
                       (c) => c.id === transaction.categoryId
@@ -273,46 +274,36 @@ const HistoryPage: FC = () => {
                     return (
                       <Box
                         key={transaction.id}
-                        className="flex items-center justify-between p-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-all duration-200 cursor-pointer active:scale-[0.98]"
+                        className="flex items-center justify-between p-3 active:bg-gray-50 transition-colors cursor-pointer"
                       >
                         <Box className="flex items-center space-x-3 flex-1">
                           <Box
-                            className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-md"
-                            style={{
-                              background: `linear-gradient(135deg, ${category?.color}15 0%, ${category?.color}25 100%)`,
-                            }}
+                            className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                            style={{ backgroundColor: `${category?.color}15` }}
                           >
-                            {IconComponent && <IconComponent size={24} color={category?.color || "#6B7280"} />}
+                            {IconComponent && <IconComponent size={22} color={category?.color || "#6B7280"} />}
                           </Box>
                           <Box className="flex-1 min-w-0">
-                            <Text size="small" className="font-bold text-gray-900">
+                            <Text size="small" className="font-semibold text-gray-900">
                               {category?.name || "Khác"}
                             </Text>
-                            <Text size="xSmall" className="text-gray-500">
+                            <Text size="xSmall" className="text-gray-500 truncate">
                               {time}
                               {transaction.note && ` • ${transaction.note}`}
                             </Text>
                           </Box>
                         </Box>
-                        <Box
-                          className={`px-3 py-1.5 rounded-xl flex-shrink-0 ml-2 ${
+                        <Text
+                          size="small"
+                          className={`font-bold flex-shrink-0 ml-2 ${
                             transaction.type === "income"
-                              ? "bg-gradient-to-r from-emerald-50 to-green-50"
-                              : "bg-gradient-to-r from-rose-50 to-red-50"
+                              ? "text-emerald-600"
+                              : "text-rose-600"
                           }`}
                         >
-                          <Text
-                            size="small"
-                            className={`font-bold ${
-                              transaction.type === "income"
-                                ? "text-emerald-600"
-                                : "text-rose-600"
-                            }`}
-                          >
-                            {transaction.type === "income" ? "+" : "-"}
-                            {formatCurrency(transaction.amount)}
-                          </Text>
-                        </Box>
+                          {transaction.type === "income" ? "+" : "-"}
+                          {formatCurrency(transaction.amount)}
+                        </Text>
                       </Box>
                     );
                   })}

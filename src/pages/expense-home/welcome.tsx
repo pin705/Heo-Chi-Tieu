@@ -2,10 +2,12 @@ import React, { FC } from "react";
 import { Box, Text } from "zmp-ui";
 import { useRecoilValue } from "recoil";
 import { userState } from "expense-state";
-import { SparklesIcon } from "components/icons";
+import { SparklesIcon, BellIcon } from "components/icons";
+import { useNavigate } from "react-router-dom";
 
 export const Welcome: FC = () => {
   const user = useRecoilValue(userState);
+  const navigate = useNavigate();
 
   // Get greeting based on time
   const getGreeting = () => {
@@ -17,40 +19,46 @@ export const Welcome: FC = () => {
 
   return (
     <Box 
-      className="relative app-header overflow-hidden"
+      className="relative overflow-hidden"
+      style={{
+        background: 'linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)',
+        paddingTop: 'calc(env(safe-area-inset-top, 0px) + 12px)',
+      }}
     >
       {/* Decorative circles */}
-      <Box className="absolute top-0 right-0 w-48 h-48 bg-white opacity-10 rounded-full -mr-24 -mt-24" />
-      <Box className="absolute bottom-0 left-0 w-36 h-36 bg-white opacity-10 rounded-full -ml-18 -mb-18" />
-      <Box className="absolute top-1/2 right-10 w-20 h-20 bg-white opacity-5 rounded-full" />
+      <Box className="absolute top-0 right-0 w-40 h-40 bg-white opacity-10 rounded-full -mr-20 -mt-20" />
+      <Box className="absolute bottom-0 left-0 w-28 h-28 bg-white opacity-10 rounded-full -ml-14 -mb-14" />
       
       {/* Content */}
-      <Box className="relative z-10 px-5 pt-12 pb-8" style={{ paddingTop: 'calc(env(safe-area-inset-top) + 16px)' }}>
+      <Box className="relative z-10 px-4 pb-6">
         <Box className="flex items-center justify-between">
-          <Box className="flex items-center space-x-4">
+          <Box className="flex items-center space-x-3">
             <Box className="relative">
               <img
-                className="w-14 h-14 rounded-2xl border-2 border-white/30 shadow-lg object-cover"
+                className="w-12 h-12 rounded-xl border-2 border-white/30 shadow-md object-cover"
                 src={user.avatar.startsWith("http") ? user.avatar : undefined}
                 alt={user.name}
               />
-              <Box className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-400 rounded-full border-2 border-white flex items-center justify-center">
-                <span className="text-[8px]">✓</span>
+              <Box className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-emerald-400 rounded-full border-2 border-white flex items-center justify-center">
+                <span className="text-[6px] text-white">✓</span>
               </Box>
             </Box>
             <Box>
-              <Text size="xSmall" className="text-gray-400 font-medium mb-0.5">
+              <Text size="xSmall" className="text-white/70 font-medium">
                 {getGreeting()} 
               </Text>
-              <Text.Title size="normal" className="font-bold">
+              <Text className="font-bold text-white text-base">
                 {user.name}
-              </Text.Title>
+              </Text>
             </Box>
           </Box>
           
-          {/* Sparkles decoration */}
-          <Box className="animate-float">
-            <SparklesIcon size={32} color="rgba(255,255,255,0.8)" />
+          {/* Notification button */}
+          <Box 
+            onClick={() => navigate("/notification")}
+            className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center cursor-pointer active:scale-95 transition-transform"
+          >
+            <BellIcon size={20} color="#FFFFFF" />
           </Box>
         </Box>
       </Box>
