@@ -499,6 +499,7 @@ export const ProgressBar: FC<ProgressBarProps> = ({
       return () => clearTimeout(timer);
     }
     setAnimated(true);
+    return undefined;
   }, [animate]);
 
   const heightClasses = {
@@ -680,6 +681,7 @@ export const SuccessCelebration: FC<SuccessCelebrationProps> = ({
       }, 1500);
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, [isVisible, onComplete]);
 
   if (!show) return null;

@@ -20,10 +20,6 @@ export const Welcome: FC = () => {
   return (
     <Box 
       className="relative overflow-hidden"
-      style={{
-        background: 'linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)',
-        paddingTop: 'calc(env(safe-area-inset-top, 0px) + 12px)',
-      }}
     >
       {/* Decorative circles */}
       <Box className="absolute top-0 right-0 w-40 h-40 bg-white opacity-10 rounded-full -mr-20 -mt-20" />
@@ -40,14 +36,14 @@ export const Welcome: FC = () => {
                 alt={user.name}
               />
               <Box className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-emerald-400 rounded-full border-2 border-white flex items-center justify-center">
-                <span className="text-[6px] text-white">✓</span>
+                <span className="text-[6px]">✓</span>
               </Box>
             </Box>
             <Box>
-              <Text size="xSmall" className="text-white/70 font-medium">
+              <Text size="xSmall" className="text-gray-300 font-medium">
                 {getGreeting()} 
               </Text>
-              <Text className="font-bold text-white text-base">
+              <Text className="font-bold text-base">
                 {user.name}
               </Text>
             </Box>

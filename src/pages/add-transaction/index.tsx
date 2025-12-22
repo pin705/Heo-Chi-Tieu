@@ -294,7 +294,7 @@ const AddTransactionPage: FC = () => {
           background: type === "expense" 
             ? 'linear-gradient(180deg, #EF4444 0%, #DC2626 100%)'
             : 'linear-gradient(180deg, #10B981 0%, #059669 100%)',
-          paddingTop: 'calc(env(safe-area-inset-top, 0px) + 12px)',
+          paddingTop: 'calc(var(--zaui-safe-area-inset-top, env(safe-area-inset-top, 0px)) + 12px)',
         }}
       >
         {/* Back button and title */}
@@ -559,12 +559,12 @@ const AddTransactionPage: FC = () => {
             <Text className="text-lg font-bold text-gray-900">Chọn danh mục</Text>
             <Box
               onClick={() => setShowCategorySheet(false)}
-              className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer"
+              className="w-8 h-8 rounded-full bg-gray-100 flex items-center hide-scrollbar justify-center cursor-pointer"
             >
               <CloseIcon size={16} color="#6B7280" />
             </Box>
           </Box>
-          <Box className="grid grid-cols-4 gap-3 max-h-[50vh] overflow-visible p-1">
+          <Box className="grid grid-cols-4 gap-3 max-h-[50vh] hide-scrollbar overflow-scroll p-1">
             {categories.map((category) => {
               const IconComponent = getIcon(category.icon);
               const isSelected = selectedCategory === category.id;

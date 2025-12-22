@@ -135,7 +135,7 @@ const ReportsPage: FC = () => {
       <AppHeader title="Báo cáo" noBack />
       <Box className="flex-1 overflow-auto pb-20">
         {/* Wallet Selector */}
-        <Box className="px-4 pt-3 pb-2 -mt-2 bg-gradient-to-b from-yellow-500/10 to-transparent">
+        <Box className="px-4 pt-3 pb-2">
           <WalletSelector compact={true} />
         </Box>
 

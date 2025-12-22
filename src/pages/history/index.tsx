@@ -105,13 +105,13 @@ const HistoryPage: FC = () => {
 
   return (
     <Page className="flex flex-col bg-background">
-      <AppHeader title="Lịch sử giao dịch" />
+      <AppHeader title="Lịch sử giao dịch" noBack={true} />
       
       {/* Wallet Selector */}
     
       
       {/* Search and Filter Bar */}
-      <Box className="px-4 pt-4 pb-3 -mt-3 bg-gradient-to-b from-yellow-500/10 to-transparent">
+      <Box className="px-4 pt-4 pb-3">
         <Box className="flex gap-2 mb-3">
           <Box className="flex-1 relative">
             <Box className="absolute left-4 top-1/2 -translate-y-1/2 z-10">

@@ -1,23 +1,16 @@
 {
   "app": {
-    "title": "Quản Lý Chi Tiêu",
-    "textColor": "black",
-    "leftButton": "none",
-    "statusBar": "transparent",
-    "selfControlLoading": false,
+    "title": "",
+    "textColor": "white",
+    "headerColor": "#FFFFFF",
+    "statusBar": "normal",
+    "actionBarHidden": true,
+    "hideActionBar": true,
     "hideAndroidBottomNavigationBar": false,
-    "hideIOSSafeAreaBottom": false,
-    "actionBarHidden": true
+    "hideIOSSafeAreaBottom": true,
+    "selfControlLoading": false
   },
-  "pages": [],
   "listCSS": [],
   "listSyncJS": [],
-  "listAsyncJS": [],
-  "template": {
-    "name": "expense-tracker",
-    "primaryColor": "#EAB308",
-    "prefixCurrencySymbol": false,
-    "currencySymbol": "đ",
-    "headerLogo": ""
-  }
+  "listAsyncJS": []
 }
