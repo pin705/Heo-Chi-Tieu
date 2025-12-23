@@ -289,45 +289,51 @@ const AddTransactionPage: FC = () => {
     <Page className="flex flex-col bg-gray-100 min-h-screen">
       {/* Fixed Header with Type Toggle */}
       <Box 
-        className="fixed top-0 left-0 right-0 z-50"
+        className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100"
         style={{
-          background: type === "expense" 
-            ? 'linear-gradient(180deg, #EF4444 0%, #DC2626 100%)'
-            : 'linear-gradient(180deg, #10B981 0%, #059669 100%)',
-          paddingTop: 'calc(var(--zaui-safe-area-inset-top, env(safe-area-inset-top, 0px)) + 12px)',
+          paddingTop: 'var(--safe-top)',
         }}
       >
         {/* Back button and title */}
-        <Box className="flex items-center justify-between px-4 pb-2">
-          <Box 
-            onClick={() => navigate(-1)}
-            className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center cursor-pointer active:scale-95 transition-transform"
-          >
-            <CloseIcon size={20} color="#FFFFFF" />
+        <Box className="flex items-center px-4 py-2 relative">
+          <Box className="flex items-center space-x-2 z-10">
+            <Box 
+              onClick={() => navigate(-1)}
+              className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer active:scale-95 transition-transform"
+            >
+              <CloseIcon size={20} color="#000000" />
+            </Box>
+            <Box 
+              onClick={() => setShowVoiceInput(true)}
+              className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer active:scale-95 transition-transform"
+            >
+              <MicrophoneIcon size={20} color="#000000" />
+            </Box>
           </Box>
-          <Text className="text-white text-lg font-bold">
-            {type === "expense" ? "Chi tiêu" : "Thu nhập"}
-          </Text>
-          <Box 
-            onClick={() => setShowVoiceInput(true)}
-            className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center cursor-pointer active:scale-95 transition-transform"
-          >
-            <MicrophoneIcon size={20} color="#FFFFFF" />
+          
+          <Box className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <Text className="text-gray-900 text-lg font-bold">
+              {type === "expense" ? "Chi tiêu" : "Thu nhập"}
+            </Text>
           </Box>
+
+          {/* Right side spacer for Zalo buttons */}
+          <Box className="flex-1" />
+          <Box className="w-24" />
         </Box>
 
         {/* Type Toggle Tabs */}
         <Box className="flex px-4 pb-4">
-          <Box className="flex bg-white/20 rounded-2xl p-1 w-full">
+          <Box className="flex bg-gray-100 rounded-2xl p-1 w-full">
             <Box
               onClick={() => { haptic.light(); setType("expense"); }}
               className={`flex-1 py-2.5 rounded-xl cursor-pointer transition-all duration-200 ${
-                type === "expense" ? "bg-white shadow-md" : ""
+                type === "expense" ? "bg-white shadow-sm" : ""
               }`}
             >
               <Box className="flex items-center justify-center space-x-2">
-                <ExpenseIcon size={18} color={type === "expense" ? "#EF4444" : "#FFFFFF"} />
-                <Text className={`font-bold text-sm ${type === "expense" ? "text-red-500" : "text-white/80"}`}>
+                <ExpenseIcon size={18} color={type === "expense" ? "#EF4444" : "#9CA3AF"} />
+                <Text className={`font-bold text-sm ${type === "expense" ? "text-red-500" : "text-gray-500"}`}>
                   Chi tiêu
                 </Text>
               </Box>
@@ -335,12 +341,12 @@ const AddTransactionPage: FC = () => {
             <Box
               onClick={() => { haptic.light(); setType("income"); }}
               className={`flex-1 py-2.5 rounded-xl cursor-pointer transition-all duration-200 ${
-                type === "income" ? "bg-white shadow-md" : ""
+                type === "income" ? "bg-white shadow-sm" : ""
               }`}
             >
               <Box className="flex items-center justify-center space-x-2">
-                <IncomeIcon size={18} color={type === "income" ? "#10B981" : "#FFFFFF"} />
-                <Text className={`font-bold text-sm ${type === "income" ? "text-green-500" : "text-white/80"}`}>
+                <IncomeIcon size={18} color={type === "income" ? "#10B981" : "#9CA3AF"} />
+                <Text className={`font-bold text-sm ${type === "income" ? "text-green-500" : "text-gray-500"}`}>
                   Thu nhập
                 </Text>
               </Box>
@@ -350,12 +356,12 @@ const AddTransactionPage: FC = () => {
 
         {/* Amount Display */}
         <Box className="px-6 pb-6">
-          <Text size="xSmall" className="text-white/70 mb-1">Số tiền</Text>
+          <Text size="xSmall" className="text-gray-500 mb-1">Số tiền</Text>
           <Box className="flex items-baseline">
-            <Text className="text-white text-5xl font-bold tracking-tight">
+            <Text className={`text-5xl font-bold tracking-tight ${type === "expense" ? "text-red-500" : "text-green-500"}`}>
               {amount ? formatCurrency(parseFloat(amount)).replace('₫', '').trim() : "0"}
             </Text>
-            <Text className="text-white/70 text-2xl ml-2 font-medium">₫</Text>
+            <Text className="text-gray-400 text-2xl ml-2 font-medium">₫</Text>
           </Box>
         </Box>
       </Box>

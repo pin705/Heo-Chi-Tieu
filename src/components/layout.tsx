@@ -1,5 +1,6 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { Route, Routes } from "react-router";
+import { useLocation } from "react-router-dom";
 import { Box } from "zmp-ui";
 import { Navigation } from "./navigation";
 import ExpenseHomePage from "pages/expense-home";
@@ -13,25 +14,23 @@ import ManageCategoriesPage from "pages/manage-categories";
 import GuidePage from "pages/guide";
 import ExportPage from "pages/export";
 import BackupPage from "pages/backup";
-import { getSystemInfo } from "zmp-sdk";
+import { configAppView, getSystemInfo, setNavigationBarColor } from "zmp-sdk";
 import { ScrollRestoration } from "./scroll-restoration";
 import { useHandlePayment } from "hooks";
 
-if (import.meta.env.DEV) {
-  document.body.style.setProperty("--zaui-safe-area-inset-top", "24px");
-} else if (getSystemInfo().platform === "android") {
-  const statusBarHeight =
-    window.ZaloJavaScriptInterface?.getStatusBarHeight() ?? 0;
-  const androidSafeTop = Math.round(statusBarHeight / window.devicePixelRatio);
-  document.body.style.setProperty(
-    "--zaui-safe-area-inset-top",
-    `${androidSafeTop}px`
-  );
-}
+// if (import.meta.env.DEV) {
+//   document.body.style.setProperty("--zaui-safe-area-inset-top", "24px");
+// } else if (getSystemInfo().platform === "android") {
+//   const statusBarHeight =
+//     window.ZaloJavaScriptInterface?.getStatusBarHeight() ?? 0;
+//   const androidSafeTop = Math.round(statusBarHeight / window.devicePixelRatio);
+//   document.body.style.setProperty(
+//     "--zaui-safe-area-inset-top",
+//     `${androidSafeTop}px`
+//   );
+// }
 
 export const Layout: FC = () => {
-  useHandlePayment();
-
   return (
     <Box flex flexDirection="column" className="h-screen">
       <ScrollRestoration />

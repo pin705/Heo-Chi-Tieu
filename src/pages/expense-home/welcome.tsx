@@ -20,13 +20,14 @@ export const Welcome: FC = () => {
   return (
     <Box 
       className="relative overflow-hidden"
+      style={{ paddingTop: "var(--safe-top)" }}
     >
       {/* Decorative circles */}
       <Box className="absolute top-0 right-0 w-40 h-40 bg-white opacity-10 rounded-full -mr-20 -mt-20" />
       <Box className="absolute bottom-0 left-0 w-28 h-28 bg-white opacity-10 rounded-full -ml-14 -mb-14" />
       
       {/* Content */}
-      <Box className="relative z-10 px-4 pb-6">
+      <Box className="relative z-10 px-4 pr-24 pb-6">
         <Box className="flex items-center justify-between">
           <Box className="flex items-center space-x-3">
             <Box className="relative">

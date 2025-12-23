@@ -21,7 +21,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({
   noBack,
   variant = "primary",
   rightElement,
-  showBorder = true,
+  showBorder = false,
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -35,9 +35,10 @@ const AppHeader: React.FC<AppHeaderProps> = ({
 
   return (
     <Box
-      className={`flex-none bg-white ${className}`}
+      className={`flex-none bg-white ${showBorder ? "border-b border-gray-100" : ""} ${className}`}
+      style={{ paddingTop: "var(--safe-top)" }}
     >
-      <Box className="h-12 w-full flex items-center px-2 py-2 relative">
+      <Box className="h-12 w-full flex items-center px-2 py-2 pr-24 relative">
         {/* Back button */}
         {shouldShowBack && (
           <Box
