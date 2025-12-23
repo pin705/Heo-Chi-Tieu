@@ -252,9 +252,9 @@ const HistoryPage: FC = () => {
                     {dayTotal >= 0 ? "+" : ""}{formatCurrency(dayTotal)}
                   </Text>
                 </Box>
-                <Card className="overflow-hidden shadow-sm" padding="none">
-                  <Box className="divide-y divide-gray-50">
-                    {dayTransactions.map((transaction) => {
+                <Box className="bg-white rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.03)] overflow-hidden">
+                  <Box>
+                    {dayTransactions.map((transaction, index) => {
                       const category = categories.find(
                         (c) => c.id === transaction.categoryId
                       );
@@ -270,14 +270,15 @@ const HistoryPage: FC = () => {
                       return (
                         <Box
                           key={transaction.id}
-                          className="flex items-center justify-between p-4 active:bg-gray-50 transition-colors cursor-pointer"
+                          className={`flex items-center justify-between p-4 active:bg-gray-50 transition-colors cursor-pointer ${
+                            index < dayTransactions.length - 1 ? 'border-b border-gray-50' : ''
+                          }`}
                         >
                           <Box className="flex items-center space-x-3 flex-1 min-w-0">
                             <Box
-                              className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm"
+                              className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm"
                               style={{ 
-                                backgroundColor: `${category?.color}15`,
-                                border: `1px solid ${category?.color}20`
+                                backgroundColor: category?.color ? `${category.color}15` : '#F3F4F6',
                               }}
                             >
                               {IconComponent && <IconComponent size={22} color={category?.color || "#6B7280"} />}
@@ -317,7 +318,7 @@ const HistoryPage: FC = () => {
                       );
                     })}
                   </Box>
-                </Card>
+                </Box>
               </Box>
             );
           })

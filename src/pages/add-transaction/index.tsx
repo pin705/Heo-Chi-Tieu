@@ -24,6 +24,7 @@ import {
   CalendarIcon,
   CloseIcon,
   ChevronDownIcon,
+  DeleteIcon,
   getIcon 
 } from "components/icons";
 
@@ -34,7 +35,7 @@ const NumberPad: FC<{
   onSubmit: () => void;
   type: TransactionType;
 }> = ({ onInput, onDelete, onSubmit, type }) => {
-  const buttons = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '.', '0', 'del'];
+  const buttons = ['7', '8', '9', '+', '4', '5', '6', '-', '1', '2', '3', 'del', '.', '0'];
 
   const handlePress = (value: string) => {
     haptic.light();
@@ -46,33 +47,28 @@ const NumberPad: FC<{
   };
 
   return (
-    <Box className="flex gap-2">
-      <Box className="flex-1 grid grid-cols-3 gap-1">
-        {buttons.map((btn, index) => (
-          <Box
-            key={index}
-            onClick={() => handlePress(btn)}
-            className="h-12 rounded-lg flex items-center justify-center cursor-pointer bg-gray-100 active:bg-gray-200 transition-colors"
-          >
-            {btn === 'del' ? (
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                <path d="M21 6H9L3 12L9 18H21C21.5523 18 22 17.5523 22 17V7C22 6.44772 21.5523 6 21 6Z" stroke="#374151" strokeWidth="1.5"/>
-                <path d="M14 10L18 14M18 10L14 14" stroke="#374151" strokeWidth="1.5" strokeLinecap="round"/>
-              </svg>
-            ) : (
-              <Text className="text-xl font-medium text-gray-800">{btn}</Text>
-            )}
-          </Box>
-        ))}
-      </Box>
-      {/* Submit button */}
+    <Box className="grid grid-cols-4 gap-3">
+      {buttons.map((btn, index) => (
+        <Box
+          key={index}
+          onClick={() => handlePress(btn)}
+          className="h-14 rounded-2xl flex items-center justify-center cursor-pointer bg-gray-50 active:bg-gray-200 transition-all shadow-sm"
+        >
+          {btn === 'del' ? (
+            <DeleteIcon size={24} color="#374151" />
+          ) : (
+            <Text className="text-2xl font-semibold text-gray-800">{btn}</Text>
+          )}
+        </Box>
+      ))}
+      {/* Submit button - Spans 2 columns */}
       <Box
         onClick={onSubmit}
-        className={`w-14 rounded-xl flex items-center justify-center cursor-pointer active:opacity-80 transition-opacity ${
+        className={`col-span-2 h-14 rounded-2xl flex items-center justify-center cursor-pointer active:opacity-80 transition-all shadow-md ${
           type === 'expense' ? 'bg-red-500' : 'bg-green-500'
         }`}
       >
-        <CheckIcon size={28} color="#FFFFFF" />
+        <CheckIcon size={32} color="#FFFFFF" />
       </Box>
     </Box>
   );
@@ -128,14 +124,21 @@ const AddTransactionPage: FC = () => {
   // Number pad handlers
   const handleNumberInput = useCallback((value: string) => {
     setAmount(prev => {
+      // Handle operators
+      if (['+', '-'].includes(value)) {
+        if (prev === '' || ['+', '-'].includes(prev.slice(-1))) return prev;
+        return prev + value;
+      }
       // Handle decimal point
       if (value === '.') {
-        if (prev.includes('.')) return prev;
+        const parts = prev.split(/[+-]/);
+        const currentPart = parts[parts.length - 1];
+        if (currentPart.includes('.')) return prev;
         return prev === '' ? '0.' : prev + '.';
       }
       const newValue = prev + value;
-      // Limit to reasonable amount
-      if (parseFloat(newValue) > 9999999999) return prev;
+      // Limit to reasonable length
+      if (newValue.length > 20) return prev;
       return newValue;
     });
   }, []);
@@ -147,8 +150,30 @@ const AddTransactionPage: FC = () => {
   const handleSubmit = useCallback(() => {
     haptic.medium();
     
+    // Evaluate expression
+    let finalAmount = 0;
+    try {
+      // Safe evaluation for + and - only
+      if (/[+-]/.test(amount)) {
+        // Remove trailing operator if any
+        const cleanAmount = ['+', '-'].includes(amount.slice(-1)) ? amount.slice(0, -1) : amount;
+        
+        finalAmount = cleanAmount.split(/([+-])/).reduce((acc, curr, idx, arr) => {
+          if (idx === 0) return parseFloat(curr) || 0;
+          if (['+', '-'].includes(curr)) return acc;
+          const op = arr[idx - 1];
+          const val = parseFloat(curr) || 0;
+          return op === '+' ? acc + val : acc - val;
+        }, 0);
+      } else {
+        finalAmount = parseFloat(amount);
+      }
+    } catch (e) {
+      finalAmount = 0;
+    }
+
     // Validation
-    if (!amount || parseFloat(amount) <= 0) {
+    if (!finalAmount || finalAmount <= 0) {
       openSnackbar({ type: "error", text: "Vui lòng nhập số tiền hợp lệ" });
       return;
     }
@@ -165,7 +190,7 @@ const AddTransactionPage: FC = () => {
 
     const transaction: Transaction = {
       id: Date.now().toString(),
-      amount: parseFloat(amount),
+      amount: finalAmount,
       type,
       categoryId: selectedCategory,
       walletId: selectedWallet,
@@ -183,8 +208,8 @@ const AddTransactionPage: FC = () => {
         return {
           ...wallet,
           balance: type === "income"
-            ? wallet.balance + transaction.amount
-            : wallet.balance - transaction.amount,
+            ? wallet.balance + finalAmount
+            : wallet.balance - finalAmount,
         };
       }
       return wallet;
@@ -252,7 +277,7 @@ const AddTransactionPage: FC = () => {
     <Page className="flex flex-col bg-white min-h-screen">
       {/* Yellow Header - Sổ Thu Chi style */}
       <Box 
-        className="bg-yellow-400"
+        className="bg-[#fbbf24]"
         style={{ paddingTop: 'var(--safe-top)' }}
       >
         <Box className="flex items-center justify-between px-4 py-3">
@@ -359,8 +384,10 @@ const AddTransactionPage: FC = () => {
               </>
             )}
           </Box>
-          <Text className={`text-2xl font-bold ${type === "expense" ? "text-gray-900" : "text-green-600"}`}>
-            {amount ? formatCurrency(parseFloat(amount)) : "0 ₫"}
+          <Text className={`text-3xl font-bold ${type === "expense" ? "text-gray-900" : "text-green-600"}`}>
+            {amount ? (
+              /[+-]/.test(amount) ? amount : formatCurrency(parseFloat(amount))
+            ) : "0 ₫"}
           </Text>
         </Box>
 

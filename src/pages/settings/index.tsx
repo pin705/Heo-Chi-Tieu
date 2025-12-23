@@ -42,10 +42,10 @@ const SettingsPage: FC = () => {
   };
 
   return (
-    <Page className="flex flex-col bg-gray-50 min-h-screen">
+    <Page className="flex flex-col  min-h-screen">
       {/* Yellow Header with User Info */}
       <Box 
-        className="flex-none"
+        className="flex-none relative z-10"
         style={{ 
           background: '#FBBF24',
           paddingTop: 'var(--safe-top)',
@@ -86,7 +86,7 @@ const SettingsPage: FC = () => {
       {/* Content */}
       <Box className="flex-1 overflow-auto pb-24 -mt-4">
         {/* Premium Card */}
-        <Box className="mx-4 mb-4">
+        {/* <Box className="mx-4 mb-4">
           <Box 
             className="bg-gray-900 rounded-2xl p-5 shadow-lg flex items-center justify-between cursor-pointer active:scale-[0.98] transition-all"
             onClick={() => openSnackbar({ text: "Tính năng đang phát triển" })}
@@ -102,7 +102,7 @@ const SettingsPage: FC = () => {
             </Box>
             <ChevronRightIcon size={24} color="#FBBF24" />
           </Box>
-        </Box>
+        </Box> */}
 
         {/* Quick Access */}
         <Box className="mx-4 mt-6">

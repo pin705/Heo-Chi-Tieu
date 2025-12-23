@@ -147,11 +147,11 @@ const BudgetPage: FC = () => {
         </Box>
 
         {/* Monthly Budget Section */}
-        <Box className="px-4 pt-4">
+      <Box className="px-4 pt-4">
           <Box className="flex items-center justify-between mb-3">
-            <Text.Title size="small" className="font-semibold">Ngân sách tháng</Text.Title>
+            <Text.Title size="small" className="font-semibold text-gray-800">Ngân sách tháng</Text.Title>
             <Box
-              className="flex items-center px-3 py-2 bg-yellow-500 rounded-xl cursor-pointer active:scale-95 transition-transform shadow-md"
+              className="flex items-center px-3 py-2 bg-yellow-500 rounded-xl cursor-pointer active:scale-95 transition-transform shadow-lg shadow-yellow-500/30"
               onClick={() => {
                 setFormData({
                   type: "monthly",
@@ -170,34 +170,40 @@ const BudgetPage: FC = () => {
           </Box>
 
           {monthlyBudget ? (
-            <Card 
-              className="animate-fadeIn"
-              padding="lg"
+            <Box 
+              className="animate-fadeIn relative overflow-hidden rounded-2xl p-5 shadow-xl shadow-yellow-500/20"
               style={{
                 background: 'linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)',
               }}
             >
-              <Text size="small" className="text-white/90">
-                {getMonthName(monthlyBudget.month)} {monthlyBudget.year}
-              </Text>
-              <Text.Title size="large" className="mt-3 mb-4 font-bold text-white">
-                <AnimatedNumber value={monthlyBudget.amount} formatFn={formatCurrency} />
-              </Text.Title>
-              <Box
-                className="flex items-center justify-center px-4 py-2 bg-white/20 rounded-xl cursor-pointer active:scale-95 transition-transform"
-                onClick={() => handleDeleteBudget(monthlyBudget.id)}
-              >
-                <DeleteIcon size={18} color="#FFFFFF" className="mr-2" />
-                <Text size="small" className="text-white font-semibold">Xóa ngân sách</Text>
+              <Box className="relative z-10">
+                <Text size="small" className="text-white/90 font-medium mb-1">
+                  {getMonthName(monthlyBudget.month)} {monthlyBudget.year}
+                </Text>
+                <Text.Title size="large" className="mb-4 font-bold text-white text-3xl">
+                  <AnimatedNumber value={monthlyBudget.amount} formatFn={formatCurrency} />
+                </Text.Title>
+                <Box
+                  className="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-sm rounded-xl cursor-pointer active:scale-95 transition-transform hover:bg-white/30"
+                  onClick={() => handleDeleteBudget(monthlyBudget.id)}
+                >
+                  <DeleteIcon size={18} color="#FFFFFF" className="mr-2" />
+                  <Text size="small" className="text-white font-semibold">Xóa ngân sách</Text>
+                </Box>
               </Box>
-            </Card>
+              {/* Decorative circles */}
+              <Box className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
+              <Box className="absolute -bottom-10 -left-10 w-32 h-32 bg-white/10 rounded-full blur-xl" />
+            </Box>
           ) : (
-            <Card className="text-center border-2 border-dashed border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100">
-              <CalendarIcon size={48} color="#9CA3AF" className="mx-auto mb-3" />
+            <Box className="text-center py-8 bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.03)]">
+              <Box className="w-16 h-16 mx-auto mb-4 bg-gray-50 rounded-full flex items-center justify-center">
+                <CalendarIcon size={32} color="#9CA3AF" />
+              </Box>
               <Text className="text-gray-500 font-medium">
                 Chưa thiết lập ngân sách cho tháng này
               </Text>
-            </Card>
+            </Box>
           )}
         </Box>
 
@@ -206,10 +212,10 @@ const BudgetPage: FC = () => {
           <Box className="flex items-center justify-between mb-4">
             <Box className="flex items-center">
               <CategoryIcon size={20} color="#8B5CF6" className="mr-2" />
-              <Text.Title size="small">Ngân sách theo danh mục</Text.Title>
+              <Text.Title size="small" className="font-semibold text-gray-800">Ngân sách theo danh mục</Text.Title>
             </Box>
             <Box
-              className="flex items-center px-3 py-2 bg-yellow-500 rounded-xl cursor-pointer active:scale-95 transition-transform shadow-md"
+              className="flex items-center px-3 py-2 bg-white text-yellow-600 border border-yellow-100 rounded-xl cursor-pointer active:scale-95 transition-transform shadow-sm"
               onClick={() => {
                 setFormData({
                   type: "category",
@@ -222,21 +228,23 @@ const BudgetPage: FC = () => {
                 setShowAddSheet(true);
               }}
             >
-              <PlusIcon size={16} color="#FFFFFF" className="mr-1" />
-              <Text size="xSmall" className="text-white font-semibold">Thêm</Text>
+              <PlusIcon size={16} color="#CA8A04" className="mr-1" />
+              <Text size="xSmall" className="font-semibold">Thêm</Text>
             </Box>
           </Box>
 
           {categoryBudgets.length === 0 ? (
-            <Card className="text-center border-2 border-dashed border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100">
-              <CategoryIcon size={48} color="#9CA3AF" className="mx-auto mb-3" />
+            <Box className="text-center py-8 bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.03)]">
+              <Box className="w-16 h-16 mx-auto mb-4 bg-gray-50 rounded-full flex items-center justify-center">
+                <CategoryIcon size={32} color="#9CA3AF" />
+              </Box>
               <Text className="text-gray-500 font-medium">
                 Chưa có ngân sách theo danh mục
               </Text>
-            </Card>
+            </Box>
           ) : (
-            <Card padding="none" className="overflow-hidden">
-              {categoryBudgets.map((budget, index) => {
+            <Box className="space-y-3">
+              {categoryBudgets.map((budget) => {
                 const category = expenseCategories.find(
                   (c) => c.id === budget.categoryId
                 );
@@ -244,37 +252,37 @@ const BudgetPage: FC = () => {
                 return (
                   <Box
                     key={budget.id}
-                    className={`flex items-center justify-between p-4 ${index < categoryBudgets.length - 1 ? 'border-b border-gray-100' : ''}`}
+                    className="flex items-center justify-between p-4 bg-white rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.03)]"
                   >
                     <Box className="flex items-center space-x-3">
                       <Box
-                        className="w-10 h-10 rounded-full flex items-center justify-center"
+                        className="w-12 h-12 rounded-full flex items-center justify-center shadow-sm"
                         style={{
-                          backgroundColor: `${category?.color}20`,
+                          backgroundColor: category?.color ? `${category.color}15` : '#F3F4F6',
                         }}
                       >
-                        {IconComponent && <IconComponent size={20} color={category?.color || "#6B7280"} />}
+                        {IconComponent && <IconComponent size={24} color={category?.color || "#6B7280"} />}
                       </Box>
                       <Box>
-                        <Text className="font-medium text-gray-900">{category?.name || "Khác"}</Text>
+                        <Text className="font-semibold text-gray-900 text-base">{category?.name || "Khác"}</Text>
                         <Text size="xSmall" className="text-gray-500">{getMonthName(budget.month)} {budget.year}</Text>
                       </Box>
                     </Box>
                     <Box className="flex items-center space-x-3">
-                      <Text className="font-semibold text-gray-900">
+                      <Text className="font-bold text-gray-900 text-base">
                         {formatCurrency(budget.amount)}
                       </Text>
                       <Box
-                        className="p-2 rounded-lg cursor-pointer active:bg-red-50 transition-colors"
+                        className="p-2 rounded-full hover:bg-red-50 active:bg-red-100 transition-colors cursor-pointer"
                         onClick={() => handleDeleteBudget(budget.id)}
                       >
-                        <DeleteIcon size={18} color="#EF4444" />
+                        <DeleteIcon size={20} color="#EF4444" />
                       </Box>
                     </Box>
                   </Box>
                 );
               })}
-            </Card>
+            </Box>
           )}
         </Box>
       </Box>

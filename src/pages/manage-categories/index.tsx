@@ -1,21 +1,35 @@
 import React, { FC, useState } from "react";
-import { Page, Box, Text, Button, Icon, useSnackbar, Sheet, Input, Select, Tabs } from "zmp-ui";
+import { Page, Box, Text, Button, useSnackbar, Sheet, Input, Select, Tabs } from "zmp-ui";
 import AppHeader from "components/app-header";
 import { useRecoilState } from "recoil";
 import { categoriesState } from "expense-state";
 import { ExpenseCategory } from "types/expense-category";
+import { 
+  getIcon, 
+  CategoryIcon, 
+  PlusIcon, 
+  EditIcon, 
+  DeleteIcon,
+  FoodIcon,
+  ShoppingIcon,
+  TransportIcon,
+  EntertainmentIcon
+} from "components/icons";
 
 const CATEGORY_ICONS = [
-  { value: "zi-home", label: "Nhà" },
-  { value: "zi-location", label: "Vị trí" },
-  { value: "zi-gallery", label: "Mua sắm" },
-  { value: "zi-play", label: "Giải trí" },
-  { value: "zi-note", label: "Ghi chú" },
-  { value: "zi-heart", label: "Yêu thích" },
-  { value: "zi-star", label: "Ngôi sao" },
-  { value: "zi-user-circle", label: "Người dùng" },
-  { value: "zi-calendar", label: "Lịch" },
-  { value: "zi-clock", label: "Đồng hồ" },
+  { value: "food", label: "Ăn uống" },
+  { value: "shopping", label: "Mua sắm" },
+  { value: "transport", label: "Di chuyển" },
+  { value: "entertainment", label: "Giải trí" },
+  { value: "coffee", label: "Cafe" },
+  { value: "bill", label: "Hóa đơn" },
+  { value: "health", label: "Sức khỏe" },
+  { value: "education", label: "Giáo dục" },
+  { value: "family", label: "Gia đình" },
+  { value: "salary", label: "Lương" },
+  { value: "investment", label: "Đầu tư" },
+  { value: "gift", label: "Quà tặng" },
+  { value: "other", label: "Khác" },
 ];
 
 const CATEGORY_COLORS = [
@@ -37,7 +51,7 @@ const ManageCategoriesPage: FC = () => {
   const [activeTab, setActiveTab] = useState<"expense" | "income">("expense");
   const [formData, setFormData] = useState({
     name: "",
-    icon: "zi-home",
+    icon: "food",
     color: "#ef4444",
     type: "expense" as "expense" | "income",
   });
@@ -49,7 +63,7 @@ const ManageCategoriesPage: FC = () => {
     setEditingCategory(null);
     setFormData({
       name: "",
-      icon: "zi-home",
+      icon: "food",
       color: "#ef4444",
       type,
     });
@@ -126,9 +140,9 @@ const ManageCategoriesPage: FC = () => {
   const renderCategoryList = (categoryList: ExpenseCategory[], type: "expense" | "income") => (
     <Box className="p-4 pb-24 space-y-2.5">
       {categoryList.length === 0 ? (
-        <Box className="bg-section rounded-2xl p-12 text-center">
-          <Box className="bg-gray-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-            <Icon icon="zi-home" size={40} className="text-gray-400" />
+        <Box className="bg-white rounded-2xl p-12 text-center shadow-sm">
+          <Box className="bg-gray-50 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+            <CategoryIcon size={40} color="#9CA3AF" />
           </Box>
           <Text className="text-gray-600 font-medium">Chưa có danh mục nào</Text>
           <Text size="xSmall" className="text-gray-400 mt-2">
@@ -136,79 +150,79 @@ const ManageCategoriesPage: FC = () => {
           </Text>
         </Box>
       ) : (
-        categoryList.map((category) => (
-          <Box
-            key={category.id}
-            className="bg-section rounded-2xl p-4"
-          >
-            <Box className="flex items-center justify-between">
-              <Box className="flex items-center flex-1">
-                <Box
-                  className="w-14 h-14 rounded-2xl flex items-center justify-center mr-3.5"
-                  style={{ backgroundColor: category.color + "15" }}
-                >
-                  <Icon
-                    icon={category.icon as any}
-                    size={26}
-                    style={{ color: category.color }}
-                  />
+        categoryList.map((category) => {
+          const IconComponent = getIcon(category.icon) || CategoryIcon;
+          return (
+            <Box
+              key={category.id}
+              className="bg-white rounded-2xl p-4 shadow-[0_2px_10px_rgba(0,0,0,0.03)] active:scale-[0.99] transition-all"
+            >
+              <Box className="flex items-center justify-between">
+                <Box className="flex items-center flex-1">
+                  <Box
+                    className="w-14 h-14 rounded-2xl flex items-center justify-center mr-4 shadow-inner"
+                    style={{ backgroundColor: `${category.color}15` }}
+                  >
+                    <IconComponent
+                      size={28}
+                      color={category.color}
+                    />
+                  </Box>
+                  <Box className="flex-1">
+                    <Text className="font-bold text-gray-900 mb-1 text-lg">
+                      {category.name}
+                    </Text>
+                    <Text size="xSmall" className="text-gray-500 font-medium">
+                      {category.type === "expense" ? "Chi tiêu" : "Thu nhập"}
+                    </Text>
+                  </Box>
                 </Box>
-                <Box className="flex-1">
-                  <Text className="font-semibold text-gray-900 mb-0.5">
-                    {category.name}
-                  </Text>
-                  <Text size="xSmall" className="text-gray-500">
-                    {category.type === "expense" ? "Chi tiêu" : "Thu nhập"}
-                  </Text>
+                <Box className="flex gap-3">
+                  <Box
+                    className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 active:bg-gray-100 cursor-pointer transition-colors"
+                    onClick={() => handleOpenEditSheet(category)}
+                  >
+                    <EditIcon size={20} color="#4B5563" />
+                  </Box>
+                  <Box
+                    className="w-10 h-10 flex items-center justify-center rounded-full bg-red-50 active:bg-red-100 cursor-pointer transition-colors"
+                    onClick={() => handleDelete(category.id)}
+                  >
+                    <DeleteIcon size={20} color="#EF4444" />
+                  </Box>
                 </Box>
-              </Box>
-              <Box className="flex gap-2">
-                <Button
-                  size="small"
-                  variant="secondary"
-                  onClick={() => handleOpenEditSheet(category)}
-                  className="border-gray-200 active:bg-gray-100"
-                  icon={<Icon icon="zi-edit" size={18} className="text-gray-700" />}
-                />
-                <Button
-                  size="small"
-                  variant="secondary"
-                  onClick={() => handleDelete(category.id)}
-                  className="border-red-200 text-red-600 active:bg-red-50"
-                  icon={<Icon icon="zi-delete" size={18} />}
-                />
               </Box>
             </Box>
-          </Box>
-        ))
+          );
+        })
       )}
       
       {/* Add Button */}
-      <Box className="fixed bottom-5 right-5 z-10">
-        <Button
-          variant="primary"
+      <Box className="fixed bottom-8 right-6 z-50">
+        <Box
           onClick={() => handleOpenAddSheet(type)}
-          className="w-14 h-14 rounded-full shadow-xl flex items-center justify-center bg-yellow-500 border-0 active:scale-95 transition-transform"
-          icon={<Icon icon="zi-plus" size={28} className="text-white" />}
-        />
+          className="w-16 h-16 rounded-full shadow-xl flex items-center justify-center bg-yellow-400 cursor-pointer active:scale-90 transition-all hover:shadow-2xl"
+        >
+          <PlusIcon size={32} color="#1F2937" />
+        </Box>
       </Box>
     </Box>
   );
 
   return (
-    <Page className="flex flex-col bg-background">
+    <Page className="flex flex-col bg-gray-50">
       <AppHeader title="Quản lý danh mục" />
       <Box className="flex-1 overflow-auto pb-4">
         {/* Header Info */}
-        <Box className="rounded-2xl m-4 bg-section p-6 relative overflow-hidden">
-          <Box className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16" />
+        <Box className="rounded-2xl m-4 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)] p-6 relative overflow-hidden">
+          <Box className="absolute top-0 right-0 w-32 h-32 bg-yellow-400 opacity-10 rounded-full -mr-16 -mt-16" />
           <Box className="relative z-10">
-            <Text.Title className="text-gray-900 text-2xl font-bold mb-3">
+            <Text.Title className="text-gray-900 text-2xl font-black mb-3">
               Danh mục thu chi
             </Text.Title>
-            <Box className="flex gap-6">
+            <Box className="flex gap-8">
               <Box>
-                <Text size="xSmall" className="text-gray-900 opacity-90 mb-1">
+                <Text size="xSmall" className="text-gray-500 font-medium mb-1 uppercase tracking-wider">
                   Chi tiêu
                 </Text>
                 <Text className="text-gray-900 font-bold text-xl">
@@ -216,7 +230,7 @@ const ManageCategoriesPage: FC = () => {
                 </Text>
               </Box>
               <Box>
-                <Text size="xSmall" className="text-gray-900 opacity-90 mb-1">
+                <Text size="xSmall" className="text-gray-500 font-medium mb-1 uppercase tracking-wider">
                   Thu nhập
                 </Text>
                 <Text className="text-gray-900 font-bold text-xl">
@@ -228,7 +242,7 @@ const ManageCategoriesPage: FC = () => {
         </Box>
 
         {/* Tabs */}
-       <Box className="m-4 rounded-2xl overflow-hidden">
+       <Box className="mx-4 rounded-2xl overflow-hidden shadow-sm">
          <Tabs
           activeKey={activeTab}
           onChange={(key) => setActiveTab(key as "expense" | "income")}

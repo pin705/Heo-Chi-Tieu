@@ -43,7 +43,7 @@ const ReportsPage: FC = () => {
   }, [wallets]);
 
   return (
-    <Page className="flex flex-col bg-gray-50 min-h-screen">
+    <Page className="flex flex-col min-h-screen">
       {/* Yellow Header */}
       <Box 
         className="flex-none"
@@ -286,7 +286,7 @@ const ReportsPage: FC = () => {
 
             {/* Wallet List */}
             <Box className="bg-white rounded-2xl shadow-sm  overflow-hidden">
-              <Box className="p-4 border-b border-gray-100">
+              <Box className="p-4">
                 <Text className="font-bold text-gray-900">Danh sách ví</Text>
               </Box>
               {wallets.map((wallet) => {

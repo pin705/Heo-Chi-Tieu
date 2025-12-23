@@ -1,18 +1,27 @@
 import React, { FC, useState } from "react";
-import { Page, Box, Text, Button, Icon, useSnackbar, Sheet, Input, Select } from "zmp-ui";
+import { Page, Box, Text, Button, useSnackbar, Sheet, Input, Select } from "zmp-ui";
 import AppHeader from "components/app-header";
 import { useRecoilState } from "recoil";
 import { walletsState } from "expense-state";
 import { Wallet } from "types/wallet";
 import { formatCurrency } from "utils/format";
+import { 
+  getIcon, 
+  WalletIcon, 
+  PlusIcon, 
+  EditIcon, 
+  DeleteIcon,
+  StarIcon,
+  UserIcon,
+  HomeIcon
+} from "components/icons";
 
 const WALLET_ICONS = [
-  { value: "zi-star", label: "Ngôi sao" },
-  { value: "zi-user-circle", label: "Người dùng" },
-  { value: "zi-user-circle-solid", label: "Người dùng (đậm)" },
-  { value: "zi-home", label: "Nhà" },
-  { value: "zi-wallet", label: "Ví" },
-  { value: "zi-card", label: "Thẻ" },
+  { value: "wallet", label: "Ví" },
+  { value: "home", label: "Nhà" },
+  { value: "star", label: "Ngôi sao" },
+  { value: "user", label: "Cá nhân" },
+  { value: "piggy-bank", label: "Heo đất" },
 ];
 
 const WALLET_COLORS = [
@@ -33,7 +42,7 @@ const ManageWalletsPage: FC = () => {
   const [formData, setFormData] = useState({
     name: "",
     balance: "0",
-    icon: "zi-wallet",
+    icon: "wallet",
     color: "#10b981",
   });
 
@@ -42,7 +51,7 @@ const ManageWalletsPage: FC = () => {
     setFormData({
       name: "",
       balance: "0",
-      icon: "zi-wallet",
+      icon: "wallet",
       color: "#10b981",
     });
     setSheetVisible(true);
@@ -125,27 +134,27 @@ const ManageWalletsPage: FC = () => {
       <AppHeader title="Quản lý ví" />
       <Box className="flex-1 overflow-auto pb-24">
         {/* Total Balance */}
-        <Box className="rounded-2xl m-4 bg-section p-6 relative overflow-hidden">
-          <Box className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16" />
+        <Box className="rounded-2xl m-4 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)] p-6 relative overflow-hidden">
+          <Box className="absolute top-0 right-0 w-32 h-32 bg-yellow-400 opacity-10 rounded-full -mr-16 -mt-16" />
           <Box className="relative z-10">
-            <Text size="xSmall" className="text-gray-900 opacity-90 mb-1">
+            <Text size="xSmall" className="text-gray-500 font-medium mb-1 uppercase tracking-wider">
               Tổng số dư
             </Text>
-            <Text.Title className="text-gray-900 text-3xl font-bold mb-2">
+            <Text.Title className="text-gray-900 text-3xl font-black mb-2">
               {formatCurrency(totalBalance)}
             </Text.Title>
-            <Text size="xSmall" className="text-gray-900 opacity-90">
-              {wallets.length} ví
+            <Text size="xSmall" className="text-gray-500 font-medium">
+              {wallets.length} ví đang hoạt động
             </Text>
           </Box>
         </Box>
 
         {/* Wallets List */}
-        <Box className="p-4 space-y-2.5">
+        <Box className="px-4 space-y-3">
           {wallets.length === 0 ? (
-            <Box className="bg-section rounded-2xl p-12 text-center">
-              <Box className="bg-gray-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                <Icon icon="zi-home" size={40} className="text-gray-400" />
+            <Box className="bg-white rounded-2xl p-12 text-center shadow-sm">
+              <Box className="bg-gray-50 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+                <WalletIcon size={40} color="#9CA3AF" />
               </Box>
               <Text className="text-gray-600 font-medium">Chưa có ví nào</Text>
               <Text size="xSmall" className="text-gray-400 mt-2">
@@ -153,59 +162,61 @@ const ManageWalletsPage: FC = () => {
               </Text>
             </Box>
           ) : (
-            wallets.map((wallet) => (
-              <Box
-                key={wallet.id}
-                className="bg-section rounded-2xl p-4"
-              >
-                <Box className="flex items-center justify-between">
-                  <Box className="flex items-center flex-1">
-                    <Box
-                      className="w-14 h-14 rounded-2xl flex items-center justify-center mr-3.5"
-                      style={{ backgroundColor: wallet.color + "15" }}
-                    >
-                      <Icon
-                        icon={wallet.icon as any}
-                        size={26}
-                        style={{ color: wallet.color }}
-                      />
+            wallets.map((wallet) => {
+              const IconComponent = getIcon(wallet.icon) || WalletIcon;
+              return (
+                <Box
+                  key={wallet.id}
+                  className="bg-white rounded-2xl p-4 shadow-[0_2px_10px_rgba(0,0,0,0.03)] active:scale-[0.99] transition-all"
+                >
+                  <Box className="flex items-center justify-between">
+                    <Box className="flex items-center flex-1">
+                      <Box
+                        className="w-14 h-14 rounded-2xl flex items-center justify-center mr-4 shadow-inner"
+                        style={{ backgroundColor: `${wallet.color}15` }}
+                      >
+                        <IconComponent
+                          size={28}
+                          color={wallet.color}
+                        />
+                      </Box>
+                      <Box className="flex-1">
+                        <Text className="font-bold text-gray-900 mb-1 text-lg">
+                          {wallet.name}
+                        </Text>
+                        <Text className="text-base font-semibold" style={{ color: wallet.color }}>
+                          {formatCurrency(wallet.balance)}
+                        </Text>
+                      </Box>
                     </Box>
-                    <Box className="flex-1">
-                      <Text className="font-semibold text-gray-900 mb-0.5">
-                        {wallet.name}
-                      </Text>
-                      <Text className="text-lg font-bold" style={{ color: wallet.color }}>
-                        {formatCurrency(wallet.balance)}
-                      </Text>
-                    </Box>
-                  </Box>
-                  <Box className="flex gap-2">
-                    <Box
-                      className="w-9 h-9 flex items-center justify-center rounded-full bg-gray-100 active:bg-gray-200 cursor-pointer transition-colors"
-                      onClick={() => handleOpenEditSheet(wallet)}
-                    >
-                      <Icon icon="zi-edit" size={18} className="text-gray-600" />
-                    </Box>
-                    <Box
-                      className="w-9 h-9 flex items-center justify-center rounded-full bg-red-50 active:bg-red-100 cursor-pointer transition-colors"
-                      onClick={() => handleDelete(wallet.id)}
-                    >
-                      <Icon icon="zi-delete" size={18} className="text-red-500" />
+                    <Box className="flex gap-3">
+                      <Box
+                        className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 active:bg-gray-100 cursor-pointer transition-colors"
+                        onClick={() => handleOpenEditSheet(wallet)}
+                      >
+                        <EditIcon size={20} color="#4B5563" />
+                      </Box>
+                      <Box
+                        className="w-10 h-10 flex items-center justify-center rounded-full bg-red-50 active:bg-red-100 cursor-pointer transition-colors"
+                        onClick={() => handleDelete(wallet.id)}
+                      >
+                        <DeleteIcon size={20} color="#EF4444" />
+                      </Box>
                     </Box>
                   </Box>
                 </Box>
-              </Box>
-            ))
+              );
+            })
           )}
         </Box>
 
         {/* Add Button */}
-        <Box className="fixed bottom-24 right-5 z-10">
+        <Box className="fixed bottom-8 right-6 z-50">
           <Box
             onClick={handleOpenAddSheet}
-            className="w-14 h-14 rounded-full shadow-xl flex items-center justify-center bg-yellow-500 cursor-pointer active:scale-95 transition-transform"
+            className="w-16 h-16 rounded-full shadow-xl flex items-center justify-center bg-yellow-400 cursor-pointer active:scale-90 transition-all hover:shadow-2xl"
           >
-            <Icon icon="zi-plus" size={28} className="text-white" />
+            <PlusIcon size={32} color="#1F2937" />
           </Box>
         </Box>
 
