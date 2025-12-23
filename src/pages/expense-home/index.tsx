@@ -178,7 +178,7 @@ const ExpenseHomePage: FC = () => {
                       <Box
                         key={transaction.id}
                         className={`flex items-center justify-between px-4 py-3 bg-white cursor-pointer active:bg-gray-50 transition-colors ${
-                          index < data.transactions.length - 1 ? 'border-b border-gray-50' : ''
+                          index < data.transactions.length - 1 ? '' : ''
                         }`}
                         onClick={() => navigate(`/history?id=${transaction.id}`)}
                       >

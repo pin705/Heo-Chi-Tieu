@@ -271,7 +271,7 @@ const HistoryPage: FC = () => {
                         <Box
                           key={transaction.id}
                           className={`flex items-center justify-between p-4 active:bg-gray-50 transition-colors cursor-pointer ${
-                            index < dayTransactions.length - 1 ? 'border-b border-gray-50' : ''
+                            index < dayTransactions.length - 1 ? '' : ''
                           }`}
                         >
                           <Box className="flex items-center space-x-3 flex-1 min-w-0">
