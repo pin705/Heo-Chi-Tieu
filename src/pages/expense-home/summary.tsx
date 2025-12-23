@@ -14,7 +14,7 @@ export const Summary: FC = () => {
   const navigate = useNavigate();
 
   return (
-    <Box className="px-4 pt-4 pb-2 -mt-3 relative z-10">
+    <Box className="px-4 pt-4 pb-2 -mt-8 relative z-10">
       {/* Total Balance Card with Gradient */}
       <Card 
         className="mb-3 relative overflow-hidden"
@@ -45,6 +45,32 @@ export const Summary: FC = () => {
           </Box>
         </Box>
       </Card>
+
+      {/* Income & Expense Overview */}
+      <Box className="grid grid-cols-2 gap-3 mb-3">
+        <Card padding="sm" className="bg-white border border-emerald-50">
+          <Box className="flex items-center space-x-2 mb-1">
+            <Box className="bg-emerald-100 rounded-lg p-1.5">
+              <IncomeIcon size={14} color="#10B981" />
+            </Box>
+            <Text size="xxSmall" className="text-gray-500 font-medium">Thu nhập</Text>
+          </Box>
+          <Text className="font-bold text-emerald-600 text-sm">
+            <AnimatedNumber value={stats.income} formatFn={formatCurrency} duration={600} />
+          </Text>
+        </Card>
+        <Card padding="sm" className="bg-white border border-rose-50">
+          <Box className="flex items-center space-x-2 mb-1">
+            <Box className="bg-rose-100 rounded-lg p-1.5">
+              <ExpenseIcon size={14} color="#EF4444" />
+            </Box>
+            <Text size="xxSmall" className="text-gray-500 font-medium">Chi tiêu</Text>
+          </Box>
+          <Text className="font-bold text-rose-600 text-sm">
+            <AnimatedNumber value={stats.expense} formatFn={formatCurrency} duration={600} />
+          </Text>
+        </Card>
+      </Box>
 
       {/* Budget Alert with modern styling */}
       {budgetStatus.hasBudget && budgetStatus.isExceeded && (

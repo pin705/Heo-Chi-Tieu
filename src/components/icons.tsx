@@ -85,6 +85,21 @@ export const PlusIcon: React.FC<IconProps> = ({ size = 24, color = "#FFFFFF", cl
 
 // ==================== ACTION ICONS ====================
 
+// Icon Menu (hamburger)
+export const MenuIcon: React.FC<IconProps> = ({ size = 24, color = "currentColor", className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+    <path d="M3 7H21M3 12H21M3 17H21" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+  </svg>
+);
+
+// Icon Report / Báo cáo
+export const ReportIcon: React.FC<IconProps> = ({ size = 24, color = "#6F7071", className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+    <rect x="4" y="3" width="16" height="18" rx="2" stroke={color} strokeWidth="1.5"/>
+    <path d="M8 7H16M8 11H16M8 15H12" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
+  </svg>
+);
+
 // Icon Quay lại
 export const BackIcon: React.FC<IconProps> = ({ size = 24, color = "currentColor", className }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>

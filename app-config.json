@@ -2,7 +2,7 @@
   "app": {
     "title": "",
     "textColor": "white",
-    "headerColor": "#FFFFFF",
+    "headerColor": "#fbbf24",
     "statusBar": "normal",
     "actionBarHidden": true,
     "hideActionBar": true,

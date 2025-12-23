@@ -20,31 +20,36 @@ export const Welcome: FC = () => {
   return (
     <Box 
       className="relative overflow-hidden"
-      style={{ paddingTop: "var(--safe-top)" }}
+      style={{ 
+        paddingTop: "var(--safe-top)",
+        background: 'linear-gradient(180deg, #EAB308 0%, #CA8A04 100%)',
+        borderBottomLeftRadius: '24px',
+        borderBottomRightRadius: '24px',
+      }}
     >
       {/* Decorative circles */}
       <Box className="absolute top-0 right-0 w-40 h-40 bg-white opacity-10 rounded-full -mr-20 -mt-20" />
       <Box className="absolute bottom-0 left-0 w-28 h-28 bg-white opacity-10 rounded-full -ml-14 -mb-14" />
       
       {/* Content */}
-      <Box className="relative z-10 px-4 pr-24 pb-6">
+      <Box className="relative z-10 px-4 pr-24 pb-10 pt-4">
         <Box className="flex items-center justify-between">
           <Box className="flex items-center space-x-3">
             <Box className="relative">
               <img
-                className="w-12 h-12 rounded-xl border-2 border-white/30 shadow-md object-cover"
+                className="w-12 h-12 rounded-xl border-2 border-white/50 shadow-lg object-cover"
                 src={user.avatar.startsWith("http") ? user.avatar : undefined}
                 alt={user.name}
               />
-              <Box className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-emerald-400 rounded-full border-2 border-white flex items-center justify-center">
-                <span className="text-[6px]">✓</span>
+              <Box className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-emerald-400 rounded-full border-2 border-white flex items-center justify-center shadow-sm">
+                <span className="text-[6px] text-white font-bold">✓</span>
               </Box>
             </Box>
             <Box>
-              <Text size="xSmall" className="text-gray-300 font-medium">
+              <Text size="xSmall" className="text-white/80 font-medium">
                 {getGreeting()} 
               </Text>
-              <Text className="font-bold text-base">
+              <Text className="font-bold text-lg text-white">
                 {user.name}
               </Text>
             </Box>
@@ -53,7 +58,7 @@ export const Welcome: FC = () => {
           {/* Notification button */}
           <Box 
             onClick={() => navigate("/notification")}
-            className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center cursor-pointer active:scale-95 transition-transform"
+            className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center cursor-pointer active:scale-95 transition-transform backdrop-blur-sm"
           >
             <BellIcon size={20} color="#FFFFFF" />
           </Box>

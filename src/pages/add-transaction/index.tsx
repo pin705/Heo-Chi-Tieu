@@ -1,6 +1,5 @@
 import React, { FC, useState, useEffect, useCallback, useMemo } from "react";
 import { Page, Box, Text, Input, Sheet, useSnackbar } from "zmp-ui";
-import AppHeader from "components/app-header";
 import DatePicker from "zmp-ui/date-picker";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -18,26 +17,24 @@ import { VoiceInput } from "components/voice-input";
 import { parseVoiceInput } from "utils/voice-parser";
 import { haptic } from "components/ui";
 import { 
-  ExpenseIcon, 
-  IncomeIcon, 
   MicrophoneIcon, 
-  StarIcon, 
   CategoryIcon, 
   WalletIcon, 
   CheckIcon, 
   CalendarIcon,
   CloseIcon,
-  ChevronRightIcon,
+  ChevronDownIcon,
   getIcon 
 } from "components/icons";
 
-// Number pad component
+// Number pad component matching Sổ Thu Chi style
 const NumberPad: FC<{
   onInput: (value: string) => void;
   onDelete: () => void;
-  onClear: () => void;
-}> = ({ onInput, onDelete, onClear }) => {
-  const buttons = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '000', '0', 'del'];
+  onSubmit: () => void;
+  type: TransactionType;
+}> = ({ onInput, onDelete, onSubmit, type }) => {
+  const buttons = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '.', '0', 'del'];
 
   const handlePress = (value: string) => {
     haptic.light();
@@ -49,64 +46,34 @@ const NumberPad: FC<{
   };
 
   return (
-    <Box className="grid grid-cols-3 gap-1.5">
-      {buttons.map((btn, index) => (
-        <Box
-          key={index}
-          onClick={() => handlePress(btn)}
-          className={`
-            h-11 rounded-xl flex items-center justify-center cursor-pointer
-            transition-all duration-150 active:scale-95
-            ${btn === 'del' 
-              ? 'bg-gray-200 text-gray-600' 
-              : 'bg-white shadow-sm text-gray-800 hover:bg-gray-50'
-            }
-          `}
-        >
-          {btn === 'del' ? (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M9 18L15 12L9 6" stroke="#6B7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" transform="rotate(180 12 12)"/>
-              <path d="M19 6H11L5 12L11 18H19C19.5523 18 20 17.5523 20 17V7C20 6.44772 19.5523 6 19 6Z" stroke="#6B7280" strokeWidth="1.5"/>
-            </svg>
-          ) : (
-            <Text className="text-lg font-bold">{btn}</Text>
-          )}
-        </Box>
-      ))}
-    </Box>
-  );
-};
-
-// Quick amount buttons
-const QuickAmounts: FC<{
-  onSelect: (amount: number) => void;
-  type: TransactionType;
-}> = ({ onSelect, type }) => {
-  const amounts = type === 'expense' 
-    ? [10000, 20000, 50000, 100000, 200000, 500000]
-    : [100000, 500000, 1000000, 2000000, 5000000, 10000000];
-
-  const formatQuickAmount = (amount: number) => {
-    if (amount >= 1000000) return `${amount / 1000000}tr`;
-    return `${amount / 1000}k`;
-  };
-
-  return (
-    <Box className="grid grid-cols-6 gap-1.5 mb-3">
-      {amounts.map((amount) => (
-        <Box
-          key={amount}
-          onClick={() => {
-            haptic.light();
-            onSelect(amount);
-          }}
-          className="py-2 bg-white rounded-lg shadow-sm cursor-pointer active:scale-95 transition-transform text-center"
-        >
-          <Text size="xSmall" className="font-bold text-gray-600">
-            {formatQuickAmount(amount)}
-          </Text>
-        </Box>
-      ))}
+    <Box className="flex gap-2">
+      <Box className="flex-1 grid grid-cols-3 gap-1">
+        {buttons.map((btn, index) => (
+          <Box
+            key={index}
+            onClick={() => handlePress(btn)}
+            className="h-12 rounded-lg flex items-center justify-center cursor-pointer bg-gray-100 active:bg-gray-200 transition-colors"
+          >
+            {btn === 'del' ? (
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M21 6H9L3 12L9 18H21C21.5523 18 22 17.5523 22 17V7C22 6.44772 21.5523 6 21 6Z" stroke="#374151" strokeWidth="1.5"/>
+                <path d="M14 10L18 14M18 10L14 14" stroke="#374151" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+            ) : (
+              <Text className="text-xl font-medium text-gray-800">{btn}</Text>
+            )}
+          </Box>
+        ))}
+      </Box>
+      {/* Submit button */}
+      <Box
+        onClick={onSubmit}
+        className={`w-14 rounded-xl flex items-center justify-center cursor-pointer active:opacity-80 transition-opacity ${
+          type === 'expense' ? 'bg-red-500' : 'bg-green-500'
+        }`}
+      >
+        <CheckIcon size={28} color="#FFFFFF" />
+      </Box>
     </Box>
   );
 };
@@ -133,7 +100,6 @@ const AddTransactionPage: FC = () => {
   );
   const [date, setDate] = useState(new Date());
   const [note, setNote] = useState("");
-  const [showCategorySheet, setShowCategorySheet] = useState(false);
   const [showWalletSheet, setShowWalletSheet] = useState(false);
   const [suggestedCategory, setSuggestedCategory] = useState<ExpenseCategory | null>(null);
   const [showVoiceInput, setShowVoiceInput] = useState(false);
@@ -162,6 +128,11 @@ const AddTransactionPage: FC = () => {
   // Number pad handlers
   const handleNumberInput = useCallback((value: string) => {
     setAmount(prev => {
+      // Handle decimal point
+      if (value === '.') {
+        if (prev.includes('.')) return prev;
+        return prev === '' ? '0.' : prev + '.';
+      }
       const newValue = prev + value;
       // Limit to reasonable amount
       if (parseFloat(newValue) > 9999999999) return prev;
@@ -171,14 +142,6 @@ const AddTransactionPage: FC = () => {
 
   const handleNumberDelete = useCallback(() => {
     setAmount(prev => prev.slice(0, -1));
-  }, []);
-
-  const handleNumberClear = useCallback(() => {
-    setAmount("");
-  }, []);
-
-  const handleQuickAmount = useCallback((quickAmount: number) => {
-    setAmount(quickAmount.toString());
   }, []);
 
   const handleSubmit = useCallback(() => {
@@ -286,329 +249,150 @@ const AddTransactionPage: FC = () => {
   }, [date]);
 
   return (
-    <Page className="flex flex-col bg-gray-100 min-h-screen">
-      {/* Fixed Header with Type Toggle */}
+    <Page className="flex flex-col bg-white min-h-screen">
+      {/* Yellow Header - Sổ Thu Chi style */}
       <Box 
-        className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100"
-        style={{
-          paddingTop: 'var(--safe-top)',
-        }}
+        className="bg-yellow-400"
+        style={{ paddingTop: 'var(--safe-top)' }}
       >
-        {/* Back button and title */}
-        <Box className="flex items-center px-4 py-2 relative">
-          <Box className="flex items-center space-x-2 z-10">
-            <Box 
-              onClick={() => navigate(-1)}
-              className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer active:scale-95 transition-transform"
-            >
-              <CloseIcon size={20} color="#000000" />
-            </Box>
+        <Box className="flex items-center justify-between px-4 py-3">
+          <Box 
+            onClick={() => navigate(-1)}
+            className="cursor-pointer active:opacity-70"
+          >
+            <Text className="text-gray-800 font-medium">Hủy</Text>
+          </Box>
+          <Text className="text-gray-900 font-bold text-lg">Thêm</Text>
+          <Box className="flex items-center space-x-2">
             <Box 
               onClick={() => setShowVoiceInput(true)}
-              className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer active:scale-95 transition-transform"
+              className="w-8 h-8 rounded-full bg-yellow-500/50 flex items-center justify-center cursor-pointer active:scale-95"
             >
-              <MicrophoneIcon size={20} color="#000000" />
+              <MicrophoneIcon size={18} color="#1F2937" />
             </Box>
+            <Box className="w-6" /> {/* Spacer for Zalo buttons */}
           </Box>
-          
-          <Box className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <Text className="text-gray-900 text-lg font-bold">
-              {type === "expense" ? "Chi tiêu" : "Thu nhập"}
-            </Text>
-          </Box>
-
-          {/* Right side spacer for Zalo buttons */}
-          <Box className="flex-1" />
-          <Box className="w-24" />
         </Box>
 
-        {/* Type Toggle Tabs */}
-        <Box className="flex px-4 pb-4">
-          <Box className="flex bg-gray-100 rounded-2xl p-1 w-full">
+        {/* Type Toggle - Black pill style */}
+        <Box className="flex justify-center pb-4">
+          <Box className="flex bg-gray-900 rounded-full p-1">
             <Box
               onClick={() => { haptic.light(); setType("expense"); }}
-              className={`flex-1 py-2.5 rounded-xl cursor-pointer transition-all duration-200 ${
-                type === "expense" ? "bg-white shadow-sm" : ""
+              className={`px-5 py-2 rounded-full cursor-pointer transition-all ${
+                type === "expense" ? "bg-white" : ""
               }`}
             >
-              <Box className="flex items-center justify-center space-x-2">
-                <ExpenseIcon size={18} color={type === "expense" ? "#EF4444" : "#9CA3AF"} />
-                <Text className={`font-bold text-sm ${type === "expense" ? "text-red-500" : "text-gray-500"}`}>
-                  Chi tiêu
-                </Text>
-              </Box>
+              <Text className={`text-sm font-medium ${type === "expense" ? "text-gray-900" : "text-white"}`}>
+                Chi tiêu
+              </Text>
             </Box>
             <Box
               onClick={() => { haptic.light(); setType("income"); }}
-              className={`flex-1 py-2.5 rounded-xl cursor-pointer transition-all duration-200 ${
-                type === "income" ? "bg-white shadow-sm" : ""
+              className={`px-5 py-2 rounded-full cursor-pointer transition-all ${
+                type === "income" ? "bg-white" : ""
               }`}
             >
-              <Box className="flex items-center justify-center space-x-2">
-                <IncomeIcon size={18} color={type === "income" ? "#10B981" : "#9CA3AF"} />
-                <Text className={`font-bold text-sm ${type === "income" ? "text-green-500" : "text-gray-500"}`}>
-                  Thu nhập
-                </Text>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-
-        {/* Amount Display */}
-        <Box className="px-6 pb-6">
-          <Text size="xSmall" className="text-gray-500 mb-1">Số tiền</Text>
-          <Box className="flex items-baseline">
-            <Text className={`text-5xl font-bold tracking-tight ${type === "expense" ? "text-red-500" : "text-green-500"}`}>
-              {amount ? formatCurrency(parseFloat(amount)).replace('₫', '').trim() : "0"}
-            </Text>
-            <Text className="text-gray-400 text-2xl ml-2 font-medium">₫</Text>
-          </Box>
-        </Box>
-      </Box>
-
-      {/* Scrollable Content Area */}
-      <Box className="flex-1 pt-56 pb-safe overflow-auto">
-        {/* Quick Amount Buttons */}
-        <Box className="px-4 pt-2 mb-3">
-          <QuickAmounts onSelect={handleQuickAmount} type={type} />
-        </Box>
-
-        {/* Selection Cards */}
-        <Box className="px-4 space-y-3">
-          {/* Category Selection */}
-          <Box
-            onClick={() => { haptic.light(); setShowCategorySheet(true); }}
-            className="bg-white rounded-2xl p-4 shadow-sm cursor-pointer active:scale-[0.98] transition-transform"
-          >
-            <Box className="flex items-center justify-between">
-              <Box className="flex items-center space-x-3">
-                {selectedCategoryData ? (
-                  <>
-                    <Box
-                      className="w-12 h-12 rounded-2xl flex items-center justify-center"
-                      style={{ backgroundColor: `${selectedCategoryData.color}15` }}
-                    >
-                      {(() => {
-                        const IconComponent = getIcon(selectedCategoryData.icon);
-                        return IconComponent ? <IconComponent size={24} color={selectedCategoryData.color} /> : <CategoryIcon size={24} color={selectedCategoryData.color} />;
-                      })()}
-                    </Box>
-                    <Box>
-                      <Text size="xSmall" className="text-gray-500">Danh mục</Text>
-                      <Text className="font-bold text-gray-900">{selectedCategoryData.name}</Text>
-                    </Box>
-                  </>
-                ) : (
-                  <>
-                    <Box className="w-12 h-12 rounded-2xl bg-gray-100 flex items-center justify-center">
-                      <CategoryIcon size={24} color="#9CA3AF" />
-                    </Box>
-                    <Box>
-                      <Text size="xSmall" className="text-gray-500">Danh mục</Text>
-                      <Text className="text-gray-400">Chọn danh mục</Text>
-                    </Box>
-                  </>
-                )}
-              </Box>
-              <ChevronRightIcon size={20} color="#9CA3AF" />
-            </Box>
-          </Box>
-
-          {/* AI Category Suggestion */}
-          {suggestedCategory && selectedCategory !== suggestedCategory.id && (
-            <Box
-              onClick={() => { haptic.light(); setSelectedCategory(suggestedCategory.id); }}
-              className="bg-gradient-to-r from-yellow-50 to-amber-50 rounded-2xl p-4 border border-yellow-200 cursor-pointer active:scale-[0.98] transition-transform"
-            >
-              <Box className="flex items-center justify-between">
-                <Box className="flex items-center space-x-3">
-                  <Box className="w-10 h-10 rounded-xl bg-yellow-400 flex items-center justify-center">
-                    <StarIcon size={20} color="#FFFFFF" active />
-                  </Box>
-                  <Box>
-                    <Text size="xSmall" className="text-yellow-700">AI gợi ý</Text>
-                    <Text className="font-bold text-yellow-900">{suggestedCategory.name}</Text>
-                  </Box>
-                </Box>
-                <Box className="px-3 py-1.5 bg-yellow-500 rounded-xl">
-                  <Text size="xSmall" className="text-white font-bold">Áp dụng</Text>
-                </Box>
-              </Box>
-            </Box>
-          )}
-
-          {/* Wallet Selection */}
-          <Box
-            onClick={() => { haptic.light(); setShowWalletSheet(true); }}
-            className="bg-white rounded-2xl p-4 shadow-sm cursor-pointer active:scale-[0.98] transition-transform"
-          >
-            <Box className="flex items-center justify-between">
-              <Box className="flex items-center space-x-3">
-                {selectedWalletData ? (
-                  <>
-                    <Box
-                      className="w-12 h-12 rounded-2xl flex items-center justify-center"
-                      style={{ backgroundColor: `${selectedWalletData.color}15` }}
-                    >
-                      {(() => {
-                        const IconComponent = getIcon(selectedWalletData.icon);
-                        return IconComponent ? <IconComponent size={24} color={selectedWalletData.color} /> : <WalletIcon size={24} color={selectedWalletData.color} />;
-                      })()}
-                    </Box>
-                    <Box>
-                      <Text size="xSmall" className="text-gray-500">Ví</Text>
-                      <Text className="font-bold text-gray-900">{selectedWalletData.name}</Text>
-                      <Text size="xSmall" className="text-gray-500">{formatCurrency(selectedWalletData.balance)}</Text>
-                    </Box>
-                  </>
-                ) : (
-                  <>
-                    <Box className="w-12 h-12 rounded-2xl bg-gray-100 flex items-center justify-center">
-                      <WalletIcon size={24} color="#9CA3AF" />
-                    </Box>
-                    <Box>
-                      <Text size="xSmall" className="text-gray-500">Ví</Text>
-                      <Text className="text-gray-400">Chọn ví</Text>
-                    </Box>
-                  </>
-                )}
-              </Box>
-              <ChevronRightIcon size={20} color="#9CA3AF" />
-            </Box>
-          </Box>
-
-          {/* Date Selection */}
-          <Box
-            onClick={() => { haptic.light(); setShowDateSheet(true); }}
-            className="bg-white rounded-2xl p-4 shadow-sm cursor-pointer active:scale-[0.98] transition-transform"
-          >
-            <Box className="flex items-center justify-between">
-              <Box className="flex items-center space-x-3">
-                <Box className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center">
-                  <CalendarIcon size={24} color="#3B82F6" />
-                </Box>
-                <Box>
-                  <Text size="xSmall" className="text-gray-500">Ngày</Text>
-                  <Text className="font-bold text-gray-900">{formattedDate}</Text>
-                </Box>
-              </Box>
-              <ChevronRightIcon size={20} color="#9CA3AF" />
-            </Box>
-          </Box>
-
-          {/* Note Selection */}
-          <Box
-            onClick={() => { haptic.light(); setShowNoteSheet(true); }}
-            className="bg-white rounded-2xl p-4 shadow-sm cursor-pointer active:scale-[0.98] transition-transform"
-          >
-            <Box className="flex items-center justify-between">
-              <Box className="flex items-center space-x-3">
-                <Box className="w-12 h-12 rounded-2xl bg-gray-100 flex items-center justify-center">
-                  {(() => {
-                    const NoteIcon = getIcon("receipt");
-                    return NoteIcon ? <NoteIcon size={24} color="#6B7280" /> : null;
-                  })()}
-                </Box>
-                <Box>
-                  <Text size="xSmall" className="text-gray-500">Ghi chú</Text>
-                  <Text className={`${note ? "font-bold text-gray-900" : "text-gray-400"}`}>
-                    {note || "Thêm ghi chú"}
-                  </Text>
-                </Box>
-              </Box>
-              <ChevronRightIcon size={20} color="#9CA3AF" />
-            </Box>
-          </Box>
-        </Box>
-
-        {/* Number Pad */}
-        <Box className="px-4 mt-4 mb-4">
-          <NumberPad
-            onInput={handleNumberInput}
-            onDelete={handleNumberDelete}
-            onClear={handleNumberClear}
-          />
-        </Box>
-
-        {/* Submit Button */}
-        <Box className="px-4 pb-6">
-          <Box
-            onClick={handleSubmit}
-            className="w-full py-4 rounded-2xl cursor-pointer transition-all duration-200 active:scale-[0.98] shadow-lg"
-            style={{
-              background: type === "expense" 
-                ? 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)'
-                : 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
-            }}
-          >
-            <Box className="flex items-center justify-center space-x-2">
-              <CheckIcon size={24} color="#FFFFFF" />
-              <Text className="text-white text-lg font-bold">
-                {type === "expense" ? "Lưu chi tiêu" : "Lưu thu nhập"}
+              <Text className={`text-sm font-medium ${type === "income" ? "text-gray-900" : "text-white"}`}>
+                Thu nhập
               </Text>
             </Box>
           </Box>
         </Box>
       </Box>
 
-      {/* Category Selection Sheet */}
-      <Sheet
-        visible={showCategorySheet}
-        onClose={() => setShowCategorySheet(false)}
-        autoHeight
-        mask
-        handler
-        swipeToClose
-      >
-        <Box className="p-4 pb-8">
-          <Box className="flex items-center justify-between mb-4">
-            <Text className="text-lg font-bold text-gray-900">Chọn danh mục</Text>
-            <Box
-              onClick={() => setShowCategorySheet(false)}
-              className="w-8 h-8 rounded-full bg-gray-100 flex items-center hide-scrollbar justify-center cursor-pointer"
-            >
-              <CloseIcon size={16} color="#6B7280" />
-            </Box>
-          </Box>
-          <Box className="grid grid-cols-4 gap-3 max-h-[50vh] hide-scrollbar overflow-scroll p-1">
-            {categories.map((category) => {
-              const IconComponent = getIcon(category.icon);
-              const isSelected = selectedCategory === category.id;
-              return (
-                <Box
-                  key={category.id}
-                  onClick={() => {
-                    haptic.light();
-                    setSelectedCategory(category.id);
-                    setShowCategorySheet(false);
-                  }}
-                  className={`relative p-3 rounded-2xl cursor-pointer text-center transition-all duration-200 active:scale-95 ${
-                    isSelected ? "bg-yellow-50 shadow-md" : "bg-gray-50"
+      {/* Category Grid - Scrollable */}
+      <Box className="flex-1 overflow-auto pb-64">
+        <Box className="grid grid-cols-4 gap-2 p-4">
+          {categories.map((category) => {
+            const IconComponent = getIcon(category.icon);
+            const isSelected = selectedCategory === category.id;
+            return (
+              <Box
+                key={category.id}
+                onClick={() => {
+                  haptic.light();
+                  setSelectedCategory(category.id);
+                }}
+                className={`relative p-2 rounded-xl cursor-pointer text-center transition-all active:scale-95 ${
+                  isSelected ? "bg-yellow-50" : "bg-transparent"
+                }`}
+              >
+                <Box 
+                  className={`w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-1 ${
+                    isSelected ? "border-2 border-yellow-400" : ""
                   }`}
-                  style={{
-                    border: isSelected ? '2px solid #EAB308' : '2px solid transparent'
-                  }}
+                  style={{ backgroundColor: `${category.color}20` }}
                 >
-                  {isSelected && (
-                    <Box className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-yellow-500 flex items-center justify-center shadow-md">
-                      <CheckIcon size={12} color="#FFFFFF" />
-                    </Box>
-                  )}
-                  <Box 
-                    className="w-11 h-11 mx-auto rounded-xl flex items-center justify-center mb-1.5"
-                    style={{ backgroundColor: `${category.color}20` }}
-                  >
-                    {IconComponent ? <IconComponent size={22} color={category.color} /> : <CategoryIcon size={22} color={category.color} />}
-                  </Box>
-                  <Text size="xxSmall" className="text-gray-700 font-medium line-clamp-2 leading-tight">
-                    {category.name}
-                  </Text>
+                  {IconComponent ? <IconComponent size={24} color={category.color} /> : <CategoryIcon size={24} color={category.color} />}
                 </Box>
-              );
-            })}
+                <Text size="xxSmall" className={`leading-tight line-clamp-2 ${isSelected ? "font-bold text-gray-900" : "text-gray-600"}`}>
+                  {category.name}
+                </Text>
+              </Box>
+            );
+          })}
+        </Box>
+      </Box>
+
+      {/* Bottom Panel - Fixed */}
+      <Box className="fixed bottom-0 left-0 right-0 bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.05)] rounded-t-3xl" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+        {/* Wallet and Amount Row */}
+        <Box className="flex items-center justify-between px-4 pt-4 pb-2">
+          <Box 
+            onClick={() => { haptic.light(); setShowWalletSheet(true); }}
+            className="flex items-center space-x-2 cursor-pointer"
+          >
+            {selectedWalletData && (
+              <>
+                <Box
+                  className="w-8 h-8 rounded-full flex items-center justify-center"
+                  style={{ backgroundColor: `${selectedWalletData.color}20` }}
+                >
+                  {(() => {
+                    const IconComponent = getIcon(selectedWalletData.icon);
+                    return IconComponent ? <IconComponent size={16} color={selectedWalletData.color} /> : <WalletIcon size={16} color={selectedWalletData.color} />;
+                  })()}
+                </Box>
+                <Text className="text-gray-700 font-medium text-sm">{selectedWalletData.name}</Text>
+                <ChevronDownIcon size={16} color="#9CA3AF" />
+              </>
+            )}
+          </Box>
+          <Text className={`text-2xl font-bold ${type === "expense" ? "text-gray-900" : "text-green-600"}`}>
+            {amount ? formatCurrency(parseFloat(amount)) : "0 ₫"}
+          </Text>
+        </Box>
+
+        {/* Note and Date Row */}
+        <Box className="flex items-center px-4 pb-3 space-x-3">
+          <Box 
+            onClick={() => { haptic.light(); setShowNoteSheet(true); }}
+            className="flex-1 flex items-center bg-gray-50 rounded-lg px-3 py-2 cursor-pointer"
+          >
+            <Text size="small" className={note ? "text-gray-700" : "text-gray-400"}>
+              {note || "Ghi chú"}
+            </Text>
+          </Box>
+          <Box 
+            onClick={() => { haptic.light(); setShowDateSheet(true); }}
+            className="flex items-center bg-gray-50 rounded-lg px-3 py-2 cursor-pointer space-x-2"
+          >
+            <CalendarIcon size={16} color="#6B7280" />
+            <Text size="small" className="text-gray-700">{formattedDate}</Text>
           </Box>
         </Box>
-      </Sheet>
+
+        {/* Number Pad */}
+        <Box className="px-4 pb-4">
+          <NumberPad
+            onInput={handleNumberInput}
+            onDelete={handleNumberDelete}
+            onSubmit={handleSubmit}
+            type={type}
+          />
+        </Box>
+      </Box>
 
       {/* Wallet Selection Sheet */}
       <Sheet
@@ -643,8 +427,8 @@ const AddTransactionPage: FC = () => {
                   }}
                   className={`p-4 rounded-2xl cursor-pointer flex items-center justify-between transition-all duration-200 active:scale-[0.98] ${
                     isSelected 
-                      ? "bg-yellow-50 ring-2 ring-yellow-400" 
-                      : "bg-gray-50"
+                      ? "bg-yellow-50 border-2 border-yellow-400" 
+                      : "bg-gray-50 border-2 border-transparent"
                   }`}
                 >
                   <Box className="flex items-center space-x-3">

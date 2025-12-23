@@ -85,7 +85,16 @@ const HistoryPage: FC = () => {
   // Group transactions by date
   const groupedTransactions = filteredTransactions.reduce((acc, transaction) => {
     const date = new Date(transaction.date);
-    const dateKey = date.toLocaleDateString("vi-VN");
+    const today = new Date();
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    let dateKey = date.toLocaleDateString("vi-VN");
+    if (date.toDateString() === today.toDateString()) {
+      dateKey = "Hôm nay";
+    } else if (date.toDateString() === yesterday.toDateString()) {
+      dateKey = "Hôm qua";
+    }
 
     if (!acc[dateKey]) {
       acc[dateKey] = [];
@@ -234,79 +243,80 @@ const HistoryPage: FC = () => {
             }, 0);
 
             return (
-              <Box key={dateKey} className="mb-3">
-                <Box 
-                  className="px-4 py-2.5 flex justify-between items-center rounded-t-xl"
-                  style={{
-                    background: 'linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)',
-                  }}
-                >
-                  <Text size="small" className="font-bold text-white">
+              <Box key={dateKey} className="mb-5">
+                <Box className="flex justify-between items-end px-1 mb-2">
+                  <Text size="small" className="font-bold text-gray-900">
                     {dateKey}
                   </Text>
-                  <Box
-                    className={`px-2.5 py-1 rounded-lg ${
-                      dayTotal >= 0 
-                        ? "bg-white/20" 
-                        : "bg-white/20"
-                    }`}
-                  >
-                    <Text size="xSmall" className="font-bold text-white">
-                      {dayTotal >= 0 ? "+" : ""}
-                      {formatCurrency(dayTotal)}
-                    </Text>
-                  </Box>
+                  <Text size="xSmall" className={`font-bold ${dayTotal >= 0 ? "text-emerald-600" : "text-rose-600"}`}>
+                    {dayTotal >= 0 ? "+" : ""}{formatCurrency(dayTotal)}
+                  </Text>
                 </Box>
-                <Card className="rounded-t-none shadow-sm" padding="none">
-                  {dayTransactions.map((transaction) => {
-                    const category = categories.find(
-                      (c) => c.id === transaction.categoryId
-                    );
-                    const time = new Date(transaction.date).toLocaleTimeString(
-                      "vi-VN",
-                      {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      }
-                    );
-                    const IconComponent = getIcon(category?.icon || "other");
+                <Card className="overflow-hidden shadow-sm border border-gray-100" padding="none">
+                  <Box className="divide-y divide-gray-50">
+                    {dayTransactions.map((transaction) => {
+                      const category = categories.find(
+                        (c) => c.id === transaction.categoryId
+                      );
+                      const time = new Date(transaction.date).toLocaleTimeString(
+                        "vi-VN",
+                        {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        }
+                      );
+                      const IconComponent = getIcon(category?.icon || "other");
 
-                    return (
-                      <Box
-                        key={transaction.id}
-                        className="flex items-center justify-between p-3 active:bg-gray-50 transition-colors cursor-pointer"
-                      >
-                        <Box className="flex items-center space-x-3 flex-1">
-                          <Box
-                            className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-                            style={{ backgroundColor: `${category?.color}15` }}
-                          >
-                            {IconComponent && <IconComponent size={22} color={category?.color || "#6B7280"} />}
+                      return (
+                        <Box
+                          key={transaction.id}
+                          className="flex items-center justify-between p-4 active:bg-gray-50 transition-colors cursor-pointer"
+                        >
+                          <Box className="flex items-center space-x-3 flex-1 min-w-0">
+                            <Box
+                              className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm"
+                              style={{ 
+                                backgroundColor: `${category?.color}15`,
+                                border: `1px solid ${category?.color}20`
+                              }}
+                            >
+                              {IconComponent && <IconComponent size={22} color={category?.color || "#6B7280"} />}
+                            </Box>
+                            <Box className="flex-1 min-w-0">
+                              <Text className="font-bold text-gray-900 text-sm">
+                                {category?.name || "Khác"}
+                              </Text>
+                              <Box className="flex items-center space-x-1.5">
+                                <Text size="xxSmall" className="text-gray-400">
+                                  {time}
+                                </Text>
+                                {transaction.note && (
+                                  <>
+                                    <Box className="w-1 h-1 rounded-full bg-gray-300" />
+                                    <Text size="xxSmall" className="text-gray-400 truncate">
+                                      {transaction.note}
+                                    </Text>
+                                  </>
+                                )}
+                              </Box>
+                            </Box>
                           </Box>
-                          <Box className="flex-1 min-w-0">
-                            <Text size="small" className="font-semibold text-gray-900">
-                              {category?.name || "Khác"}
-                            </Text>
-                            <Text size="xSmall" className="text-gray-500 truncate">
-                              {time}
-                              {transaction.note && ` • ${transaction.note}`}
+                          <Box className="text-right ml-2">
+                            <Text
+                              className={`font-bold text-sm ${
+                                transaction.type === "income"
+                                  ? "text-emerald-600"
+                                  : "text-rose-600"
+                              }`}
+                            >
+                              {transaction.type === "income" ? "+" : "-"}
+                              {formatCurrency(transaction.amount)}
                             </Text>
                           </Box>
                         </Box>
-                        <Text
-                          size="small"
-                          className={`font-bold flex-shrink-0 ml-2 ${
-                            transaction.type === "income"
-                              ? "text-emerald-600"
-                              : "text-rose-600"
-                          }`}
-                        >
-                          {transaction.type === "income" ? "+" : "-"}
-                          {formatCurrency(transaction.amount)}
-                        </Text>
-                      </Box>
-                    );
-                  })}
+                      );
+                    })}
+                  </Box>
                 </Card>
               </Box>
             );

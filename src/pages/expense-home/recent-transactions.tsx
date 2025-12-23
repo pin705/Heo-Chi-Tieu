@@ -49,8 +49,8 @@ export const RecentTransactions: FC = () => {
           <ChevronRightIcon size={12} color="#CA8A04" />
         </Box>
       </Box>
-      <Card padding="sm">
-        <Box className="space-y-1.5">
+      <Card padding="none" className="overflow-hidden">
+        <Box className="divide-y divide-gray-100">
           {recentTransactions.map((transaction, index) => {
             const category = categories.find(
               (c) => c.id === transaction.categoryId
@@ -61,39 +61,45 @@ export const RecentTransactions: FC = () => {
             return (
               <Box
                 key={transaction.id}
-                className="flex items-center justify-between p-2.5 bg-gray-50 rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98]"
+                className="flex items-center justify-between p-4 hover:bg-gray-50 transition-all duration-200 cursor-pointer active:bg-gray-100"
                 onClick={() => navigate(`/history?id=${transaction.id}`)}
               >
-                <Box className="flex items-center space-x-2.5">
+                <Box className="flex items-center space-x-3">
                   <Box
-                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    className="w-11 h-11 rounded-2xl flex items-center justify-center shadow-sm"
                     style={{ 
                       background: `${category?.color}15`,
+                      border: `1px solid ${category?.color}20`
                     }}
                   >
                     {IconComponent ? (
-                      <IconComponent size={18} color={category?.color || "#6B7280"} />
+                      <IconComponent size={22} color={category?.color || "#6B7280"} />
                     ) : (
-                      <CategoryIcon size={18} color={category?.color || "#6B7280"} />
+                      <CategoryIcon size={22} color={category?.color || "#6B7280"} />
                     )}
                   </Box>
                   <Box>
-                    <Text size="xSmall" className="font-bold text-gray-900">
+                    <Text className="font-bold text-gray-900 text-sm">
                       {category?.name || "Khác"}
                     </Text>
-                    <Text size="xxSmall" className="text-gray-500">
-                      {date.toLocaleDateString("vi-VN")}
-                    </Text>
+                    <Box className="flex items-center space-x-1.5">
+                      <Text size="xxSmall" className="text-gray-400">
+                        {date.toLocaleDateString("vi-VN", { day: '2-digit', month: '2-digit' })}
+                      </Text>
+                      {transaction.note && (
+                        <>
+                          <Box className="w-1 h-1 rounded-full bg-gray-300" />
+                          <Text size="xxSmall" className="text-gray-400 truncate max-w-[120px]">
+                            {transaction.note}
+                          </Text>
+                        </>
+                      )}
+                    </Box>
                   </Box>
                 </Box>
-                <Box className={`px-2 py-1 rounded-lg ${
-                  transaction.type === "income"
-                    ? "bg-emerald-50"
-                    : "bg-rose-50"
-                }`}>
+                <Box className="text-right">
                   <Text
-                    size="xSmall"
-                    className={`font-bold ${
+                    className={`font-bold text-sm ${
                       transaction.type === "income"
                         ? "text-emerald-600"
                         : "text-rose-600"

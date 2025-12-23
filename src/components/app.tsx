@@ -1,5 +1,5 @@
-import React from "react";
-import { App, ZMPRouter, SnackbarProvider } from "zmp-ui";
+import React, { Suspense } from "react";
+import { App, ZMPRouter, SnackbarProvider, Box, Text } from "zmp-ui";
 import { RecoilRoot } from "recoil";
 import { getConfig } from "utils/config";
 import { Layout } from "./layout";
@@ -15,7 +15,13 @@ const MyApp = () => {
         <App>
           <SnackbarProvider>
             <ZMPRouter>
-              <Layout />
+              <Suspense fallback={
+                <Box className="h-screen flex items-center justify-center bg-yellow-400">
+                  <Text className="font-bold text-lg">Đang tải...</Text>
+                </Box>
+              }>
+                <Layout />
+              </Suspense>
             </ZMPRouter>
           </SnackbarProvider>
         </App>
