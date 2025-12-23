@@ -33,14 +33,19 @@ const NumberPad: FC<{
   onInput: (value: string) => void;
   onDelete: () => void;
   onSubmit: () => void;
+  onVoice: () => void;
   type: TransactionType;
-}> = ({ onInput, onDelete, onSubmit, type }) => {
-  const buttons = ['7', '8', '9', '+', '4', '5', '6', '-', '1', '2', '3', 'del', '.', '0'];
+}> = ({ onInput, onDelete, onSubmit, onVoice, type }) => {
+  const buttons = ['7', '8', '9', '+', '4', '5', '6', '-', '1', '2', '3', 'del', '.', '0', 'voice', 'submit'];
 
   const handlePress = (value: string) => {
     haptic.light();
     if (value === 'del') {
       onDelete();
+    } else if (value === 'voice') {
+      onVoice();
+    } else if (value === 'submit') {
+      onSubmit();
     } else {
       onInput(value);
     }
@@ -48,28 +53,38 @@ const NumberPad: FC<{
 
   return (
     <Box className="grid grid-cols-4 gap-3">
-      {buttons.map((btn, index) => (
-        <Box
-          key={index}
-          onClick={() => handlePress(btn)}
-          className="h-14 rounded-2xl flex items-center justify-center cursor-pointer bg-gray-50 active:bg-gray-200 transition-all shadow-sm"
-        >
-          {btn === 'del' ? (
-            <DeleteIcon size={24} color="#374151" />
-          ) : (
-            <Text className="text-2xl font-semibold text-gray-800">{btn}</Text>
-          )}
-        </Box>
-      ))}
-      {/* Submit button - Spans 2 columns */}
-      <Box
-        onClick={onSubmit}
-        className={`col-span-2 h-14 rounded-2xl flex items-center justify-center cursor-pointer active:opacity-80 transition-all shadow-md ${
-          type === 'expense' ? 'bg-red-500' : 'bg-green-500'
-        }`}
-      >
-        <CheckIcon size={32} color="#FFFFFF" />
-      </Box>
+      {buttons.map((btn, index) => {
+        if (btn === 'submit') {
+          return (
+            <Box
+              key={index}
+              onClick={onSubmit}
+              className={`h-14 rounded-2xl flex items-center justify-center cursor-pointer active:opacity-80 transition-all shadow-md ${
+                type === 'expense' ? 'bg-red-500' : 'bg-green-500'
+              }`}
+            >
+              <CheckIcon size={32} color="#FFFFFF" />
+            </Box>
+          );
+        }
+        return (
+          <Box
+            key={index}
+            onClick={() => handlePress(btn)}
+            className={`h-14 rounded-2xl flex items-center justify-center cursor-pointer transition-all shadow-sm ${
+              btn === 'voice' ? 'bg-blue-50 active:bg-blue-100' : 'bg-gray-50 active:bg-gray-200'
+            }`}
+          >
+            {btn === 'del' ? (
+              <DeleteIcon size={24} color="#374151" />
+            ) : btn === 'voice' ? (
+              <MicrophoneIcon size={24} color="#2563EB" />
+            ) : (
+              <Text className="text-2xl font-semibold text-gray-800">{btn}</Text>
+            )}
+          </Box>
+        );
+      })}
     </Box>
   );
 };
@@ -99,6 +114,7 @@ const AddTransactionPage: FC = () => {
   const [showWalletSheet, setShowWalletSheet] = useState(false);
   const [suggestedCategory, setSuggestedCategory] = useState<ExpenseCategory | null>(null);
   const [showVoiceInput, setShowVoiceInput] = useState(false);
+  const [showKeypad, setShowKeypad] = useState(false);
   const [showDateSheet, setShowDateSheet] = useState(false);
   const [showNoteSheet, setShowNoteSheet] = useState(false);
 
@@ -289,12 +305,6 @@ const AddTransactionPage: FC = () => {
           </Box>
           <Text className="text-gray-900 font-bold text-lg">Thêm</Text>
           <Box className="flex items-center space-x-2">
-            <Box 
-              onClick={() => setShowVoiceInput(true)}
-              className="w-8 h-8 rounded-full bg-yellow-500/50 flex items-center justify-center cursor-pointer active:scale-95"
-            >
-              <MicrophoneIcon size={18} color="#1F2937" />
-            </Box>
             <Box className="w-6" /> {/* Spacer for Zalo buttons */}
           </Box>
         </Box>
@@ -327,7 +337,7 @@ const AddTransactionPage: FC = () => {
       </Box>
 
       {/* Category Grid - Scrollable */}
-      <Box className="flex-1 overflow-auto pb-64">
+      <Box className={`flex-1 overflow-auto transition-all duration-300 ${showKeypad ? "pb-[420px]" : "pb-40"}`}>
         <Box className="grid grid-cols-4 gap-2 p-4">
           {categories.map((category) => {
             const IconComponent = getIcon(category.icon);
@@ -338,6 +348,7 @@ const AddTransactionPage: FC = () => {
                 onClick={() => {
                   haptic.light();
                   setSelectedCategory(category.id);
+                  setShowKeypad(true);
                 }}
                 className={`relative p-2 rounded-xl cursor-pointer text-center transition-all active:scale-95 ${
                   isSelected ? "bg-yellow-50" : "bg-transparent"
@@ -384,7 +395,10 @@ const AddTransactionPage: FC = () => {
               </>
             )}
           </Box>
-          <Text className={`text-3xl font-bold ${type === "expense" ? "text-gray-900" : "text-green-600"}`}>
+          <Text 
+            onClick={() => setShowKeypad(true)}
+            className={`text-3xl font-bold cursor-pointer ${type === "expense" ? "text-gray-900" : "text-green-600"}`}
+          >
             {amount ? (
               /[+-]/.test(amount) ? amount : formatCurrency(parseFloat(amount))
             ) : "0 ₫"}
@@ -411,14 +425,17 @@ const AddTransactionPage: FC = () => {
         </Box>
 
         {/* Number Pad */}
-        <Box className="px-4 pb-4">
-          <NumberPad
-            onInput={handleNumberInput}
-            onDelete={handleNumberDelete}
-            onSubmit={handleSubmit}
-            type={type}
-          />
-        </Box>
+        {showKeypad && (
+          <Box className="px-4 pb-4 animate-enter-active">
+            <NumberPad
+              onInput={handleNumberInput}
+              onDelete={handleNumberDelete}
+              onSubmit={handleSubmit}
+              onVoice={() => setShowVoiceInput(true)}
+              type={type}
+            />
+          </Box>
+        )}
       </Box>
 
       {/* Wallet Selection Sheet */}

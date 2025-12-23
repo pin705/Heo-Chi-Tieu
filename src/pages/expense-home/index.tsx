@@ -87,10 +87,10 @@ const ExpenseHomePage: FC = () => {
             <Text className="text-black text-lg font-bold">Heo Chi Tiêu</Text>
           </Box>
           <Box className="flex items-center space-x-3">
-            <Box className="cursor-pointer p-2" onClick={() => navigate("/history")}>
+            <Box className="cursor-pointer p-2" onClick={() => navigate("/search")}>
               <SearchIcon size={22} color="#000000" />
             </Box>
-            <Box className="cursor-pointer p-2">
+            <Box className="cursor-pointer p-2" onClick={() => setShowMonthPicker(true)}>
               <CalendarIcon size={22} color="#000000" />
             </Box>
           </Box>

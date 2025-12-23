@@ -57,11 +57,11 @@ export const Navigation: FC = () => {
     <Box className="relative bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.03)] safe-area-bottom">
       {/* Floating Add Button */}
       <Box
-        className="absolute left-1/2 -translate-x-1/2 -top-7 z-50"
+        className="absolute left-1/2 -translate-x-1/2 -top-6 z-50"
         onClick={handleAddClick}
       >
         <Box 
-          className="w-14 h-14 rounded-full shadow-lg flex items-center justify-center cursor-pointer active:scale-90 transition-all duration-200"
+          className="w-14 h-14 rounded-full shadow-[0_4px_15px_rgba(251,191,36,0.4)] border-4 border-white flex items-center justify-center cursor-pointer active:scale-90 transition-all duration-200"
           style={{
             background: '#FBBF24',
           }}
