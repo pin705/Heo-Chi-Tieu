@@ -271,13 +271,13 @@ const ReportsPage: FC = () => {
             {/* Action Buttons */}
             <Box className="grid grid-cols-2 gap-3">
               <Box 
-                className="bg-white rounded-2xl p-4 text-center shadow-sm border border-gray-100 cursor-pointer active:bg-gray-50"
+                className="bg-white rounded-2xl p-4 text-center shadow-sm  cursor-pointer active:bg-gray-50"
                 onClick={() => navigate("/manage-wallets")}
               >
                 <Text className="font-medium text-gray-900">Thêm tài khoản</Text>
               </Box>
               <Box 
-                className="bg-white rounded-2xl p-4 text-center shadow-sm border border-gray-100 cursor-pointer active:bg-gray-50"
+                className="bg-white rounded-2xl p-4 text-center shadow-sm  cursor-pointer active:bg-gray-50"
                 onClick={() => navigate("/manage-wallets")}
               >
                 <Text className="font-medium text-gray-900">Quản lý tài khoản</Text>
@@ -285,7 +285,7 @@ const ReportsPage: FC = () => {
             </Box>
 
             {/* Wallet List */}
-            <Box className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <Box className="bg-white rounded-2xl shadow-sm  overflow-hidden">
               <Box className="p-4 border-b border-gray-100">
                 <Text className="font-bold text-gray-900">Danh sách ví</Text>
               </Box>
@@ -294,7 +294,7 @@ const ReportsPage: FC = () => {
                 return (
                   <Box 
                     key={wallet.id}
-                    className="flex items-center justify-between p-4 border-b border-gray-50 last:border-b-0"
+                    className="flex items-center justify-between p-4  last:border-b-0"
                   >
                     <Box className="flex items-center space-x-3">
                       <Box

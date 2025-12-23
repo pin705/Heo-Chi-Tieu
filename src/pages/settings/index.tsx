@@ -3,7 +3,21 @@ import { Page, Box, Text, useSnackbar } from "zmp-ui";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userState, walletsState, transactionsState, categoriesState } from "expense-state";
-import { ChevronRightIcon, getIcon } from "components/icons";
+import { 
+  ChevronRightIcon, 
+  getIcon, 
+  ShareIcon, 
+  AdBlockIcon, 
+  SettingsIcon, 
+  AppIcon, 
+  WalletIcon, 
+  CategoryIcon, 
+  BudgetIcon, 
+  ExportIcon, 
+  BackupIcon, 
+  DeleteIcon,
+  TrophyIcon
+} from "components/icons";
 import { AppLogo } from "components/logo";
 
 const SettingsPage: FC = () => {
@@ -27,31 +41,6 @@ const SettingsPage: FC = () => {
     }
   };
 
-  const menuItems = [
-    {
-      icon: "👍",
-      label: "Giới thiệu cho bạn bè",
-      onClick: () => openSnackbar({ text: "Tính năng đang phát triển" }),
-    },
-    {
-      icon: "🚫",
-      label: "Chặn quảng cáo",
-      onClick: () => openSnackbar({ text: "Tính năng đang phát triển" }),
-    },
-    {
-      icon: "⚙️",
-      label: "Cài đặt",
-      onClick: () => navigate("/manage-categories"),
-      showSubmenu: true,
-    },
-    {
-      icon: "📱",
-      label: "Ứng dụng của chúng tôi",
-      onClick: () => openSnackbar({ text: "Tính năng đang phát triển" }),
-      badge: true,
-    },
-  ];
-
   return (
     <Page className="flex flex-col bg-gray-50 min-h-screen">
       {/* Yellow Header with User Info */}
@@ -62,29 +51,32 @@ const SettingsPage: FC = () => {
           paddingTop: 'var(--safe-top)',
         }}
       >
-        <Box className="px-4 py-6 pr-24">
+        <Box className="px-4 py-8 pr-24">
           <Box className="flex items-center space-x-4">
             {/* User Avatar */}
             <Box className="relative">
               {user.avatar.startsWith("http") ? (
                 <img
-                  className="w-16 h-16 rounded-full border-2 border-white shadow-lg object-cover"
+                  className="w-20 h-20 rounded-full border-4 border-white shadow-xl object-cover"
                   src={user.avatar}
                   alt={user.name}
                 />
               ) : (
-                <Box className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center border-2 border-white shadow-lg">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                <Box className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center border-4 border-white shadow-xl">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
                     <circle cx="12" cy="8" r="4" stroke="#9CA3AF" strokeWidth="2"/>
                     <path d="M4 20C4 16.6863 7.58172 14 12 14C16.4183 14 20 16.6863 20 20" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round"/>
                   </svg>
                 </Box>
               )}
+              <Box className="absolute bottom-0 right-0 bg-yellow-500 border-2 border-white rounded-full p-1 shadow-md">
+                <TrophyIcon size={12} color="#FFFFFF" />
+              </Box>
             </Box>
             <Box>
-              <Text className="text-black text-lg font-bold">{user.name || "Đăng nhập"}</Text>
-              <Text size="small" className="text-black/70">
-                {user.name ? `ID: ${user.id?.slice(0, 8)}...` : "Đăng nhập, thú vị hơn!"}
+              <Text className="text-black text-xl font-bold">{user.name || "Đăng nhập"}</Text>
+              <Text size="small" className="text-black/70 font-medium">
+                {user.name ? `ID: ${user.id?.slice(0, 8)}` : "Đăng nhập để đồng bộ dữ liệu"}
               </Text>
             </Box>
           </Box>
@@ -92,121 +84,74 @@ const SettingsPage: FC = () => {
       </Box>
 
       {/* Content */}
-      <Box className="flex-1 overflow-auto pb-24 -mt-2">
+      <Box className="flex-1 overflow-auto pb-24 -mt-4">
         {/* Premium Card */}
-        <Box className="mx-4 mb-3">
+        <Box className="mx-4 mb-4">
           <Box 
-            className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center justify-between cursor-pointer active:bg-gray-50"
+            className="bg-gray-900 rounded-2xl p-5 shadow-lg flex items-center justify-between cursor-pointer active:scale-[0.98] transition-all"
             onClick={() => openSnackbar({ text: "Tính năng đang phát triển" })}
           >
-            <Box className="flex items-center space-x-3">
-              <Text className="text-2xl">👑</Text>
-              <Text className="font-bold text-gray-900">Thành viên Premium</Text>
+            <Box className="flex items-center space-x-4">
+              <Box className="w-12 h-12 rounded-xl bg-yellow-400 flex items-center justify-center shadow-inner">
+                <TrophyIcon size={28} color="#000000" />
+              </Box>
+              <Box>
+                <Text className="font-bold text-white text-lg">Nâng cấp Premium</Text>
+                <Text size="xSmall" className="text-yellow-400 font-medium">Mở khóa tất cả tính năng</Text>
+              </Box>
             </Box>
-            <ChevronRightIcon size={20} color="#9CA3AF" />
+            <ChevronRightIcon size={24} color="#FBBF24" />
           </Box>
         </Box>
 
-        {/* Menu Items */}
-        <Box className="mx-4">
-          <Box className="bg-white rounded-2xl shadow-sm overflow-hidden">
-            {menuItems.map((item, index) => (
+        {/* Quick Access */}
+        <Box className="mx-4 mt-6">
+          <Text size="xSmall" className="text-gray-400 font-bold mb-3 px-1 tracking-wider uppercase">Quản lý dữ liệu</Text>
+          <Box className="bg-white rounded-2xl shadow-sm overflow-hidden ">
+            {[
+              { icon: <WalletIcon size={20} color="#F59E0B" />, label: "Quản lý ví", path: "/manage-wallets" },
+              { icon: <CategoryIcon size={20} color="#10B981" />, label: "Quản lý danh mục", path: "/manage-categories" },
+              { icon: <BudgetIcon size={20} color="#3B82F6" />, label: "Ngân sách", path: "/budget" },
+              { icon: <ExportIcon size={20} color="#8B5CF6" />, label: "Xuất dữ liệu", path: "/export" },
+              { icon: <BackupIcon size={20} color="#EC4899" />, label: "Sao lưu & Khôi phục", path: "/backup" },
+            ].map((item, index, arr) => (
               <Box
                 key={index}
                 className={`flex items-center justify-between p-4 cursor-pointer active:bg-gray-50 ${
-                  index < menuItems.length - 1 ? "border-b border-gray-50" : ""
+                  index < arr.length - 1 ? "" : ""
                 }`}
-                onClick={item.onClick}
+                onClick={() => navigate(item.path)}
               >
-                <Box className="flex items-center space-x-3">
-                  <Text className="text-xl">{item.icon}</Text>
-                  <Text className="font-medium text-gray-900">{item.label}</Text>
+                <Box className="flex items-center space-x-4">
+                  <Box className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center">
+                    {item.icon}
+                  </Box>
+                  <Text className="font-semibold text-gray-800">{item.label}</Text>
                 </Box>
-                <Box className="flex items-center space-x-2">
-                  {item.badge && (
-                    <Box className="w-2 h-2 rounded-full bg-red-500" />
-                  )}
-                  <ChevronRightIcon size={20} color="#9CA3AF" />
-                </Box>
+                <ChevronRightIcon size={20} color="#D1D5DB" />
               </Box>
             ))}
           </Box>
         </Box>
 
-        {/* Quick Access */}
-        <Box className="mx-4 mt-4">
-          <Text size="xSmall" className="text-gray-500 font-medium mb-2 px-1">QUẢN LÝ</Text>
-          <Box className="bg-white rounded-2xl shadow-sm overflow-hidden">
-            <Box
-              className="flex items-center justify-between p-4 cursor-pointer active:bg-gray-50 border-b border-gray-50"
-              onClick={() => navigate("/manage-wallets")}
-            >
-              <Box className="flex items-center space-x-3">
-                <Text className="text-xl">💼</Text>
-                <Text className="font-medium text-gray-900">Quản lý ví</Text>
-              </Box>
-              <ChevronRightIcon size={20} color="#9CA3AF" />
-            </Box>
-            <Box
-              className="flex items-center justify-between p-4 cursor-pointer active:bg-gray-50 border-b border-gray-50"
-              onClick={() => navigate("/manage-categories")}
-            >
-              <Box className="flex items-center space-x-3">
-                <Text className="text-xl">📂</Text>
-                <Text className="font-medium text-gray-900">Quản lý danh mục</Text>
-              </Box>
-              <ChevronRightIcon size={20} color="#9CA3AF" />
-            </Box>
-            <Box
-              className="flex items-center justify-between p-4 cursor-pointer active:bg-gray-50 border-b border-gray-50"
-              onClick={() => navigate("/budget")}
-            >
-              <Box className="flex items-center space-x-3">
-                <Text className="text-xl">💰</Text>
-                <Text className="font-medium text-gray-900">Ngân sách</Text>
-              </Box>
-              <ChevronRightIcon size={20} color="#9CA3AF" />
-            </Box>
-            <Box
-              className="flex items-center justify-between p-4 cursor-pointer active:bg-gray-50 border-b border-gray-50"
-              onClick={() => navigate("/export")}
-            >
-              <Box className="flex items-center space-x-3">
-                <Text className="text-xl">📊</Text>
-                <Text className="font-medium text-gray-900">Xuất dữ liệu</Text>
-              </Box>
-              <ChevronRightIcon size={20} color="#9CA3AF" />
-            </Box>
-            <Box
-              className="flex items-center justify-between p-4 cursor-pointer active:bg-gray-50"
-              onClick={() => navigate("/backup")}
-            >
-              <Box className="flex items-center space-x-3">
-                <Text className="text-xl">☁️</Text>
-                <Text className="font-medium text-gray-900">Sao lưu & Khôi phục</Text>
-              </Box>
-              <ChevronRightIcon size={20} color="#9CA3AF" />
-            </Box>
-          </Box>
-        </Box>
-
         {/* Danger Zone */}
-        <Box className="mx-4 mt-4">
+        <Box className="mx-4 mt-8">
           <Box
             onClick={handleClearData}
-            className="flex items-center justify-center p-4 bg-red-50 rounded-2xl cursor-pointer active:scale-[0.98] transition-all"
+            className="flex items-center justify-center p-4 bg-red-50 rounded-2xl cursor-pointer active:scale-[0.98] transition-all border border-red-100"
           >
-            <Text className="text-red-600 font-semibold">🗑️ Xóa toàn bộ dữ liệu</Text>
+            <DeleteIcon size={20} color="#EF4444" className="mr-2" />
+            <Text className="text-red-600 font-bold">Xóa toàn bộ dữ liệu</Text>
           </Box>
         </Box>
 
         {/* Footer */}
-        <Box className="px-4 py-8 flex flex-col items-center justify-center space-y-2">
-          <AppLogo size={48} />
+        <Box className="px-4 py-10 flex flex-col items-center justify-center space-y-3">
+          <AppLogo size={56} />
           <Box className="text-center">
-            <Text className="text-gray-900 font-bold">Heo Chi Tiêu</Text>
-            <Text size="xSmall" className="text-gray-400">
-              Phiên bản 1.0.0 • © 2025
+            <Text className="text-gray-900 font-black text-lg tracking-tight">Heo Chi Tiêu</Text>
+            <Text size="xSmall" className="text-gray-400 font-medium">
+              Phiên bản 1.0.0 • Made with ❤️
             </Text>
           </Box>
         </Box>
