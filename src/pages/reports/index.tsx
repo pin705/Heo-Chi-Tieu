@@ -88,7 +88,7 @@ const ReportsPage: FC = () => {
         {activeTab === "analysis" ? (
           <Box className="p-4 space-y-4">
             {/* Monthly Stats Card */}
-            <Box className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+            <Box className="bg-white rounded-2xl p-4 shadow-sm">
               <Box 
                 className="flex items-center justify-between mb-4 cursor-pointer"
                 onClick={() => navigate("/history")}
@@ -125,7 +125,7 @@ const ReportsPage: FC = () => {
             </Box>
 
             {/* Budget Card */}
-            <Box className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+            <Box className="bg-white rounded-2xl p-4 shadow-sm">
               <Box 
                 className="flex items-center justify-between mb-4 cursor-pointer"
                 onClick={() => navigate("/budget")}
@@ -143,7 +143,7 @@ const ReportsPage: FC = () => {
                       cy="50"
                       r="40"
                       fill="none"
-                      stroke="#E5E7EB"
+                      stroke="#F3F4F6"
                       strokeWidth="12"
                     />
                     {budgetStatus.hasBudget && budgetStatus.budget > 0 && (
@@ -190,7 +190,7 @@ const ReportsPage: FC = () => {
 
             {/* Category Breakdown */}
             {categoryStats.length > 0 && (
-              <Box className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+              <Box className="bg-white rounded-2xl p-4 shadow-sm">
                 <Text className="font-bold text-gray-900 mb-4">Chi tiêu theo danh mục</Text>
                 <Box className="space-y-3">
                   {categoryStats.slice(0, 5).map((stat) => {

@@ -685,6 +685,42 @@ export const UploadIcon: React.FC<IconProps> = ({ size = 24, color = "currentCol
   </svg>
 );
 
+// Icon Chia sẻ (Share)
+export const ShareIcon: React.FC<IconProps> = ({ size = 24, color = "currentColor", className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+    <path d="M18 8C19.6569 8 21 6.65685 21 5C21 3.34315 19.6569 2 18 2C16.3431 2 15 3.34315 15 5C15 6.65685 16.3431 8 18 8Z" stroke={color} strokeWidth="1.5"/>
+    <path d="M6 15C7.65685 15 9 13.6569 9 12C9 10.3431 7.65685 9 6 9C4.34315 9 3 10.3431 3 12C3 13.6569 4.34315 15 6 15Z" stroke={color} strokeWidth="1.5"/>
+    <path d="M18 22C19.6569 22 21 20.6569 21 19C21 17.3431 19.6569 16 18 16C16.3431 16 15 17.3431 15 19C15 20.6569 16.3431 22 18 22Z" stroke={color} strokeWidth="1.5"/>
+    <path d="M8.59 13.51L15.42 17.49" stroke={color} strokeWidth="1.5"/>
+    <path d="M15.41 6.51L8.59 10.49" stroke={color} strokeWidth="1.5"/>
+  </svg>
+);
+
+// Icon Chặn quảng cáo (AdBlock)
+export const AdBlockIcon: React.FC<IconProps> = ({ size = 24, color = "currentColor", className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke={color} strokeWidth="1.5"/>
+    <path d="M4.93 4.93L19.07 19.07" stroke={color} strokeWidth="1.5"/>
+  </svg>
+);
+
+// Icon Ứng dụng (App)
+export const AppIcon: React.FC<IconProps> = ({ size = 24, color = "currentColor", className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+    <rect x="3" y="3" width="7" height="7" rx="1.5" stroke={color} strokeWidth="1.5"/>
+    <rect x="14" y="3" width="7" height="7" rx="1.5" stroke={color} strokeWidth="1.5"/>
+    <rect x="3" y="14" width="7" height="7" rx="1.5" stroke={color} strokeWidth="1.5"/>
+    <path d="M14 17.5H21M17.5 14V21" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
+  </svg>
+);
+
+// Icon Trừ (Minus)
+export const MinusIcon: React.FC<IconProps> = ({ size = 24, color = "currentColor", className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+    <path d="M5 12H19" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+  </svg>
+);
+
 // Icon MenuGrid
 export const MenuGridIcon: React.FC<IconProps> = ({ size = 24, color = "currentColor", className }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
@@ -751,6 +787,10 @@ export const iconMap: Record<string, React.FC<IconProps>> = {
   "piggy-bank": PiggyBankIcon,
   download: DownloadIcon,
   upload: UploadIcon,
+  share: ShareIcon,
+  adblock: AdBlockIcon,
+  app: AppIcon,
+  minus: MinusIcon,
   "menu-grid": MenuGridIcon,
   bell: BellIcon,
   // New category icons

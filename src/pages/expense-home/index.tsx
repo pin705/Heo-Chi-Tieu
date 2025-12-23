@@ -13,6 +13,7 @@ import {
   CategoryIcon 
 } from "components/icons";
 import { haptic } from "components/ui";
+import { AppLogo } from "components/logo";
 
 const ExpenseHomePage: FC = () => {
   const navigate = useNavigate();
@@ -80,13 +81,10 @@ const ExpenseHomePage: FC = () => {
       >
         {/* Top Bar */}
         <Box className="flex items-center justify-between px-4 py-3 pr-24">
-          <Box 
-            className="cursor-pointer p-2 -ml-2"
-            onClick={() => navigate("/settings")}
-          >
-            <MenuIcon size={24} color="#000000" />
+          <Box className="flex items-center space-x-2">
+            <AppLogo size={32} />
+            <Text className="text-black text-lg font-bold">Heo Chi Tiêu</Text>
           </Box>
-          <Text className="text-black text-lg font-bold">Sổ Thu Chi</Text>
           <Box className="flex items-center space-x-3">
             <Box className="cursor-pointer p-2" onClick={() => navigate("/history")}>
               <SearchIcon size={22} color="#000000" />

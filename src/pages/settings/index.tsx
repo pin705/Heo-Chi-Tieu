@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userState, walletsState, transactionsState, categoriesState } from "expense-state";
 import { ChevronRightIcon, getIcon } from "components/icons";
+import { AppLogo } from "components/logo";
 
 const SettingsPage: FC = () => {
   const navigate = useNavigate();
@@ -108,12 +109,12 @@ const SettingsPage: FC = () => {
 
         {/* Menu Items */}
         <Box className="mx-4">
-          <Box className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <Box className="bg-white rounded-2xl shadow-sm overflow-hidden">
             {menuItems.map((item, index) => (
               <Box
                 key={index}
                 className={`flex items-center justify-between p-4 cursor-pointer active:bg-gray-50 ${
-                  index < menuItems.length - 1 ? "border-b border-gray-100" : ""
+                  index < menuItems.length - 1 ? "border-b border-gray-50" : ""
                 }`}
                 onClick={item.onClick}
               >
@@ -135,9 +136,9 @@ const SettingsPage: FC = () => {
         {/* Quick Access */}
         <Box className="mx-4 mt-4">
           <Text size="xSmall" className="text-gray-500 font-medium mb-2 px-1">QUẢN LÝ</Text>
-          <Box className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <Box className="bg-white rounded-2xl shadow-sm overflow-hidden">
             <Box
-              className="flex items-center justify-between p-4 cursor-pointer active:bg-gray-50 border-b border-gray-100"
+              className="flex items-center justify-between p-4 cursor-pointer active:bg-gray-50 border-b border-gray-50"
               onClick={() => navigate("/manage-wallets")}
             >
               <Box className="flex items-center space-x-3">
@@ -147,7 +148,7 @@ const SettingsPage: FC = () => {
               <ChevronRightIcon size={20} color="#9CA3AF" />
             </Box>
             <Box
-              className="flex items-center justify-between p-4 cursor-pointer active:bg-gray-50 border-b border-gray-100"
+              className="flex items-center justify-between p-4 cursor-pointer active:bg-gray-50 border-b border-gray-50"
               onClick={() => navigate("/manage-categories")}
             >
               <Box className="flex items-center space-x-3">
@@ -157,7 +158,7 @@ const SettingsPage: FC = () => {
               <ChevronRightIcon size={20} color="#9CA3AF" />
             </Box>
             <Box
-              className="flex items-center justify-between p-4 cursor-pointer active:bg-gray-50 border-b border-gray-100"
+              className="flex items-center justify-between p-4 cursor-pointer active:bg-gray-50 border-b border-gray-50"
               onClick={() => navigate("/budget")}
             >
               <Box className="flex items-center space-x-3">
@@ -167,7 +168,7 @@ const SettingsPage: FC = () => {
               <ChevronRightIcon size={20} color="#9CA3AF" />
             </Box>
             <Box
-              className="flex items-center justify-between p-4 cursor-pointer active:bg-gray-50 border-b border-gray-100"
+              className="flex items-center justify-between p-4 cursor-pointer active:bg-gray-50 border-b border-gray-50"
               onClick={() => navigate("/export")}
             >
               <Box className="flex items-center space-x-3">
@@ -193,17 +194,21 @@ const SettingsPage: FC = () => {
         <Box className="mx-4 mt-4">
           <Box
             onClick={handleClearData}
-            className="flex items-center justify-center p-4 bg-red-50 rounded-2xl cursor-pointer active:scale-[0.98] transition-all border border-red-200"
+            className="flex items-center justify-center p-4 bg-red-50 rounded-2xl cursor-pointer active:scale-[0.98] transition-all"
           >
             <Text className="text-red-600 font-semibold">🗑️ Xóa toàn bộ dữ liệu</Text>
           </Box>
         </Box>
 
         {/* Footer */}
-        <Box className="px-4 py-6 text-center">
-          <Text size="xSmall" className="text-gray-400">
-            Sổ Thu Chi v1.0.0 • © 2025
-          </Text>
+        <Box className="px-4 py-8 flex flex-col items-center justify-center space-y-2">
+          <AppLogo size={48} />
+          <Box className="text-center">
+            <Text className="text-gray-900 font-bold">Heo Chi Tiêu</Text>
+            <Text size="xSmall" className="text-gray-400">
+              Phiên bản 1.0.0 • © 2025
+            </Text>
+          </Box>
         </Box>
       </Box>
     </Page>

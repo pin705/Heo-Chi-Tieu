@@ -54,7 +54,7 @@ export const Navigation: FC = () => {
   const secondHalf = tabs.slice(2);
 
   return (
-    <Box className="relative bg-white border-t border-gray-100 safe-area-bottom">
+    <Box className="relative bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.03)] safe-area-bottom">
       {/* Floating Add Button */}
       <Box
         className="absolute left-1/2 -translate-x-1/2 -top-7 z-50"

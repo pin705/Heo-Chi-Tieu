@@ -252,7 +252,7 @@ const HistoryPage: FC = () => {
                     {dayTotal >= 0 ? "+" : ""}{formatCurrency(dayTotal)}
                   </Text>
                 </Box>
-                <Card className="overflow-hidden shadow-sm border border-gray-100" padding="none">
+                <Card className="overflow-hidden shadow-sm" padding="none">
                   <Box className="divide-y divide-gray-50">
                     {dayTransactions.map((transaction) => {
                       const category = categories.find(
