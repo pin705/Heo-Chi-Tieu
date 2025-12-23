@@ -69,9 +69,9 @@ module.exports = {
         },
       },
       boxShadow: {
-        'soft': '0 2px 8px 0 rgba(0, 0, 0, 0.06)',
-        'card': '0 4px 12px 0 rgba(0, 0, 0, 0.08)',
-        'floating': '0 8px 24px 0 rgba(0, 0, 0, 0.15)',
+        'soft': '0 2px 10px rgba(0, 0, 0, 0.03)',
+        'card': '0 4px 20px rgba(0, 0, 0, 0.05)',
+        'floating': '0 8px 30px rgba(0, 0, 0, 0.12)',
         'glow': '0 0 20px rgba(234, 179, 8, 0.3)',
         'inner-soft': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
       },

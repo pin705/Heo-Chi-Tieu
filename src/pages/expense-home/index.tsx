@@ -10,7 +10,8 @@ import {
   CalendarIcon, 
   ChevronDownIcon,
   getIcon,
-  CategoryIcon 
+  CategoryIcon, 
+  ChevronRightIcon
 } from "components/icons";
 import { haptic } from "components/ui";
 import { AppLogo } from "components/logo";
@@ -136,7 +137,7 @@ const ExpenseHomePage: FC = () => {
       </Box>
 
       {/* Transaction List */}
-      <Box className="flex-1 overflow-auto pb-24 bg-gray-50">
+      <Box className="flex-1 overflow-auto pb-24 bg-gray-50 px-4 pt-4">
         {Object.keys(groupedTransactions).length === 0 ? (
           <Box className="flex flex-col items-center justify-center h-full py-20">
             <Box className="w-16 h-16 mb-4 opacity-30">
@@ -154,56 +155,60 @@ const ExpenseHomePage: FC = () => {
             const capitalizedDay = dayName.charAt(0).toUpperCase() + dayName.slice(1);
 
             return (
-              <Box key={key}>
+              <Box key={key} className="mb-4">
                 {/* Date Header */}
-                <Box className="flex items-center justify-between px-4 py-2 bg-gray-50">
+                <Box className="flex items-center justify-between px-1 py-2">
                   <Box className="flex items-center space-x-2">
-                    <Text size="small" className="text-gray-600 font-medium">{dateStr}</Text>
-                    <Text size="small" className="text-gray-400">{capitalizedDay}</Text>
+                    <Text size="small" className="text-gray-800 font-bold">{dateStr}</Text>
+                    <Text size="small" className="text-gray-500">{capitalizedDay}</Text>
                   </Box>
-                  <Text size="small" className="text-gray-500">
+                  <Text size="small" className="text-gray-500 font-medium">
                     {data.expense > 0 ? `Chi: ${formatCurrency(data.expense).replace(' ₫', '')}` : ''}
                     {data.income > 0 ? ` Thu: ${formatCurrency(data.income).replace(' ₫', '')}` : ''}
                   </Text>
                 </Box>
 
                 {/* Transactions */}
-                {data.transactions.map((transaction) => {
-                  const category = categories.find((c) => c.id === transaction.categoryId);
-                  const IconComponent = getIcon(category?.icon || "");
+                <Box className="bg-white rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.03)] overflow-hidden">
+                  {data.transactions.map((transaction, index) => {
+                    const category = categories.find((c) => c.id === transaction.categoryId);
+                    const IconComponent = getIcon(category?.icon || "");
 
-                  return (
-                    <Box
-                      key={transaction.id}
-                      className="flex items-center justify-between px-4 py-3 bg-white cursor-pointer active:bg-gray-50"
-                      onClick={() => navigate(`/history?id=${transaction.id}`)}
-                    >
-                      <Box className="flex items-center space-x-3">
-                        <Box
-                          className="w-11 h-11 rounded-full flex items-center justify-center"
-                          style={{ backgroundColor: category?.color ? `${category.color}20` : '#FEF3C7' }}
-                        >
-                          {IconComponent ? (
-                            <IconComponent size={22} color={category?.color || "#EAB308"} />
-                          ) : (
-                            <CategoryIcon size={22} color={category?.color || "#EAB308"} />
-                          )}
+                    return (
+                      <Box
+                        key={transaction.id}
+                        className={`flex items-center justify-between px-4 py-3 bg-white cursor-pointer active:bg-gray-50 transition-colors ${
+                          index < data.transactions.length - 1 ? 'border-b border-gray-50' : ''
+                        }`}
+                        onClick={() => navigate(`/history?id=${transaction.id}`)}
+                      >
+                        <Box className="flex items-center space-x-3">
+                          <Box
+                            className="w-10 h-10 rounded-full flex items-center justify-center shadow-sm"
+                            style={{ backgroundColor: category?.color ? `${category.color}15` : '#F3F4F6' }}
+                          >
+                            {IconComponent ? (
+                              <IconComponent size={20} color={category?.color || "#EAB308"} />
+                            ) : (
+                              <CategoryIcon size={20} color={category?.color || "#EAB308"} />
+                            )}
+                          </Box>
+                          <Box>
+                            <Text className="text-gray-900 font-semibold text-sm">{category?.name || "Khác"}</Text>
+                            {transaction.note && (
+                              <Text size="xxSmall" className="text-gray-400 truncate max-w-[180px]">
+                                {transaction.note}
+                              </Text>
+                            )}
+                          </Box>
                         </Box>
-                        <Box>
-                          <Text className="text-gray-900 font-medium">{category?.name || "Khác"}</Text>
-                          {transaction.note && (
-                            <Text size="xxSmall" className="text-gray-400 truncate max-w-[180px]">
-                              {transaction.note}
-                            </Text>
-                          )}
-                        </Box>
+                        <Text className={`font-bold text-sm ${transaction.type === "income" ? "text-emerald-600" : "text-gray-900"}`}>
+                          {transaction.type === "expense" ? "-" : "+"}{formatCurrency(transaction.amount).replace(' ₫', '')}
+                        </Text>
                       </Box>
-                      <Text className={`font-bold ${transaction.type === "income" ? "text-green-600" : "text-gray-900"}`}>
-                        {transaction.type === "expense" ? "-" : "+"}{formatCurrency(transaction.amount).replace(' ₫', '')}
-                      </Text>
-                    </Box>
-                  );
-                })}
+                    );
+                  })}
+                </Box>
               </Box>
             );
           })
@@ -223,31 +228,33 @@ const ExpenseHomePage: FC = () => {
           <Text className="text-lg font-bold text-center mb-4">Chọn tháng</Text>
           
           {/* Year Selector */}
-          <Box className="flex items-center justify-center space-x-4 mb-4">
+          <Box className="flex items-center justify-center space-x-6 mb-6">
             <Box 
-              className="px-4 py-2 rounded-lg bg-gray-100 cursor-pointer"
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 active:bg-gray-200 cursor-pointer transition-colors"
               onClick={() => setSelectedYear(selectedYear - 1)}
             >
-              <Text>◀</Text>
+              <Box className="transform rotate-180">
+                <ChevronRightIcon size={20} color="#374151" />
+              </Box>
             </Box>
-            <Text className="text-xl font-bold">{selectedYear}</Text>
+            <Text className="text-xl font-bold text-gray-900">{selectedYear}</Text>
             <Box 
-              className="px-4 py-2 rounded-lg bg-gray-100 cursor-pointer"
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 active:bg-gray-200 cursor-pointer transition-colors"
               onClick={() => setSelectedYear(selectedYear + 1)}
             >
-              <Text>▶</Text>
+              <ChevronRightIcon size={20} color="#374151" />
             </Box>
           </Box>
 
           {/* Month Grid */}
-          <Box className="grid grid-cols-4 gap-2">
+          <Box className="grid grid-cols-4 gap-3">
             {months.map((month, index) => (
               <Box
                 key={index}
                 className={`py-3 rounded-xl text-center cursor-pointer transition-all ${
                   selectedMonth === index
-                    ? "bg-yellow-400 text-black font-bold"
-                    : "bg-gray-100 text-gray-700"
+                    ? "bg-yellow-400 text-black font-bold shadow-md shadow-yellow-400/30"
+                    : "bg-gray-50 text-gray-600 hover:bg-gray-100"
                 }`}
                 onClick={() => {
                   haptic.light();
@@ -255,7 +262,7 @@ const ExpenseHomePage: FC = () => {
                   setShowMonthPicker(false);
                 }}
               >
-                <Text size="small" className={selectedMonth === index ? "font-bold" : ""}>
+                <Text size="small" className={selectedMonth === index ? "font-bold" : "font-medium"}>
                   {month}
                 </Text>
               </Box>
